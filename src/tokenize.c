@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 15:23:42 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/01/31 16:39:50 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/01/31 17:22:16 by maxborde         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,13 +60,13 @@ char	*add_token(char	*line, t_token **tokenlist)
 	{
 		printf("start addtoken\n");
 		*tokenlist = create_new_token(get_element(line));
-		set_token_type(*tokenlist);
 		return (line + ft_strlen((*tokenlist)->element));
 	}
 	tmp = *tokenlist;
 	while (tmp->next)
 		tmp = tmp->next;
 	tmp->next = create_new_token(get_element(line));
+	(*tmp)->ttype = set_token_type(*tmp);
 	return (line + ft_strlen(tmp->next->element));
 }
 

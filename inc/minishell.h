@@ -15,6 +15,7 @@ enum				ttype
 	COMMAND,
 	COMMAND_ARGS,
 	SPE_CHAR,
+	VARIABLE,
 	BUILTIN
 };
 
