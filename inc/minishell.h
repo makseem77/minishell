@@ -42,4 +42,6 @@ int					is_a_command(char *element, char **bin_paths);
 
 void	set_token_type(t_token *token);
 
+void	listening_loop(void);
+
 #endif

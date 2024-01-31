@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 15:23:42 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/01/31 17:22:16 by maxborde         ###   ########.fr       */
+/*   Updated: 2024/01/31 21:09:11 by maxborde         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,34 @@ t_token	*create_new_token(char *element)
 	return (token);
 }
 
+//Returns the size of the element between quotes. 
+//Handles " and ' quotes.
+int	compute_quotes_size(char *line)
+{
+	int	i;
+
+	i = 0;
+	if(line[i] == 39)
+	{
+		i++;
+		while(line[i] && line[i] != 39)
+			i++;
+		i++;
+	}
+	else if(line[i] == 34)
+	{
+		i++;
+		while(line[i] && line[i] != 34)
+			i++;
+		i++;
+	}
+	return (i);
+}
+
+
 //Takes the pointer to line and extracts and returns the first element  it encounters.
+//We first calculate the lenght of the element and then duplicate it. If the element starts with 
+//quote we go until the next quote.
 char	*get_element(char *line)
 {
 	char	*element;		
@@ -37,8 +64,13 @@ char	*get_element(char *line)
 	i = 0;
 	j = 0;
 	printf("Line in GE = %s\n", line);
-	while (line[i] && line[i] != ' ')
-		i++;	
+	if (line[i] == 39 || line[i] == 34)
+		i += compute_quotes_size(line);
+	else
+	{
+		while (line[i] && line[i] != ' ')
+			i++;	
+	}
 	printf("Size of element = %d\n", i);
 	element = malloc(sizeof(char) * (i + 1));
 	while (j < i)
@@ -60,13 +92,13 @@ char	*add_token(char	*line, t_token **tokenlist)
 	{
 		printf("start addtoken\n");
 		*tokenlist = create_new_token(get_element(line));
+		printf("Element: %s\n", (*tokenlist)->element);
 		return (line + ft_strlen((*tokenlist)->element));
 	}
 	tmp = *tokenlist;
 	while (tmp->next)
 		tmp = tmp->next;
 	tmp->next = create_new_token(get_element(line));
-	(*tmp)->ttype = set_token_type(*tmp);
 	return (line + ft_strlen(tmp->next->element));
 }
 

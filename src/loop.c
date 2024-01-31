@@ -18,7 +18,7 @@ void	listening_loop(void) //don't forget to free the line
 		tmp = *tokenlist;
 		while (tmp)
 		{
-			printf("Element: %s\n", tmp->element);
+			printf("Element = %s\n", tmp->element);
 			tmp = tmp->next;
 		}
 	}

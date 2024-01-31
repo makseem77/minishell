@@ -1,26 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maxborde <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/31 15:26:32 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/01/31 20:10:57 by maxborde         ###   ########.fr       */
+/*   Created: 2023/12/13 09:08:04 by maxborde          #+#    #+#             */
+/*   Updated: 2023/12/13 09:27:52 by maxborde         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/minishell.h"
+#include "libft.h"
 
-
-int	main(int argc, char *argv[], char *envp[])
+int	ft_strcmp(const char *s1, const char *s2)
 {
-	char	**envdup;
+	size_t	i;
 
-	printf("Value = %s\n", getenv("LANGUAGE"));
-	argc += 1;
-	*argv += 1;
-	envdup = dup_env(envp);
-	listening_loop();
+	i = 0;
+	while ((s1[i] || s2[i]))
+	{
+		if ((unsigned char)s1[i] > (unsigned char)s2[i])
+			return (1);
+		else if ((unsigned char)s1[i] < (unsigned char)s2[i])
+			return (-1);
+		i++;
+	}
 	return (0);
 }
