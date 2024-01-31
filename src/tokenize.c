@@ -1,4 +1,16 @@
-#include "minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   tokenize.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/01/31 15:23:42 by ymeziane          #+#    #+#             */
+/*   Updated: 2024/01/31 16:39:50 by ymeziane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../inc/minishell.h"
 
 //Creates a new token, adds a duplicate of element and returns it.
 t_token	*create_new_token(char *element)
@@ -48,6 +60,7 @@ char	*add_token(char	*line, t_token **tokenlist)
 	{
 		printf("start addtoken\n");
 		*tokenlist = create_new_token(get_element(line));
+		set_token_type(*tokenlist);
 		return (line + ft_strlen((*tokenlist)->element));
 	}
 	tmp = *tokenlist;

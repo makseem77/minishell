@@ -1,6 +1,18 @@
-#include "minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parsing.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/01/31 15:23:35 by ymeziane          #+#    #+#             */
+/*   Updated: 2024/01/31 16:32:53 by ymeziane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-void	set_token_types(t_token **tokenlist)
+#include "../inc/minishell.h"
+
+void	set_token_type(t_token *token)
 {
-
+    
 }
