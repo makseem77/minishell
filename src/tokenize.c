@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 15:23:42 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/01 15:48:06 by maxborde         ###   ########.fr       */
+/*   Updated: 2024/02/01 16:39:54 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ t_token	*create_new_token(char *element)
 {
 	t_token	*token;
 
-	printf("start createnewtoken\n");
 	token = (t_token *)malloc(sizeof(t_token));
 	if (!token)
 		return (NULL);
@@ -60,10 +59,8 @@ char	*get_element(char *line)
 	int	i;
 	int	j;
 
-	printf("start getelement\n");
 	i = 0;
 	j = 0;
-	printf("Line in GE = %s\n", line);
 	if (line[i] == 39 || line[i] == 34)
 		i += compute_quotes_size(line);
 	else
@@ -71,7 +68,6 @@ char	*get_element(char *line)
 		while (line[i] && line[i] != ' ' && line[i] != 39 && line[i] != 34)
 			i++;	
 	}
-	printf("Size of element = %d\n", i);
 	element = malloc(sizeof(char) * (i + 1));
 	while (j < i)
 	{
@@ -90,9 +86,7 @@ char	*add_token(char	*line, t_token **tokenlist)
 
 	if (!(*tokenlist))
 	{
-		printf("start addtoken\n");
 		*tokenlist = create_new_token(get_element(line));
-		printf("Element: %s\n", (*tokenlist)->element);
 		return (line + ft_strlen((*tokenlist)->element));
 	}
 	tmp = *tokenlist;
@@ -106,7 +100,6 @@ char	*clean_up_quotes(char *element)
 {
 	if (*element == 39)
 	{
-		printf("strlen = %ld\n", ft_strlen(element));
 		if(element[ft_strlen(element) - 1] == 39)
 			return(ft_strndup(element + 1, ft_strlen(element) - 2));
 					
@@ -142,14 +135,12 @@ t_token	**tokenize(char	*line)
 
 	tokenlist = malloc(sizeof(t_token*));
 	*tokenlist = NULL;
-	printf("start tokenize\n");
 	while (*line)
 	{
 		if ((*line < 9 || *line > 13) && *line != ' ')
 			line = add_token(line, tokenlist);
 		else
 			line++;
-		printf("Line = %s\n", line);
 	}
 	clean_up_tokens(tokenlist);
 	return(tokenlist);

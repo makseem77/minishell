@@ -4,3 +4,6 @@ maxborde@c1r7p3:~/Documents/code42/minishellgit$ echo "'" hello "'"
 maxborde@c1r7p3:~/Documents/code42/minishellgit$ echo "'"                  hello              "'"
 ' hello '
 
+
+k""k
+expected => kk, nous on a : k(null)k

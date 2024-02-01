@@ -1,11 +1,24 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   loop.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/02/01 16:43:34 by ymeziane          #+#    #+#             */
+/*   Updated: 2024/02/01 20:36:33 by ymeziane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-void	listening_loop(void) //don't forget to free the line
+void	listening_loop(char **env) //don't forget to free the line
 {
 	char	*line;
 	t_token **tokenlist;
 	t_token *tmp;
-
+	(void)env;
+	
 	while(1)
 	{
 		line = readline("minishell> ");
@@ -14,11 +27,13 @@ void	listening_loop(void) //don't forget to free the line
 		if (*line)
 			add_history(line);
 		tokenlist = tokenize(line);
+		set_token_types(tokenlist, env);
 		free(line);
 		tmp = *tokenlist;
 		while (tmp)
 		{
 			printf("Element = %s\n", tmp->element);
+			printf("Type = %d\n", tmp->ttype);
 			tmp = tmp->next;
 		}
 	}

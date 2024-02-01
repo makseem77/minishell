@@ -14,9 +14,10 @@ enum				ttype
 {
 	COMMAND,
 	COMMAND_ARGS,
-	SPE_CHAR,
+	META_CHAR,
 	VARIABLE,
-	BUILTIN
+	BUILTIN,
+	STRING
 };
 
 typedef struct s_token
@@ -31,17 +32,22 @@ typedef struct s_token
 //2. scan the user-input and cut it into tokens. for instance: "cat file.txt" would give 2 tokens: "cat" -> COMMAND and "file.txt" -> FILENAME.
 //Save data on each token in a struct.
 //3. Start executing the user-input by going trough each token one by one.
+
+//	TOKENIZE
 t_token				**tokenize(char *line);
 char				*add_token(char *line, t_token **tokenlist);
 char				*get_element(char *line);
 t_token				*create_new_token(char *element);
 
+
+//	ENV
 char				**dup_env(char **env);
 char				**find_bin_paths(char **env);
-int					is_a_command(char *element, char **bin_paths);
 
-void	set_token_type(t_token *token);
+//	PARSING
+void	set_token_types(t_token **tokenlist, char **env);
 
-void	listening_loop(void);
+//	LOOP
+void	listening_loop(char **env);
 
 #endif

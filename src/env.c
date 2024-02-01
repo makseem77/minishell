@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 15:23:28 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/01/31 15:35:40 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/01 17:21:33 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,33 +47,3 @@ char	**find_bin_paths(char **env)
 	return (bin_paths);
 }
 
-//Returns 1 if it's element is actually an executable command,
-//0 if it is not.
-//Here, we go trough the splitted PATH variables, and join element
-//to each of them, then check if they are actually executable.
-//We also do a first check with open to make sure that we are not
-//using access, X_OK on a directory because it would return 0 like
-//an exe.
-int	is_a_command(char *element, char **bin_paths)
-{
-	char	*executable;
-	int	fd;
-
-	executable = NULL;
-	while (*bin_paths)
-	{
-		executable = ft_strjoin(*bin_paths, "/");
-		executable = ft_strjoin(executable, element);
-		printf("Element = %s\n\n", executable);
-		fd = open(executable, O_DIRECTORY);
-		if (fd == -1) 
-		{
-			if (access(executable, X_OK) == 0)
-				return (1);
-		}
-		else
-			close(fd);
-		bin_paths++;
-	}
-	return (0);
-}

@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 15:26:32 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/01/31 20:10:57 by maxborde         ###   ########.fr       */
+/*   Updated: 2024/02/01 17:24:16 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,12 @@
 int	main(int argc, char *argv[], char *envp[])
 {
 	char	**envdup;
-
-	printf("Value = %s\n", getenv("LANGUAGE"));
+	
+	if(argc > 1 || ft_strcmp(argv[0], "./minishell"))
+		return(ft_putstr_fd("Usage: ./minishell\n", 2), 0);
 	argc += 1;
 	*argv += 1;
 	envdup = dup_env(envp);
-	listening_loop();
+	listening_loop(envdup);
 	return (0);
 }
