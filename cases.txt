@@ -1,0 +1,6 @@
+maxborde@c1r7p3:~/Documents/code42/minishellgit$ echo "'" hello "'"
+' hello '
+
+maxborde@c1r7p3:~/Documents/code42/minishellgit$ echo "'"                  hello              "'"
+' hello '
+

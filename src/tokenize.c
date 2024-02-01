@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 15:23:42 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/01/31 21:09:11 by maxborde         ###   ########.fr       */
+/*   Updated: 2024/02/01 15:48:06 by maxborde         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ char	*get_element(char *line)
 		i += compute_quotes_size(line);
 	else
 	{
-		while (line[i] && line[i] != ' ')
+		while (line[i] && line[i] != ' ' && line[i] != 39 && line[i] != 34)
 			i++;	
 	}
 	printf("Size of element = %d\n", i);
@@ -102,6 +102,35 @@ char	*add_token(char	*line, t_token **tokenlist)
 	return (line + ft_strlen(tmp->next->element));
 }
 
+char	*clean_up_quotes(char *element)
+{
+	if (*element == 39)
+	{
+		printf("strlen = %ld\n", ft_strlen(element));
+		if(element[ft_strlen(element) - 1] == 39)
+			return(ft_strndup(element + 1, ft_strlen(element) - 2));
+					
+	}
+	if (*element == 34)
+	{
+		if(element[ft_strlen(element) - 1] == 34)
+			return(ft_strndup(element + 1, ft_strlen(element) - 2));
+	}
+	return (element);
+}
+
+void	clean_up_tokens(t_token **tokenlist)
+{
+	t_token	*tmp;
+
+	tmp = *tokenlist;
+	while (tmp)
+	{
+		tmp->element = clean_up_quotes(tmp->element);
+		tmp = tmp->next;
+	}
+}
+
 //Returns a pointer to the first element of the linked list of all the tokens in 
 //the bash expression.
 //You go trough the line, skip whitespaces, and adds a token every time it encounters
@@ -122,5 +151,6 @@ t_token	**tokenize(char	*line)
 			line++;
 		printf("Line = %s\n", line);
 	}
+	clean_up_tokens(tokenlist);
 	return(tokenlist);
 }
