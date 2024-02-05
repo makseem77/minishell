@@ -13,7 +13,6 @@
 enum				ttype
 {
 	COMMAND,
-	COMMAND_ARGS,
 	META_CHAR,
 	VARIABLE,
 	BUILTIN,

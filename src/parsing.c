@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 15:23:35 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/01 20:37:53 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/05 13:23:51 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ int	is_a_command(char *element, char **env)
 	{
 		executable = ft_strjoin(*bin_paths, "/");
 		executable = ft_strjoin(executable, element);
-		// printf("Element = %s\n\n", executable);
 		fd = open(executable, O_DIRECTORY);
 		if (fd == -1) 
 		{
@@ -67,8 +66,21 @@ int	is_a_command(char *element, char **env)
 	return (0);
 }
 
+int is_a_variable(char *element)
+{
+	while (element)
+	{
+		if(!ft_isdigit(*element) && !ft_isalpha(*element) && (*element != '_'))
+			return (0);
+		element++;
+		if (*element == '=')
+			return (1);
+	}
+	return (0);
+}
+
 //Goes trough the token linked list and gives a tokentype to every node of the list.
-void	set_token_types(t_token **tokenlist, char **env)
+void	set_token_types(t_token **tokenlist, char **env	)
 {
 	t_token	*tmp;
 	int		i;
@@ -83,6 +95,8 @@ void	set_token_types(t_token **tokenlist, char **env)
 			tmp->ttype = META_CHAR;
 		else if(is_a_command(tmp->element, env))
 			tmp->ttype = COMMAND;
+		else if(is_a_variable(tmp->element))
+			tmp->ttype = VARIABLE;
 		else
 			tmp->ttype = STRING;
 		tmp = tmp->next;

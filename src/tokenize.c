@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 15:23:42 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/01 16:39:54 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/05 11:50:49 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,26 +55,28 @@ int	compute_quotes_size(char *line)
 //quote we go until the next quote.
 char	*get_element(char *line)
 {
-	char	*element;		
+	char	*element;
 	int	i;
 	int	j;
 
 	i = 0;
 	j = 0;
-	if (line[i] == 39 || line[i] == 34)
+	if (line[i] == '\'' || line[i] == '"')
 		i += compute_quotes_size(line);
 	else
 	{
-		while (line[i] && line[i] != ' ' && line[i] != 39 && line[i] != 34)
+		while (line[i] && line[i] != ' ' && line[i] != '\'' && line[i] != '"')
 			i++;	
 	}
-	element = malloc(sizeof(char) * (i + 1));
+	element = malloc(i + 1);
+	if (!element)
+		return (NULL);
 	while (j < i)
 	{
 		element[j] = line[j];
 		j++;
 	}
-	element[j] = 0;
+	element[j] = '\0';
 	return (element);
 }
 
@@ -98,15 +100,15 @@ char	*add_token(char	*line, t_token **tokenlist)
 
 char	*clean_up_quotes(char *element)
 {
-	if (*element == 39)
+	if (*element == '\'')
 	{
-		if(element[ft_strlen(element) - 1] == 39)
+		if(element[ft_strlen(element) - 1] == '\'')
 			return(ft_strndup(element + 1, ft_strlen(element) - 2));
 					
 	}
-	if (*element == 34)
+	if (*element == '"')
 	{
-		if(element[ft_strlen(element) - 1] == 34)
+		if(element[ft_strlen(element) - 1] == '"')
 			return(ft_strndup(element + 1, ft_strlen(element) - 2));
 	}
 	return (element);
@@ -119,6 +121,8 @@ void	clean_up_tokens(t_token **tokenlist)
 	tmp = *tokenlist;
 	while (tmp)
 	{
+		if(ft_strcmp(tmp->element, "\"\"")	== 0)
+			return;
 		tmp->element = clean_up_quotes(tmp->element);
 		tmp = tmp->next;
 	}
@@ -137,7 +141,7 @@ t_token	**tokenize(char	*line)
 	*tokenlist = NULL;
 	while (*line)
 	{
-		if ((*line < 9 || *line > 13) && *line != ' ')
+		if ((*line < '\t' || *line > '\r') && *line != ' ')
 			line = add_token(line, tokenlist);
 		else
 			line++;
