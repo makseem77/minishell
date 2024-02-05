@@ -1,16 +1,9 @@
-maxborde@c1r7p3:~/Documents/code42/minishellgit$ echo "'" hello "'"
-' hello '
-
-maxborde@c1r7p3:~/Documents/code42/minishellgit$ echo "'"                  hello              "'"
-' hello '
-
-
-k""k
-expected => kk, nous on a : k(null)k
-
 minishell> YANIS=2
 Element = YANIS=2
 Type = 2
 minishell> "BONJOUR=2"
 Element = BONJOUR=2
 Type = 2
+
+a="ls -l file"
+$a

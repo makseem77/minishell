@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 15:23:35 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/05 13:23:51 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/05 16:00:54 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ int is_a_variable(char *element)
 	return (0);
 }
 
+
 //Goes trough the token linked list and gives a tokentype to every node of the list.
 void	set_token_types(t_token **tokenlist, char **env	)
 {
@@ -96,9 +97,14 @@ void	set_token_types(t_token **tokenlist, char **env	)
 		else if(is_a_command(tmp->element, env))
 			tmp->ttype = COMMAND;
 		else if(is_a_variable(tmp->element))
+			tmp->ttype = VARIABLE_DECLA;
+		else if (tmp->element[0] == '$')
 			tmp->ttype = VARIABLE;
 		else
-			tmp->ttype = STRING;
+		{
+			printf("%s: command not found\n", tmp->element);
+			exit(EXIT_FAILURE);
+		}
 		tmp = tmp->next;
 	}
 }
