@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 15:23:42 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/05 11:50:49 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/05 15:19:06 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,23 +32,44 @@ int	compute_quotes_size(char *line)
 	int	i;
 
 	i = 0;
-	if(line[i] == 39)
+	if(line[i] == '\'')
 	{
 		i++;
-		while(line[i] && line[i] != 39)
+		while(line[i] && line[i] != '\'')
 			i++;
 		i++;
 	}
-	else if(line[i] == 34)
+	else if(line[i] == '"')
 	{
 		i++;
-		while(line[i] && line[i] != 34)
+		while(line[i] && line[i] != '"')
 			i++;
 		i++;
 	}
 	return (i);
 }
 
+size_t compute_len(char *element)
+{
+	size_t len;
+	int flag_double_quotes;
+	int flag_single_quotes;
+
+	len = 0;
+	flag_double_quotes = 0;
+	flag_single_quotes = 0;
+	while (element[len])
+	{
+		if(element[len] == ' ' && flag_double_quotes % 2 == 0 && flag_single_quotes % 2 == 0)
+			break;
+		if (element[len] == '"' && flag_single_quotes % 2 == 0)
+			flag_double_quotes++;
+		if (element[len] == '\'' && flag_double_quotes % 2 == 0)
+			flag_single_quotes++;
+		len++;
+	}
+	return (len);
+}
 
 //Takes the pointer to line and extracts and returns the first element  it encounters.
 //We first calculate the lenght of the element and then duplicate it. If the element starts with 
@@ -61,13 +82,8 @@ char	*get_element(char *line)
 
 	i = 0;
 	j = 0;
-	if (line[i] == '\'' || line[i] == '"')
-		i += compute_quotes_size(line);
-	else
-	{
-		while (line[i] && line[i] != ' ' && line[i] != '\'' && line[i] != '"')
-			i++;	
-	}
+	
+	i = compute_len(line);
 	element = malloc(i + 1);
 	if (!element)
 		return (NULL);
@@ -98,20 +114,61 @@ char	*add_token(char	*line, t_token **tokenlist)
 	return (line + ft_strlen(tmp->next->element));
 }
 
+size_t count_del_quotes(char *element)
+{
+	size_t single_quote;
+	size_t double_quote;
+
+	single_quote = 0;
+	double_quote = 0;
+	while (*element)
+	{
+		if(*element == '\'' && double_quote % 2 == 0)
+			single_quote++;
+		if(*element == '"' && single_quote % 2 == 0)
+			double_quote++;
+		element++;
+	}
+	printf("single_quote = %zu\n", single_quote);
+	printf("double_quote = %zu\n", double_quote);
+
+	if(single_quote % 2 != 0 || double_quote % 2 != 0)
+	{
+		printf("Error: Unmatched quotes\n");
+		exit(EXIT_FAILURE);
+	}
+	return (single_quote + double_quote);
+}
+
 char	*clean_up_quotes(char *element)
 {
-	if (*element == '\'')
+	int i = 0;
+	int j = 0;
+	size_t quotes_count = count_del_quotes(element);
+	char *new_element;
+	new_element = malloc(ft_strlen(element) - quotes_count + 1);
+	if(!new_element)
+		return (NULL);
+	while (element[i])
 	{
-		if(element[ft_strlen(element) - 1] == '\'')
-			return(ft_strndup(element + 1, ft_strlen(element) - 2));
-					
+		if(element[i] == '\'')
+		{
+			i++;
+			while(element[j] && element[i] != '\'')
+				new_element[j++] = element[i++];
+		}
+		else if(element[i] == '"')
+		{
+			i++;
+			while(element[j] && element[i] != '"')
+				new_element[j++] = element[i++];
+		}
+		else
+			new_element[j++] = element[i];
+		i++;
 	}
-	if (*element == '"')
-	{
-		if(element[ft_strlen(element) - 1] == '"')
-			return(ft_strndup(element + 1, ft_strlen(element) - 2));
-	}
-	return (element);
+	new_element[j] = '\0';
+	return (new_element);
 }
 
 void	clean_up_tokens(t_token **tokenlist)
