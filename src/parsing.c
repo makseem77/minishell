@@ -73,12 +73,10 @@ int has_a_variable(char *element)
 {
 	int	dquotesflag;
 	int	squotesflag;
-	int	dollarsignflag;
 	int	i;
 
 	dquotesflag = 0;
 	squotesflag = 0;
-	dollarsignflag = 0;
 	i = 0;
 	printf("This is the ele= %s\n", element);
 	while (element[i])

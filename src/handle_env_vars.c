@@ -88,6 +88,7 @@ char	*update_line(char *line, char **env, int newlinelen)
 				*newline = line[i];
 				newline++;
 			}
+			i++;
 		}
 		
 	}
