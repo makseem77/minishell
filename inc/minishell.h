@@ -34,10 +34,12 @@ typedef struct s_token
 //3. Start executing the user-input by going trough each token one by one.
 
 //	TOKENIZE
-t_token				**tokenize(char *line);
-char				*add_token(char *line, t_token **tokenlist);
+t_token				**tokenize(char *line, char **env);
+char				*add_token(char *line, t_token **tokenlist, char **env);
 char				*get_element(char *line);
 t_token				*create_new_token(char *element);
+char				*replace_in_line(char *line, char **env);
+int				has_a_variable(char *element);
 
 
 //	ENV
@@ -49,5 +51,8 @@ void	set_token_types(t_token **tokenlist, char **env);
 
 //	LOOP
 void	listening_loop(char **env);
+
+//	HANDLE_ENV_VARS
+char	*replace_in_line(char *line, char **env);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 15:23:42 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/05 15:19:06 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/06 18:49:19 by maxborde         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,30 +25,8 @@ t_token	*create_new_token(char *element)
 	return (token);
 }
 
-//Returns the size of the element between quotes. 
-//Handles " and ' quotes.
-int	compute_quotes_size(char *line)
-{
-	int	i;
-
-	i = 0;
-	if(line[i] == '\'')
-	{
-		i++;
-		while(line[i] && line[i] != '\'')
-			i++;
-		i++;
-	}
-	else if(line[i] == '"')
-	{
-		i++;
-		while(line[i] && line[i] != '"')
-			i++;
-		i++;
-	}
-	return (i);
-}
-
+//Returns the len of the element, but without quoting the double quotes and single quotes.
+//We only count the dquotes or squotes that are inside quotes.
 size_t compute_len(char *element)
 {
 	size_t len;
@@ -96,44 +74,10 @@ char	*get_element(char *line)
 	return (element);
 }
 
-//This function will take the string line and return a duplicate where every occurence of a variable is changed into its assignation.
-//A variable starts with a $ and end with anything that is not 
-//an alphadigit char or a _.
-char	*replace_in_line(char *line)
+//Creates and adds a new token to the end of tokenlist. Returns the pointer to line incremented by the len of the element. to the end of the element. If the element is a var ($VAR) it will replace the variable by its value.
+//If the element has a variable in it, we replace it by it's value so we can tokenize it. 
+char	*add_token(char	*line, t_token **tokenlist, char **env) 
 {
-	printf("Line at the beginning = %s\n");
-	char	*var;
-	char	*newline;
-	int	varlen;
-	int	linelen;
-	int	i;
-
-	i = 0;
-	linelen = 0;
-	varlen = 0;
-	while (line[i])
-	{
-		if (line[i] == '$')
-		{
-			while (ft_isdigit(line[i]) || ft_isalpha(line[i]) || line[i] == '_')
-			{
-				i++;
-				varlen++;
-			}
-		}
-		i++;
-	}
-	var = malloc(sizeof(char) * (varlen + 1));
-	var = ft_strndup(ft_strchr("$", varlen));
-	while (ft_strncmp(var, vartab, varlen));
-		vartab++;
-	linelen = ft_strlen(line) - varlen + ft_strlen(vartab + (varlen + 1));	
-	newline = malloc(sizeof(char) * linelen + 1);
-	// reste a copier dans newline.
-	printf("Line at the end = %s\n");
-}
-
-//Creates and adds a new token to the end of tokenlist. Returns the pointer to line incremented by the len of the element. to the end of the element. If the element is a var ($VAR) it will replace the variable by its value. char	*add_token(char	*line, t_token **tokenlist) {
 	t_token	*tmp;
 	char	*element;
 	int	elementlen;
@@ -141,7 +85,7 @@ char	*replace_in_line(char *line)
 	element = get_element(line);
 	elementlen = ft_strlen(element);
 	if (has_a_variable(element))
-		return (replace_in_line(line));
+		return (replace_in_line(line, env));
 	if (!(*tokenlist))
 	{
 		*tokenlist = create_new_token(element);
@@ -150,12 +94,12 @@ char	*replace_in_line(char *line)
 	tmp = *tokenlist;
 	while (tmp->next)
 		tmp = tmp->next;
-	if (has_a_variable(element))
-		return (replace_in_line(line));
 	tmp->next = create_new_token(element);
 	return (line + elementlen);
 }
 
+//Returns the number of quotes we need to delete on the element.
+//We don't count the squotes or dquotes that are inside quotes.
 size_t count_del_quotes(char *element)
 {
 	size_t single_quote;
@@ -179,6 +123,7 @@ size_t count_del_quotes(char *element)
 	return (single_quote + double_quote);
 }
 
+//This function takes the element and returns it cleaned from the quotes.
 char	*clean_up_quotes(char *element)
 {
 	int i = 0;
@@ -210,6 +155,7 @@ char	*clean_up_quotes(char *element)
 	return (new_element);
 }
 
+//Goes trough all the tokens and cleans up the element in every one of them.
 void	clean_up_tokens(t_token **tokenlist)
 {
 	t_token	*tmp;
@@ -217,7 +163,7 @@ void	clean_up_tokens(t_token **tokenlist)
 	tmp = *tokenlist;
 	while (tmp)
 	{
-		if(ft_strcmp(tmp->element, "\"\"")	== 0)
+		if(ft_strcmp(tmp->element, "\"\"") == 0)
 			return;
 		tmp->element = clean_up_quotes(tmp->element);
 		tmp = tmp->next;
@@ -229,7 +175,7 @@ void	clean_up_tokens(t_token **tokenlist)
 //You go trough the line, skip whitespaces, and adds a token every time it encounters
 //an element of a bash expression. The add token while increment the line pointer 
 //to the end of the element so you can then continue trough the rest of the line.
-t_token	**tokenize(char	*line)
+t_token	**tokenize(char	*line, char **env)
 {
 	t_token	**tokenlist;
 
@@ -238,7 +184,7 @@ t_token	**tokenize(char	*line)
 	while (*line)
 	{
 		if ((*line < '\t' || *line > '\r') && *line != ' ')
-			line = add_token(line, tokenlist);
+			line = add_token(line, tokenlist, env);
 		else
 			line++;
 	}

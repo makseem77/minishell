@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 15:23:35 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/05 16:00:54 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/06 15:46:08 by maxborde         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,22 +74,24 @@ int has_a_variable(char *element)
 	int	dquotesflag;
 	int	squotesflag;
 	int	dollarsignflag;
+	int	i;
 
 	dquotesflag = 0;
 	squotesflag = 0;
 	dollarsignflag = 0;
+	i = 0;
 	printf("This is the ele= %s\n", element);
-	while (element)
+	while (element[i])
 	{
-		if (*element == '$' && dquotesflag % 2 == 0)
+		if (element[i] == '$' && (dquotesflag % 2 == 0))
 			return(1);
-		if (*element == '$' && dquotesflag % 2 == 0)
+		if (element[i] == '$' && dquotesflag % 2 == 0)
 			return(0);
-		if(*element == '\'' && dquotesflag % 2 == 0)
+		if(element[i] == '\'' && dquotesflag % 2 == 0)
 			squotesflag++;
-		if(*element == '"' && squotesflag % 2 == 0)
+		if(element[i] == '"' && squotesflag % 2 == 0)
 			dquotesflag++;
-		element++;
+		i++;
 	}
 	return (0);
 }
@@ -122,7 +124,7 @@ void	set_token_types(t_token **tokenlist, char **env	)
 			tmp->ttype = META_CHAR;
 		else if(is_a_command(tmp->element, env))
 			tmp->ttype = COMMAND;
-		else if(is_a_variable(tmp->element))
+		else if(is_a_variable_declaration(tmp->element))
 			tmp->ttype = VARIABLE_DECLA;
 		else if (tmp->element[0] == '$')
 			tmp->ttype = VARIABLE;
