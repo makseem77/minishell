@@ -66,7 +66,35 @@ int	is_a_command(char *element, char **env)
 	return (0);
 }
 
-int is_a_variable(char *element)
+//Will return 1 if the element is or has a variable ($VAR), 0 if 
+//it is not and -1 if we have unclosed quotes. 
+//"$VAR" is interpreted as a variable where '$VAR' is not.
+int has_a_variable(char *element)
+{
+	int	dquotesflag;
+	int	squotesflag;
+	int	dollarsignflag;
+
+	dquotesflag = 0;
+	squotesflag = 0;
+	dollarsignflag = 0;
+	printf("This is the ele= %s\n", element);
+	while (element)
+	{
+		if (*element == '$' && dquotesflag % 2 == 0)
+			return(1);
+		if (*element == '$' && dquotesflag % 2 == 0)
+			return(0);
+		if(*element == '\'' && dquotesflag % 2 == 0)
+			squotesflag++;
+		if(*element == '"' && squotesflag % 2 == 0)
+			dquotesflag++;
+		element++;
+	}
+	return (0);
+}
+
+int is_a_variable_declaration(char *element)
 {
 	while (element)
 	{
@@ -84,12 +112,10 @@ int is_a_variable(char *element)
 void	set_token_types(t_token **tokenlist, char **env	)
 {
 	t_token	*tmp;
-	int		i;
 
 	tmp = *tokenlist;
 	while (tmp)
 	{
-		i = 0;
 		if (is_a_built_in(tmp->element))
 			tmp->ttype = BUILTIN;
 		else if (is_a_meta_char(tmp->element))

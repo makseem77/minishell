@@ -96,22 +96,64 @@ char	*get_element(char *line)
 	return (element);
 }
 
-//Creates and adds a new token to the end of tokenlist. Returns the pointer to line incremented
-//to the end of the element.
-char	*add_token(char	*line, t_token **tokenlist)
+//This function will take the string line and return a duplicate where every occurence of a variable is changed into its assignation.
+//A variable starts with a $ and end with anything that is not 
+//an alphadigit char or a _.
+char	*replace_in_line(char *line)
 {
-	t_token	*tmp;
+	printf("Line at the beginning = %s\n");
+	char	*var;
+	char	*newline;
+	int	varlen;
+	int	linelen;
+	int	i;
 
+	i = 0;
+	linelen = 0;
+	varlen = 0;
+	while (line[i])
+	{
+		if (line[i] == '$')
+		{
+			while (ft_isdigit(line[i]) || ft_isalpha(line[i]) || line[i] == '_')
+			{
+				i++;
+				varlen++;
+			}
+		}
+		i++;
+	}
+	var = malloc(sizeof(char) * (varlen + 1));
+	var = ft_strndup(ft_strchr("$", varlen));
+	while (ft_strncmp(var, vartab, varlen));
+		vartab++;
+	linelen = ft_strlen(line) - varlen + ft_strlen(vartab + (varlen + 1));	
+	newline = malloc(sizeof(char) * linelen + 1);
+	// reste a copier dans newline.
+	printf("Line at the end = %s\n");
+}
+
+//Creates and adds a new token to the end of tokenlist. Returns the pointer to line incremented by the len of the element. to the end of the element. If the element is a var ($VAR) it will replace the variable by its value. char	*add_token(char	*line, t_token **tokenlist) {
+	t_token	*tmp;
+	char	*element;
+	int	elementlen;
+
+	element = get_element(line);
+	elementlen = ft_strlen(element);
+	if (has_a_variable(element))
+		return (replace_in_line(line));
 	if (!(*tokenlist))
 	{
-		*tokenlist = create_new_token(get_element(line));
-		return (line + ft_strlen((*tokenlist)->element));
+		*tokenlist = create_new_token(element);
+		return (line + elementlen);
 	}
 	tmp = *tokenlist;
 	while (tmp->next)
 		tmp = tmp->next;
-	tmp->next = create_new_token(get_element(line));
-	return (line + ft_strlen(tmp->next->element));
+	if (has_a_variable(element))
+		return (replace_in_line(line));
+	tmp->next = create_new_token(element);
+	return (line + elementlen);
 }
 
 size_t count_del_quotes(char *element)
@@ -129,9 +171,6 @@ size_t count_del_quotes(char *element)
 			double_quote++;
 		element++;
 	}
-	printf("single_quote = %zu\n", single_quote);
-	printf("double_quote = %zu\n", double_quote);
-
 	if(single_quote % 2 != 0 || double_quote % 2 != 0)
 	{
 		printf("Error: Unmatched quotes\n");
