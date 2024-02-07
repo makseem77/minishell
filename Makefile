@@ -11,7 +11,7 @@ LIBFT_DIR = libft
 SRC_DIR = src
 OBJ_DIR = obj
 
-SRC_FILES = main env parsing tokenize loop execution handle_env_vars ft_lst builtins/ft_unset builtins/ft_pwd builtins/ft_cd
+SRC_FILES = main env parsing tokenize loop execution handle_env_vars ft_lst builtins/ft_unset builtins/ft_pwd builtins/ft_cd builtins/ft_export
 SRC = $(addprefix $(SRC_DIR)/, $(addsuffix .c, $(SRC_FILES)))
 OBJ = $(addprefix $(OBJ_DIR)/, $(addsuffix .o, $(SRC_FILES)))
 

@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 13:53:56 by maxborde          #+#    #+#             */
-/*   Updated: 2024/02/07 16:23:32 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/07 23:23:33 by maxborde         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,4 +73,19 @@ void	lst_del_one(t_env_list **lst, char *variable)
 	prev->next = tmp->next;
 	free(tmp->variable);
 	free(tmp);
+}
+
+int	lst_size(t_env_list **lst)
+{
+	t_env_list	*tmp;
+	int	i;
+
+	i = 0;
+	tmp = *lst;	
+	while (tmp)
+	{
+		tmp = tmp->next;
+		i++;
+	}
+	return (i);
 }

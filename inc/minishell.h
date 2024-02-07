@@ -71,5 +71,6 @@ void	lst_add_back(t_env_list **lst, t_env_list *new);
 t_env_list	*lst_last(t_env_list *lst);
 t_env_list	*lst_new(char	*variable);
 void	lst_del_one(t_env_list **lst, char *variable);
+int	lst_size(t_env_list **lst);
 
 #endif
