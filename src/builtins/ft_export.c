@@ -6,7 +6,7 @@
 /*   By: maxborde <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 00:26:30 by maxborde          #+#    #+#             */
-/*   Updated: 2024/02/07 14:08:19 by maxborde         ###   ########.fr       */
+/*   Updated: 2024/02/07 14:54:25 by maxborde         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ char	**get_export_variables(char **env)
 	return (NULL);
 }
 
-void	export(char **args, char **env)
+void	export(char **args, t_env_list **env)
 {
 	//export without any arguments list all the env variables in alphabetical order.
 	char	**exp_vars;
