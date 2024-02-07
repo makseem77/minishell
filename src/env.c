@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 15:23:28 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/01 17:21:33 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/07 14:12:22 by maxborde         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,23 +15,17 @@
 //Returns a duplicate of envp. 
 //Goes trough the 2d array envp once to get its size for allocating
 //memory, then goes trough it a second time to duplicate each env variables.
-char	**dup_env(char **env)
+t_env_list	**dup_env(char **env)
 {
-	char	**envdup;
-	int	size;
+	t_env_list	**env_list;
 
-	size = 0;
-	while (env[size])
-		size++;
-	envdup = malloc(sizeof(char *) * (size + 1));
-	size = 0;
-	while (env[size])
-	{
-		envdup[size] = ft_strdup(env[size]);
-		size++;
+	env_list = malloc(sizeof(t_env_list *));
+	while (*env)
+	{	
+		lst_add_back(env_list, lst_new(ft_strdup(*env)));
+		env++;
 	}
-	envdup[size] = 0;
-	return (envdup);
+	return (env_list);
 }
 
 //Returns all the PATHs variables, splitted in a 2d array, without

@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 15:23:42 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/06 23:55:22 by maxborde         ###   ########.fr       */
+/*   Updated: 2024/02/07 14:23:43 by maxborde         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ char	*get_element(char *line)
 
 //Creates and adds a new token to the end of tokenlist. Returns the pointer to line incremented by the len of the element. to the end of the element. If the element is a var ($VAR) it will replace the variable by its value.
 //If the element has a variable in it, we replace it by it's value so we can tokenize it. 
-char	*add_token(char	*line, t_token **tokenlist, char **env) 
+char	*add_token(char	*line, t_token **tokenlist, t_env_list **env) 
 {
 	t_token	*tmp;
 	char	*element;
@@ -178,7 +178,7 @@ void	clean_up_tokens(t_token **tokenlist)
 //You go trough the line, skip whitespaces, and adds a token every time it encounters
 //an element of a bash expression. The add token while increment the line pointer 
 //to the end of the element so you can then continue trough the rest of the line.
-t_token	**tokenize(char	*line, char **env)
+t_token	**tokenize(char	*line, t_env_list **env)
 {
 	t_token	**tokenlist;
 

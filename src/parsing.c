@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 15:23:35 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/06 23:54:56 by maxborde         ###   ########.fr       */
+/*   Updated: 2024/02/07 13:19:14 by maxborde         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,13 +82,8 @@ int has_a_variable(char *element)
 	while (element[i])
 	{
 		if (element[i] == '$' && (squotesflag % 2 == 0) && 
-				(isalpha(element[i + 1]) || isalpha(element[i + 1]) || element[i + 1] == ' '))
-		{
-			printf("AAAAHHHH\n\n");
+				(isalpha(element[i + 1]) || isdigit(element[i + 1]) || element[i + 1] == '_'))
 			return(1);
-		}
-		if (element[i] == '$')
-			return(0);
 		if(element[i] == '\'' && dquotesflag % 2 == 0)
 			squotesflag++;
 		if(element[i] == '"' && squotesflag % 2 == 0)

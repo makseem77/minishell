@@ -6,7 +6,7 @@
 /*   By: maxborde <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 00:26:30 by maxborde          #+#    #+#             */
-/*   Updated: 2024/02/07 12:47:42 by maxborde         ###   ########.fr       */
+/*   Updated: 2024/02/07 14:08:19 by maxborde         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,23 +51,15 @@ void 	append_declare_prefix(char **expvars)
 //It makes a copy of the dupenv, then sorts it alphabetically and adds the -x prefix.
 char	**get_export_variables(char **env)
 {
-	char	**export_variables;	
 	int	size;
 	
 	size = 0;
 	while(env[size])
 		size++;
-	export_variables = malloc(sizeof(char *) * (size + 1));
-	size = 0;
-	while (env[size])
-	{
-		export_variables[size] = ft_strdup(env[size]);
-		size++;
-	}
-	export_variables[size] = 0;
-	sorting_alphabetically(export_variables, size);
-	append_declare_prefix(export_variables);
-	return (export_variables);
+	//sorting_alphabetically(exp_vars_list, size);
+	//append_declare_prefix(exp_vars_list);
+	//return (export_variables);
+	return (NULL);
 }
 
 void	export(char **args, char **env)

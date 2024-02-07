@@ -6,13 +6,13 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:43:34 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/06 15:50:08 by maxborde         ###   ########.fr       */
+/*   Updated: 2024/02/07 14:12:47 by maxborde         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	listening_loop(char **env) //don't forget to free the line
+void	listening_loop(t_env_list **env) //don't forget to free the line
 {
 	char	*line;
 	t_token **tokenlist;
