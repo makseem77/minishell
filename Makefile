@@ -11,7 +11,7 @@ LIBFT_DIR = libft
 SRC_DIR = src
 OBJ_DIR = obj
 
-SRC_FILES = main env parsing tokenize loop execution handle_env_vars builtins/ft_export ft_lst
+SRC_FILES = main env parsing tokenize loop execution handle_env_vars ft_lst builtins/ft_unset builtins/ft_pwd builtins/ft_cd
 SRC = $(addprefix $(SRC_DIR)/, $(addsuffix .c, $(SRC_FILES)))
 OBJ = $(addprefix $(OBJ_DIR)/, $(addsuffix .o, $(SRC_FILES)))
 
@@ -29,9 +29,10 @@ $(NAME): $(OBJ)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@echo "$(GREEN)Generating $(NAME) objects...$(NO_COLOR)"
-	@mkdir -p $(OBJ_DIR)
+	@mkdir -p $(@D)
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 	@echo "$(GREEN)$(NAME) objects generated$(NO_COLOR)"
+
 
 clean:
 	@make clean -C $(LIBFT_DIR)

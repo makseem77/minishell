@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 15:23:35 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/07 13:19:14 by maxborde         ###   ########.fr       */
+/*   Updated: 2024/02/07 15:47:34 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	is_a_meta_char(char *element)
 //We also do a first check with open to make sure that we are not
 //using access, X_OK on a directory because it would return 0 like
 //an exe.
-int	is_a_command(char *element, char **env)
+int	is_a_command(char *element, t_env_list **env)
 {
 	char	*executable;
 	int	fd;
@@ -94,7 +94,7 @@ int has_a_variable(char *element)
 }
 
 //Goes trough the token linked list and gives a tokentype to every node of the list.
-void	set_token_types(t_token **tokenlist, char **env	)
+void	set_token_types(t_token **tokenlist, t_env_list **env)
 {
 	t_token	*tmp;
 

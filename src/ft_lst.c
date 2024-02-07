@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lst.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maxborde <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 13:53:56 by maxborde          #+#    #+#             */
-/*   Updated: 2024/02/07 14:09:22 by maxborde         ###   ########.fr       */
+/*   Updated: 2024/02/07 16:23:32 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,4 +46,31 @@ void	lst_add_back(t_env_list **lst, t_env_list *new)
 	}
 	last_el = lst_last(*lst);
 	last_el->next = new;
+}
+
+void	lst_del_one(t_env_list **lst, char *variable)
+{
+	t_env_list	*tmp;
+	t_env_list	*prev;
+
+	if (!lst || !*lst)
+		return ;
+	tmp = *lst;
+	if (ft_strcmp(tmp->variable, variable) == 0)
+	{
+		*lst = tmp->next;
+		free(tmp->variable);
+		free(tmp);
+		return ;
+	}
+	while (tmp && ft_strncmp(tmp->variable, variable, ft_strlen(variable)) != 0)
+	{
+		prev = tmp;
+		tmp = tmp->next;
+	}
+	if (!tmp)
+		return ;
+	prev->next = tmp->next;
+	free(tmp->variable);
+	free(tmp);
 }

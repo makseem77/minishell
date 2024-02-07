@@ -9,6 +9,8 @@
 # include <unistd.h>
 # include <fcntl.h>
 # include <stdbool.h>
+# include <limits.h>
+# include <errno.h>
 
 enum				ttype
 {
@@ -47,10 +49,10 @@ int				has_a_variable(char *element);
 
 //	ENV
 t_env_list				**dup_env(char **env);
-char				**find_bin_paths(char **env);
+char	**find_bin_paths(t_env_list **env);
 
 //	PARSING
-void	set_token_types(t_token **tokenlist, char **env);
+void	set_token_types(t_token **tokenlist, t_env_list **env);
 
 //	LOOP
 void	listening_loop(t_env_list **env);
@@ -59,11 +61,15 @@ void	listening_loop(t_env_list **env);
 char	*replace_in_line(char *line, t_env_list **env);
 
 //	BUILTINS
-void	export(char **args, char **env);
+void	export(char **args, t_env_list **env);
+void	unset(char **args, t_env_list **env);
+void	pwd(void);
+void	ft_cd(char *absolute_path);
 
 //LST UTILS
 void	lst_add_back(t_env_list **lst, t_env_list *new);
 t_env_list	*lst_last(t_env_list *lst);
 t_env_list	*lst_new(char	*variable);
+void	lst_del_one(t_env_list **lst, char *variable);
 
 #endif
