@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 15:26:32 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/01 17:24:16 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/07 12:29:08 by maxborde         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ int	main(int argc, char *argv[], char *envp[])
 	argc += 1;
 	*argv += 1;
 	envdup = dup_env(envp);
+	export(NULL, envdup);
 	listening_loop(envdup);
 	return (0);
 }

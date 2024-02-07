@@ -53,4 +53,7 @@ void	listening_loop(char **env);
 //	HANDLE_ENV_VARS
 char	*replace_in_line(char *line, char **env);
 
+//	BUILTINS
+void	export(char **args, char **env);
+
 #endif
