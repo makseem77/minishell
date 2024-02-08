@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 15:26:32 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/08 17:21:49 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/08 17:30:13 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,20 +29,15 @@ int	main(int argc, char **argv, char **envp)
 	
 	if(argc > 1 || ft_strcmp(argv[0], "./minishell"))
 		return(ft_putstr_fd("Usage: ./minishell\n", 2), 0);
-	if(!set_data(&data, envp))
-		return (ft_putstr_fd("Error: failed to allocate memory\n", 2), 1);
-	pwd();
-	printf("before unset home_dir = %s\n", data->home_dir);
-	unset((char *[]){"HOME", NULL}, data->env);
-	printf("after unset, home_dir = %s\n", data->home_dir);
-	printf("just before cd \n");
-	cd("", &data);
-	pwd();
-	printf("just before cd ~\n");
-	cd("~", &data);
-	pwd();
-	// char *args[]= {"X=hello","BAD", "D=hola", NULL};
-	// export(args, envdup);
-	listening_loop(data->env);
+	argc += 1;
+	*argv += 1;
+	envdup = dup_env(envp);
+	/*pwd();
+	ft_cd("~");
+	printf("after cd\n");
+	pwd();*/
+	char *args[]= {"X=hello", "D=hola", NULL};
+	export(args, envdup);
+	listening_loop(envdup);
 	return (0);
 }
