@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:43:34 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/07 15:35:20 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/08 20:35:27 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ void	listening_loop(t_env_list **env) //don't forget to free the line
 		if (*line)
 			add_history(line);
 		tokenlist = tokenize(line, env);
-		set_token_types(tokenlist, env);
+		// set_token_types(tokenlist, env);
+		echo(tokenlist);
 		// execute_line(tokenlist, env);
 		free(line);
 		tmp = *tokenlist;

@@ -7,3 +7,5 @@ Type = 2
 
 a="ls -l file"
 $a
+
+echo \
