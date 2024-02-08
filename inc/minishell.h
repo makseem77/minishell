@@ -12,13 +12,20 @@
 # include <limits.h>
 # include <errno.h>
 
-enum				ttype
+typedef enum				e_type
 {
 	COMMAND,
 	META_CHAR,
 	BUILTIN,
 	STRING
-};
+}	t_type;
+
+typedef enum				e_exportcases
+{
+	VAR_INVALID,
+	VAR_DEFINED,
+	VAR_UNDEFINED
+}	t_exportcases;
 
 typedef struct s_token
 {

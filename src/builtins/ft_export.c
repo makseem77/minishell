@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 00:26:30 by maxborde          #+#    #+#             */
-/*   Updated: 2024/02/08 20:00:43 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/08 23:36:14 by maxborde         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,10 @@ void	sorting_alphabetically(t_env_list **expvars, int size)
 	}
 }
 
+//This function takes the variable and returns a duplicate with double quotes
+//inserted around the value of the variable. If it's a variable with no value 
+//we just return the variable. Else we allocate memory for 2 quotes and  the 
+//NULL byte and insert quotes after the = and at the end of the value.
 char	*insert_quotes(char *variable)
 {
 	char	*newvariable;
@@ -54,6 +58,8 @@ char	*insert_quotes(char *variable)
 	j = 0;
 	flag = 1;
 	newvariable = malloc(sizeof(char) * (ft_strlen(variable) + 3));
+	if (!ft_strchr(variable, '='))
+		return (variable);
 	while(variable[i])	
 	{
 		if (variable[i] == '=' && flag)
@@ -64,12 +70,18 @@ char	*insert_quotes(char *variable)
 			i++;
 			flag = 0;
 		}
-		newvariable[i + j] = variable[i];
-		i++;
+		if (variable[i])
+		{
+			newvariable[i + j] = variable[i];
+			i++;
+		}
 	}
 	if (!flag)
+	{
 		newvariable[i + j++] = '"';
+	}
 	newvariable[i + j] = 0;
+	printf("NVariable = %s\n", newvariable);
 	return (newvariable);
 }
 
@@ -107,7 +119,7 @@ t_env_list	**get_export_variables(t_env_list **env)
 
 //This function will return the extracted variable name from arg (with the = if there is one).
 //Will return NULL if this is not a valid variable name.
-char	*extract_var(char *arg)
+char	*extract_var_name(char *arg)
 {
 	int	equalflag;
 	int	len;
@@ -117,8 +129,8 @@ char	*extract_var(char *arg)
 	equalflag = 0;
 	len = 0;
 	i = 0;
-	if (isdigit(*arg))
-		return (0);
+	if (isdigit(*arg) || *arg == '=')
+		return (NULL);
 	while(arg[len])
 	{
 		len++;
@@ -153,11 +165,10 @@ int	check_var(char *arg, t_env_list **export_variables)
 	char	*var_name;
 	t_env_list	*tmp;
 
-	var_name = extract_var(arg);
+	var_name = extract_var_name(arg);
 	tmp = *export_variables;
 	if (!var_name)
 		return (0);
-	printf("VAR_NAME = %s\n\n\n\n", var_name);
 	while (tmp)
 	{
 		if (ft_strncmp(var_name, tmp->variable, ft_strlen(var_name)) == 0)
@@ -167,39 +178,57 @@ int	check_var(char *arg, t_env_list **export_variables)
 	return(2);
 }
 
+void	replace_variable_value(t_env_list **env, t_env_list **export_variables, char *arg)
+{
+	t_env_list	*tmp;
+	char	*varname;
+
+	tmp = *env;
+	varname = extract_var_name(arg);
+	while (tmp)
+	{
+		if (ft_strncmp(varname, tmp->variable, ft_strlen(varname)) == 0)
+			tmp->variable = arg;
+		tmp = tmp->next;
+	}
+	tmp = *export_variables;
+	while (tmp)
+	{
+		if (ft_strncmp(varname, tmp->variable, ft_strlen(varname)) == 0)
+			tmp->variable = arg;
+		tmp = tmp->next;
+	}
+}
 //This function will go trough all of the args passed to export so they can be added to
 //the env list and the export list. To do so, we first check if the variable exists in the 
 //lists so we can replace the value. If it doesn't exist, we add it to the two lists.
 //We have to keep in mind that you can export variable without values and it will show
 //in the export list but not in the env list. Also, if we export a variable that already
 //exists, but we don't give it a value, it will not replace the one that already exists. 
-//CASE 1 is when the variable is already in env and export list.
-//CASE 2 is when variable is not in env list.
-//CASE 3 is when variable has no value (will only show in export).
+//CASE UNDEFINED is when variable is not in env and export list.
+//CASE DEFINED is when the variable is already in env and export list.
 void	add_variable_to_env(t_env_list **env, t_env_list **export_variables, char **args)
 {
-	int	cases;	
+	t_exportcases	cases;	
 
 	while (*args)
 	{
 		cases = check_var(*args, export_variables);
-		if (cases == 1)
+		printf("ARG = %s\n", *args);
+		if (cases == VAR_UNDEFINED)
 		{
 			if (ft_strchr(*args, '='))
-			{
-				//Nothing to do, variable with no name.
-			}
+				replace_variable_value(env, export_variables, *args);
+		}
+		else if (cases == VAR_DEFINED)
+		{
+			if (!ft_strchr(*args, '='))
+				lst_add_back(export_variables, lst_new(ft_strdup(*args)));
 			else
 			{
-				//replace the var with the new variable.
+				lst_add_back(export_variables, lst_new(ft_strdup(*args)));
+				lst_add_back(env, lst_new(ft_strdup(*args)));
 			}
-			printf("MATCH !\n");
-		}
-		else if (cases == 2)
-		{
-			printf("NO MATCH !\n");	
-			lst_add_back(export_variables, lst_new(ft_strdup(*args)));
-			lst_add_back(env, lst_new(ft_strdup(*args)));
 		}
 		args++;
 	}
@@ -219,7 +248,7 @@ void	export(char **args, t_env_list **env)
 
 
 
-	/*printf("EXPORT: \n\n\n\n");
+	printf("EXPORT: \n\n\n\n");
 	t_env_list	*tmp;
 	tmp = *export_variables;
 	while (tmp)
@@ -233,7 +262,7 @@ void	export(char **args, t_env_list **env)
 	{
 		printf("%s\n", tmp->variable);
 		tmp = tmp->next;
-	}*/
+	}
 	//export with just a variable name just adds the variable to the export list but with no value. (variables with no value are not showed in the env, but in the export list).
 	//export with a variablename=value will add it to the export list and the env.
 	//export can work with multiple arguments.
