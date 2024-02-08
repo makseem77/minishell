@@ -24,7 +24,7 @@ all: $(NAME)
 $(NAME): $(OBJ)
 	@make -C $(LIBFT_DIR)
 	@echo "$(GREEN)Compiling $(NAME)...$(NO_COLOR)"
-	@$(CC) $(CFLAGS) -lreadline $(INCLUDES) -o $(NAME) $(OBJ) $(LIBFT)
+	@$(CC) $(CFLAGS) $(INCLUDES) -o $(NAME) $(OBJ) $(LIBFT) -lreadline
 	@echo "$(GREEN)$(NAME) compiled$(NO_COLOR)"
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c

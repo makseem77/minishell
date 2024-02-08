@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 15:26:32 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/08 17:30:13 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/08 19:51:32 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,14 @@ int	main(int argc, char **argv, char **envp)
 		return(ft_putstr_fd("Usage: ./minishell\n", 2), 0);
 	argc += 1;
 	*argv += 1;
-	envdup = dup_env(envp);
+	if(!set_data(&data, envp))
+		return (ft_putstr_fd("Error: malloc failed\n", 2), 1);
 	/*pwd();
 	ft_cd("~");
 	printf("after cd\n");
 	pwd();*/
 	char *args[]= {"X=hello", "D=hola", NULL};
-	export(args, envdup);
-	listening_loop(envdup);
+	export(args, data->env);
+	listening_loop(data->env);
 	return (0);
 }

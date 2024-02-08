@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maxborde <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 00:26:30 by maxborde          #+#    #+#             */
-/*   Updated: 2024/02/08 17:13:08 by maxborde         ###   ########.fr       */
+/*   Updated: 2024/02/08 20:00:43 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,7 +185,7 @@ void	add_variable_to_env(t_env_list **env, t_env_list **export_variables, char *
 		cases = check_var(*args, export_variables);
 		if (cases == 1)
 		{
-			if (ft_strchr(*args, '='));
+			if (ft_strchr(*args, '='))
 			{
 				//Nothing to do, variable with no name.
 			}
