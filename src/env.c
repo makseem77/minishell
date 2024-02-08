@@ -6,13 +6,13 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 15:23:28 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/07 15:47:03 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/08 16:48:49 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-//Returns a duplicate of envp. 
+//Returns a duplicate of envp.
 //Goes trough the 2d array envp once to get its size for allocating
 //memory, then goes trough it a second time to duplicate each env variables.
 t_env_list	**dup_env(char **env)
@@ -21,7 +21,7 @@ t_env_list	**dup_env(char **env)
 
 	env_list = malloc(sizeof(t_env_list *));
 	while (*env)
-	{	
+	{
 		lst_add_back(env_list, lst_new(ft_strdup(*env)));
 		env++;
 	}
@@ -32,8 +32,8 @@ t_env_list	**dup_env(char **env)
 //the PATH= prefix.
 char	**find_bin_paths(t_env_list **env)
 {
-	char	**bin_paths;
-	t_env_list *tmp;
+	char		**bin_paths;
+	t_env_list	*tmp;
 
 	tmp = *env;
 	bin_paths = NULL;
@@ -43,3 +43,18 @@ char	**find_bin_paths(t_env_list **env)
 	return (bin_paths);
 }
 
+
+//Returns the value of the variable in the env list.
+char	*get_env(char *variable, t_env_list **env)
+{
+	t_env_list *tmp;
+
+	tmp = *env;
+	while (tmp)
+	{
+		if (ft_strncmp(tmp->variable, variable, ft_strlen(variable)) == 0)
+			return (ft_strchr(tmp->variable, '=') + 1);
+		tmp = tmp->next;
+	}
+	return (NULL);
+}

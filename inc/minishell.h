@@ -28,9 +28,16 @@ typedef struct s_token
 	struct s_token	*next;
 }					t_token;
 
+typedef struct s_data
+{
+	char				*old_pwd;
+	char				*home_dir;
+	struct s_env_list	**env;
+}					t_data;
+
 typedef struct s_env_list
 {
-	char			*variable;
+	char				*variable;
 	struct s_env_list	*next;
 }					t_env_list;
 
@@ -44,12 +51,13 @@ t_token				**tokenize(char *line, t_env_list**env);
 char				*add_token(char *line, t_token **tokenlist, t_env_list **env);
 char				*get_element(char *line);
 t_token				*create_new_token(char *element);
-int				has_a_variable(char *element);
+int					has_a_variable(char *element);
 
 
 //	ENV
 t_env_list				**dup_env(char **env);
 char	**find_bin_paths(t_env_list **env);
+char	*get_env(char *variable, t_env_list **env);
 
 //	PARSING
 void	set_token_types(t_token **tokenlist, t_env_list **env);
@@ -63,8 +71,9 @@ char	*replace_in_line(char *line, t_env_list **env);
 //	BUILTINS
 void	export(char **args, t_env_list **env);
 void	unset(char **args, t_env_list **env);
+char	*get_current_dir(void);
 void	pwd(void);
-void	ft_cd(char *absolute_path);
+void	cd(char *absolute_path, t_data **data);
 
 //LST UTILS
 void	lst_add_back(t_env_list **lst, t_env_list *new);
