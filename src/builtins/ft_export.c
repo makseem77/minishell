@@ -6,13 +6,13 @@
 /*   By: maxborde <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 00:26:30 by maxborde          #+#    #+#             */
-/*   Updated: 2024/02/08 00:08:55 by maxborde         ###   ########.fr       */
+/*   Updated: 2024/02/08 17:13:08 by maxborde         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-//Sorts the double array expvars alphabetically using a bubble sort algorithm.
+//Sorts the linked list expvars alphabetically using a bubble sort algorithm.
 void	sorting_alphabetically(t_env_list **expvars, int size)
 {
 	t_env_list	*tmp;
@@ -67,7 +67,8 @@ char	*insert_quotes(char *variable)
 		newvariable[i + j] = variable[i];
 		i++;
 	}
-	newvariable[i + j++] = '"';
+	if (!flag)
+		newvariable[i + j++] = '"';
 	newvariable[i + j] = 0;
 	return (newvariable);
 }
@@ -104,39 +105,99 @@ t_env_list	**get_export_variables(t_env_list **env)
 	return (export_variables);
 }
 
-int	is_valid_var(char *arg)
+//This function will return the extracted variable name from arg (with the = if there is one).
+//Will return NULL if this is not a valid variable name.
+char	*extract_var(char *arg)
 {
 	int	equalflag;
+	int	len;
+	int	i;
+	char	*varname;
 
 	equalflag = 0;
+	len = 0;
+	i = 0;
 	if (isdigit(*arg))
 		return (0);
-	printf("ARG = %s\n", arg);
-	while (*arg)
+	while(arg[len])
 	{
-		printf("GOOD\n");
-		if(*arg == '=')
-			equalflag = 1;
-		if(!equalflag)	
+		len++;
+		if (arg[len] == '=')
 		{
-			if((isalpha(*arg) == 0 && *arg != '_'))	
-				return (0);
+			len++;
+			break;
 		}
-		arg++;
 	}
-	return(1);
-	//when passing an argument to export, the variable name has those rules:
-	//Can't start with a number. (but can contain one).
-	//So should start with a letter or a _.
-	//Anything can go after the =. But you have to remove quotes and double quotes around the expression.
+	varname = malloc(len + 1);
+	while (i < len + equalflag)
+	{
+		if(!ft_isalpha(arg[i]) && !ft_isdigit(arg[i]) && arg[i] != '_' && arg[i] != '=')	
+			return (NULL);
+		if (arg[i] == '=' && i < len - 1)
+			return (NULL);
+		varname[i] = arg[i];	
+		i++;
+	}
+	varname[i] = 0;
+	return (varname);	
 }
 
+//This function goal is to check the var and return ints for each different cases.
+//We will start by duplicating arg until we find a "=" or a NULL to extract the variable
+//name. We check if the variable name is valid during the duplication. 
+//We will then check if it exists in the lists. If it doesn't, we just add it to both list with
+//its value. If it does, we change the variable at the node where the old variable was located to
+//the new variable.
+int	check_var(char *arg, t_env_list **export_variables)
+{
+	char	*var_name;
+	t_env_list	*tmp;
+
+	var_name = extract_var(arg);
+	tmp = *export_variables;
+	if (!var_name)
+		return (0);
+	printf("VAR_NAME = %s\n\n\n\n", var_name);
+	while (tmp)
+	{
+		if (ft_strncmp(var_name, tmp->variable, ft_strlen(var_name)) == 0)
+			return (1);
+		tmp = tmp->next;
+	}
+	return(2);
+}
+
+//This function will go trough all of the args passed to export so they can be added to
+//the env list and the export list. To do so, we first check if the variable exists in the 
+//lists so we can replace the value. If it doesn't exist, we add it to the two lists.
+//We have to keep in mind that you can export variable without values and it will show
+//in the export list but not in the env list. Also, if we export a variable that already
+//exists, but we don't give it a value, it will not replace the one that already exists. 
+//CASE 1 is when the variable is already in env and export list.
+//CASE 2 is when variable is not in env list.
+//CASE 3 is when variable has no value (will only show in export).
 void	add_variable_to_env(t_env_list **env, t_env_list **export_variables, char **args)
 {
+	int	cases;	
+
 	while (*args)
 	{
-		if (is_valid_var(*args))
+		cases = check_var(*args, export_variables);
+		if (cases == 1)
 		{
+			if (ft_strchr(*args, '='));
+			{
+				//Nothing to do, variable with no name.
+			}
+			else
+			{
+				//replace the var with the new variable.
+			}
+			printf("MATCH !\n");
+		}
+		else if (cases == 2)
+		{
+			printf("NO MATCH !\n");	
 			lst_add_back(export_variables, lst_new(ft_strdup(*args)));
 			lst_add_back(env, lst_new(ft_strdup(*args)));
 		}
@@ -147,7 +208,6 @@ void	add_variable_to_env(t_env_list **env, t_env_list **export_variables, char *
 void	export(char **args, t_env_list **env)
 {
 	t_env_list	**export_variables;
-	t_env_list	*tmp;
 
 	export_variables = get_export_variables(env);
 	/*if (!args)
@@ -159,7 +219,8 @@ void	export(char **args, t_env_list **env)
 
 
 
-	printf("EXPORT: \n\n\n\n");
+	/*printf("EXPORT: \n\n\n\n");
+	t_env_list	*tmp;
 	tmp = *export_variables;
 	while (tmp)
 	{
@@ -172,7 +233,7 @@ void	export(char **args, t_env_list **env)
 	{
 		printf("%s\n", tmp->variable);
 		tmp = tmp->next;
-	}
+	}*/
 	//export with just a variable name just adds the variable to the export list but with no value. (variables with no value are not showed in the env, but in the export list).
 	//export with a variablename=value will add it to the export list and the env.
 	//export can work with multiple arguments.

@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 15:26:32 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/07 23:27:46 by maxborde         ###   ########.fr       */
+/*   Updated: 2024/02/08 17:00:45 by maxborde         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	main(int argc, char *argv[], char *envp[])
 	ft_cd("~");
 	printf("after cd\n");
 	pwd();*/
-	char *args[]= {"X=hello", "D=hola", NULL};
+	char *args[]= {"___", "___", "XD=rcr=bebt=vrevr", "[]=heloa", "hrhbr=xd", "varwihtoutname", NULL};
 	export(args, envdup);
 	listening_loop(envdup);
 	return (0);
