@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maxborde <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/07 00:26:30 by maxborde          #+#    #+#             */
-/*   Updated: 2024/02/09 17:46:20 by ymeziane         ###   ########.fr       */
+/*   Created: 2024/02/09 22:28:00 by maxborde          #+#    #+#             */
+/*   Updated: 2024/02/09 23:34:01 by maxborde         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 //Sorts the linked list expvars alphabetically using a bubble sort algorithm.
-void	sorting_alphabetically(t_env_list **expvars, int size)
+void	sort_alphabetically(t_env_list **expvars, int size)
 {
 	t_env_list	*tmp;
 	t_env_list	*head;
@@ -56,46 +56,41 @@ char	*insert_quotes(char *variable)
 
 	i = 0;
 	j = 0;
-	flag = 1;
+	flag = 0;
 	newvariable = malloc(sizeof(char) * (ft_strlen(variable) + 3));
 	if (!ft_strchr(variable, '='))
 		return (variable);
 	while(variable[i])	
 	{
-		if (variable[i] == '=' && flag)
+		newvariable[j] = variable[i];
+		if (variable[i] == '=' && !flag)
 		{
-			newvariable[i] = variable[i];
-			j++;
-			newvariable[i + j] = '"';
-			i++;
-			flag = 0;
+			newvariable[++j] = '"';
+			flag = 1;
 		}
-		if (variable[i])
-		{
-			newvariable[i + j] = variable[i];
-			i++;
-		}
+		i++;
+		j++;
 	}
-	if (!flag)
-	{
-		newvariable[i + j++] = '"';
-	}
-	newvariable[i + j] = 0;
-	printf("NVariable = %s\n", newvariable);
+	newvariable[++i] = '"';
+	newvariable[++i] = 0;
+	free(variable);
 	return (newvariable);
 }
 
-//Appends the declare -x prefix to every variables.
+//Appends the declare -x prefix to every variables and inserts the quotes around the value
+//of the variable.
 void 	append_declare_prefix_and_quotes(t_env_list **expvars)
 {
 	t_env_list	*tmp;
+	char	*oldvar;
 
 	tmp = *expvars;
 	while (tmp)
 	{
-		
 		tmp->variable = insert_quotes(tmp->variable);
+		oldvar = tmp->variable;
 		tmp->variable = ft_strjoin("declare -x ", tmp->variable);
+		free(oldvar);
 		tmp = tmp->next;
 	}
 }
@@ -108,8 +103,6 @@ t_env_list	**get_export_variables(t_env_list **env)
 	t_env_list	*tmp;	
 	
 	export_variables = malloc(sizeof(t_env_list *));
-	if(!export_variables)
-		return (NULL);
 	*export_variables = NULL;
 	tmp = *env;
 	while (tmp)
@@ -121,15 +114,15 @@ t_env_list	**get_export_variables(t_env_list **env)
 }
 
 //This function will return the extracted variable name from arg (with the = if there is one).
-//Will return NULL if this is not a valid variable name.
+//Will return NULL if this is not a valid variable name. It does so by calculating the size of 
+//the var name (= included), then it does a duplication of it and at the same time it checks
+//if the varname is valid.
 char	*extract_var_name(char *arg)
 {
-	int	equalflag;
 	int	len;
 	int	i;
 	char	*varname;
 
-	equalflag = 0;
 	len = 0;
 	i = 0;
 	if (isdigit(*arg) || *arg == '=')
@@ -137,19 +130,16 @@ char	*extract_var_name(char *arg)
 	while(arg[len])
 	{
 		len++;
-		if (arg[len] == '=')
-		{
-			len++;
+		if (arg[len++] == '=')
 			break;
-		}
 	}
 	varname = malloc(len + 1);
-	while (i < len + equalflag)
+	while (i < len)
 	{
 		if(!ft_isalpha(arg[i]) && !ft_isdigit(arg[i]) && arg[i] != '_' && arg[i] != '=')	
-			return (NULL);
+			return (free(varname), NULL);
 		if (arg[i] == '=' && i < len - 1)
-			return (NULL);
+			return (free(varname), NULL);
 		varname[i] = arg[i];	
 		i++;
 	}
@@ -178,9 +168,14 @@ int	check_var(char *arg, t_env_list **export_variables)
 			return (1);
 		tmp = tmp->next;
 	}
+	free(var_name);
 	return(2);
 }
 
+//This function replaces the value of a variable in the env and in the export list.
+//It does so by by extracting the varname, finding if there is a match in the env and export
+//lists, and if so replacing the variable at the corresponding node by the arg (the full
+//expression like HOME=/newhome for example.
 void	replace_variable_value(t_env_list **env, t_env_list **export_variables, char *arg)
 {
 	t_env_list	*tmp;
@@ -201,15 +196,27 @@ void	replace_variable_value(t_env_list **env, t_env_list **export_variables, cha
 			tmp->variable = arg;
 		tmp = tmp->next;
 	}
+	free(varname);
 }
+
+//Prints the error message in case of a unvalid identifier just like bash.
+void	ft_put_unvalidvar_error(char *arg)
+{
+	ft_putstr_fd("minishell: export: `", 2);
+	ft_putstr_fd(arg, 2);
+	ft_putstr_fd("': not a valid identifier\n", 2);
+
+}
+
 //This function will go trough all of the args passed to export so they can be added to
 //the env list and the export list. To do so, we first check if the variable exists in the 
 //lists so we can replace the value. If it doesn't exist, we add it to the two lists.
 //We have to keep in mind that you can export variable without values and it will show
 //in the export list but not in the env list. Also, if we export a variable that already
 //exists, but we don't give it a value, it will not replace the one that already exists. 
-//CASE UNDEFINED is when variable is not in env and export list.
-//CASE DEFINED is when the variable is already in env and export list.
+//VAR UNDEFINED is when variable is not in env and export list.
+//VAR DEFINED is when the variable is already in env and export list.
+//VAR INVALID is when the variable name is not a valid one in bash.
 void	add_variable_to_env(t_env_list **env, t_env_list **export_variables, char **args)
 {
 	t_exportcases	cases;	
@@ -217,13 +224,12 @@ void	add_variable_to_env(t_env_list **env, t_env_list **export_variables, char *
 	while (*args)
 	{
 		cases = check_var(*args, export_variables);
-		printf("ARG = %s\n", *args);
-		if (cases == VAR_UNDEFINED)
+		if (cases == VAR_DEFINED)
 		{
 			if (ft_strchr(*args, '='))
 				replace_variable_value(env, export_variables, *args);
 		}
-		else if (cases == VAR_DEFINED)
+		else if (cases == VAR_UNDEFINED)
 		{
 			if (!ft_strchr(*args, '='))
 				lst_add_back(export_variables, lst_new(ft_strdup(*args)));
@@ -233,16 +239,20 @@ void	add_variable_to_env(t_env_list **env, t_env_list **export_variables, char *
 				lst_add_back(env, lst_new(ft_strdup(*args)));
 			}
 		}
+		else if (cases == VAR_INVALID)
+			ft_put_unvalidvar_error(*args);
 		args++;
 	}
 }
 
+
 void	export(char **args, t_env_list **env)
 {
 	t_env_list	**export_variables;
+
 	export_variables = get_export_variables(env);
 	add_variable_to_env(env, export_variables, args);
-	sorting_alphabetically(export_variables, lst_size(export_variables));
+	sort_alphabetically(export_variables, lst_size(export_variables));
 	append_declare_prefix_and_quotes(export_variables);
 
 

@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 18:43:05 by maxborde          #+#    #+#             */
-/*   Updated: 2024/02/09 16:43:12 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/10 00:10:34 by maxborde         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,81 +38,81 @@ int	compute_var_len(char *line)
 	return (0);
 }
 
-//This function takes care of doing update of the line in the cases when the
+//This function takes care of doing update of the line in the case when the
 //$VAR is not an env. It updates only the first occurence of a $VAR. And returns the newline.
 char	*update_line_with_void(char *line, int newlinelen)
 {
 	char	*newline;
 	int	i;
 	int	j;
+	int	flag;
 	
 	i = 0;
 	j = 0;
+	flag = 1;
 	newline = malloc(sizeof(char) * (newlinelen + 1));
-	// printf("Size of line = %d\n", newlinelen);
-	// printf("Line bu = %s\n", line);
 	while (line[i])
 	{
-		if (line[i] == '$')
+		if (line[i] == '$' && flag)
 		{
-			// printf("Xnewline = %c\n", *newline);
 			i++;
+			flag = 0;
 			while (isalpha(line[i]) || isdigit(line[i]) || line[i] == '_')
 				i++;
 		}
 		else
-		{
-			newline[j] = line[i];
-			// printf("newline = %c\n", *newline);
-			j++;
-			i++;
-		}
+			newline[j++] = line[i++];
 	}
 	newline[j] = 0;
-	// printf("Line au = %s\n", newline);
+	free(line);
+	printf("NEWLINE=%s\n", newline);
 	return (newline);
 }
 
-//This function takes care of doing update of the line in the cases when the
-//$VAR is in env. It updates only the first occurence of a $VAR.
-char	*update_line_with_value(char *line, t_env_list *env, int newlinelen)
+//This function takes care of doing the update of the line in the case where the 
+//$VAR is indeed in env. We replace the line with a newline where $VAR is its value
+//in env.
+char	*update_line_with_value(char *line, t_env_list *env, int newlinelen, int varlen)
 {
 	char	*newline;
-	int	varlen;
 	int	i;
 	int	j;
 	int	replacedvar;
 
-	newline = malloc(sizeof(char) * (newlinelen + 1));
-	varlen = compute_var_len(line);
 	i = 0;
 	j = 0;
 	replacedvar = 0;
-	if (env)
+	newline = malloc(sizeof(char) * (newlinelen + 1));
+	while (line[i])
 	{
-		while (line[i])
+		if (line[i] == '$' && replacedvar == 0)
 		{
-			if (line[i] == '$' && replacedvar == 0)
-			{
-				ft_strlcpy(&newline[i], env->variable + varlen + 1, ft_strlen(env->variable + varlen + 1) + 1);
-				// printf("VALUELEN = %ld\n", ft_strlen(env->variable + varlen + 1) + 1);
-				// printf("NEWLINE = %s\n", newline);
-				i += varlen + 1;
-				j += ft_strlen(env->variable + varlen + 1);
-				replacedvar += 1;
-			}
-			else
-			{
-				newline[j] = line[i];
-				i++;
-				j++;
-			}
+			ft_strlcpy(&newline[i], env->variable + varlen + 1, ft_strlen(env->variable + varlen + 1) + 1);
+			i += varlen + 1;
+			j += ft_strlen(env->variable + varlen + 1);
+			replacedvar += 1;
 		}
-		newline[j] = 0;
+		else
+			newline[j++] = line[i++];
 	}
-	else
-		newline = update_line_with_void(line, newlinelen);
+	newline[j] = 0;
+	free(line);
+	printf("NEWLINE=%s\n", newline);
 	return (newline);
+}
+
+//This function takes care of doing update of the line in the cases when the
+//$VAR is in env. It updates only the first occurence of a $VAR in line. If 
+//there is no $VAR, we just replace with nothing.
+char	*update_line(char *line, t_env_list *env, int newlinelen)
+{
+	int	varlen;
+
+	varlen = compute_var_len(line);
+	if (!env)
+		return (update_line_with_void(line, newlinelen));
+	else
+		return (update_line_with_value(line, env, newlinelen, varlen));
 }
 
 //This function replaces the line by a newline duplicate that has the $VAR replaced
@@ -136,5 +136,6 @@ char	*replace_in_line(char *line, t_env_list **env)
 		newlinelen = ft_strlen(line) - varlen + ft_strlen(tmp->variable + (varlen + 1));	
 	else
 		newlinelen = ft_strlen(line) - (varlen + 1);
-	return (update_line_with_value(line, tmp, newlinelen));
+	free(var);
+	return (update_line(line, tmp, newlinelen));
 }

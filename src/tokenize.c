@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 15:23:42 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/09 16:38:06 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/10 00:13:17 by maxborde         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,17 +87,20 @@ char	*add_token(char	*line, t_token **tokenlist, t_env_list **env)
 	if (has_a_variable(element))
 	{
 		printf("HAS A VAR\n");
+		free(element);
 		return (replace_in_line(line, env));
 	}
 	if (!(*tokenlist))
 	{
 		*tokenlist = create_new_token(element);
+		free(element);
 		return (line + elementlen);
 	}
 	tmp = *tokenlist;
 	while (tmp->next)
 		tmp = tmp->next;
 	tmp->next = create_new_token(element);
+	free(element);
 	return (line + elementlen);
 }
 
@@ -134,8 +137,6 @@ char	*clean_up_quotes(char *element)
 	size_t quotes_count = count_del_quotes(element);
 	char *new_element;
 	new_element = malloc(ft_strlen(element) - quotes_count + 1);
-	if(!new_element)
-		return (NULL);
 	while (element[i])
 	{
 		if(element[i] == '\'')
@@ -155,6 +156,7 @@ char	*clean_up_quotes(char *element)
 		i++;
 	}
 	new_element[j] = '\0';
+	free(element);
 	return (new_element);
 }
 
