@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_env_vars.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maxborde <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 18:43:05 by maxborde          #+#    #+#             */
-/*   Updated: 2024/02/07 14:28:10 by maxborde         ###   ########.fr       */
+/*   Updated: 2024/02/09 16:43:12 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,13 +49,13 @@ char	*update_line_with_void(char *line, int newlinelen)
 	i = 0;
 	j = 0;
 	newline = malloc(sizeof(char) * (newlinelen + 1));
-	printf("Size of line = %d\n", newlinelen);
-	printf("Line bu = %s\n", line);
+	// printf("Size of line = %d\n", newlinelen);
+	// printf("Line bu = %s\n", line);
 	while (line[i])
 	{
 		if (line[i] == '$')
 		{
-			printf("Xnewline = %c\n", *newline);
+			// printf("Xnewline = %c\n", *newline);
 			i++;
 			while (isalpha(line[i]) || isdigit(line[i]) || line[i] == '_')
 				i++;
@@ -63,13 +63,13 @@ char	*update_line_with_void(char *line, int newlinelen)
 		else
 		{
 			newline[j] = line[i];
-			printf("newline = %c\n", *newline);
+			// printf("newline = %c\n", *newline);
 			j++;
 			i++;
 		}
 	}
 	newline[j] = 0;
-	printf("Line au = %s\n", newline);
+	// printf("Line au = %s\n", newline);
 	return (newline);
 }
 
@@ -95,8 +95,8 @@ char	*update_line_with_value(char *line, t_env_list *env, int newlinelen)
 			if (line[i] == '$' && replacedvar == 0)
 			{
 				ft_strlcpy(&newline[i], env->variable + varlen + 1, ft_strlen(env->variable + varlen + 1) + 1);
-				printf("VALUELEN = %ld\n", ft_strlen(env->variable + varlen + 1) + 1);
-				printf("NEWLINE = %s\n", newline);
+				// printf("VALUELEN = %ld\n", ft_strlen(env->variable + varlen + 1) + 1);
+				// printf("NEWLINE = %s\n", newline);
 				i += varlen + 1;
 				j += ft_strlen(env->variable + varlen + 1);
 				replacedvar += 1;

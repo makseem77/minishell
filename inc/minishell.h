@@ -8,16 +8,13 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <fcntl.h>
-# include <stdbool.h>
-# include <limits.h>
 # include <errno.h>
 
 typedef enum				e_type
 {
 	COMMAND,
 	META_CHAR,
-	BUILTIN,
-	STRING
+	BUILTIN
 }	t_type;
 
 typedef enum				e_exportcases
@@ -30,7 +27,6 @@ typedef enum				e_exportcases
 typedef struct s_token
 {
 	char			*element;
-	int				pos;
 	int				ttype;
 	struct s_token	*next;
 }					t_token;

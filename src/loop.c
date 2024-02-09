@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:43:34 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/08 20:35:27 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/09 16:52:52 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ void	listening_loop(t_env_list **env) //don't forget to free the line
 		tmp = *tokenlist;
 		while (tmp)
 		{
-			printf("Element = %s\n", tmp->element);
-			printf("Type = %d\n", tmp->ttype);
+			// printf("Element = %s\n", tmp->element);
+			// printf("Type = %d\n", tmp->ttype);
 			tmp = tmp->next;
 		}
 	}

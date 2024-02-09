@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 10:26:56 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/09 11:41:13 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/09 15:24:23 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,9 @@ void	exit_bash(char *status)
 	int	status_int;
 	int	i;
 	int	is_sign_present;
+	bool overflow;
 
+	overflow = false;
 	i = 0;
 	is_sign_present = 0;
 	if (status == NULL || status[0] == '\0')
@@ -47,6 +49,9 @@ void	exit_bash(char *status)
 			return (print_exit_error(status));
 		i++;
 	}
-	status_int = ft_atoi(status);
+	status_int = ft_atoll(status, &overflow);
+	if (overflow)
+		return (print_exit_error(status));
+	ft_putstr_fd("exit\n", 2);
 	exit(status_int % 256);
 }

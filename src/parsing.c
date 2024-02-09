@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 15:23:35 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/07 15:47:34 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/09 16:43:19 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ int has_a_variable(char *element)
 	dquotesflag = 0;
 	squotesflag = 0;
 	i = 0;
-	printf("This is the ele= %s\n", element);
+	// printf("This is the ele= %s\n", element);
 	while (element[i])
 	{
 		if (element[i] == '$' && (squotesflag % 2 == 0) && 

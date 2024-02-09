@@ -15,6 +15,8 @@
 
 # include <stdlib.h>
 # include <unistd.h>
+# include <limits.h>
+# include <stdbool.h>
 
 typedef struct s_list
 {
@@ -80,6 +82,7 @@ int					ft_toupper(int c);
 int					ft_tolower(int c);
 int					ft_atoi(const char *nptr);
 char				*ft_itoa(int n);
+long long int		ft_atoll(const char *nptr, bool *overflow);
 
 //FT_UTILS
 unsigned int		ft_count_digit(int n);

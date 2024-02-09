@@ -10,6 +10,7 @@ $a
 
 echo \
 
+NE PAS GERER
 yacode@DESKTOP-SRM6L10:~/minishell$ env ls
 Makefile  cases.txt  inc  libft  minishell  obj  src
 yacode@DESKTOP-SRM6L10:~/minishell$ env pwd
@@ -22,3 +23,9 @@ exit
 yacode@DESKTOP-SRM6L10:~/minishell$ exit 9223372036854775808
 exit
 bash: exit: 9223372036854775808: numeric argument required
+
+ymeziane@c2r7p1:~/Documents/TroncCommun/minishell$ echo -e "1\n2"
+1
+2
+ymeziane@c2r7p1:~/Documents/TroncCommun/minishell$ echo -e 1\n2
+1n2

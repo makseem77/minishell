@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 15:23:28 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/08 16:48:49 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/09 17:44:10 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,9 @@ t_env_list	**dup_env(char **env)
 	t_env_list	**env_list;
 
 	env_list = malloc(sizeof(t_env_list *));
+	if(!env_list)
+		return (NULL);
+	*env_list = NULL;
 	while (*env)
 	{
 		lst_add_back(env_list, lst_new(ft_strdup(*env)));

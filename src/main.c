@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 15:26:32 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/09 11:19:36 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/09 17:48:19 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,19 @@ bool	set_data(t_data **data, char **envp)
 int	main(int argc, char **argv, char **envp)
 {
 	t_data	*data = NULL;
+	char *argunset[] = {"4", "LANGUAGE", NULL};
+	char *argexport[] = {"", NULL};
 	
 	if(argc > 1 || ft_strcmp(argv[0], "./minishell"))
 		return(ft_putstr_fd("Usage: ./minishell\n", 2), 0);
 	if(!set_data(&data, envp))
 		return (ft_putstr_fd("Error: malloc failed\n", 2), 1);
-	exit_bash("abc");
+	env(data->env);
+	unset(argunset, data->env);
+	printf("\n\n\n\n\n\n\n");
+	env(data->env);
+	printf("\n\n\n\n\n\n\n");
+	export(argexport, data->env);
 	listening_loop(data->env);
 	return (0);
 }

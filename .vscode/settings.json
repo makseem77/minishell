@@ -2,6 +2,16 @@
     "files.associations": {
         "*.embeddedhtml": "html",
         "minishell.h": "c",
-        "fcntl.h": "c"
+        "fcntl.h": "c",
+        "cmath": "c",
+        "compare": "c",
+        "concepts": "c",
+        "cstddef": "c",
+        "exception": "c",
+        "type_traits": "c",
+        "limits": "c",
+        "*.tcc": "c",
+        "typeinfo": "c",
+        "limits.h": "c"
     }
 }

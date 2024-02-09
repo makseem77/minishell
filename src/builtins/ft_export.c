@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 00:26:30 by maxborde          #+#    #+#             */
-/*   Updated: 2024/02/08 23:36:14 by maxborde         ###   ########.fr       */
+/*   Updated: 2024/02/09 17:46:20 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,9 @@ t_env_list	**get_export_variables(t_env_list **env)
 	t_env_list	*tmp;	
 	
 	export_variables = malloc(sizeof(t_env_list *));
+	if(!export_variables)
+		return (NULL);
+	*export_variables = NULL;
 	tmp = *env;
 	while (tmp)
 	{
@@ -237,11 +240,7 @@ void	add_variable_to_env(t_env_list **env, t_env_list **export_variables, char *
 void	export(char **args, t_env_list **env)
 {
 	t_env_list	**export_variables;
-
 	export_variables = get_export_variables(env);
-	/*if (!args)
-		print_export_variables;
-	else */
 	add_variable_to_env(env, export_variables, args);
 	sorting_alphabetically(export_variables, lst_size(export_variables));
 	append_declare_prefix_and_quotes(export_variables);
