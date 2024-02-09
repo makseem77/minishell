@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 11:29:19 by maxborde          #+#    #+#             */
-/*   Updated: 2024/02/08 16:41:55 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/09 11:06:48 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ char *get_current_dir(void)
 
 	if (getcwd(current_dir, PATH_MAX) == NULL)
 	{
-		ft_putstr_fd(strerror(errno), 2);
+		perror("getcwd");
 		write(2, "\n", 1);
 		return NULL;
 	}

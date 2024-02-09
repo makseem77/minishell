@@ -9,3 +9,16 @@ a="ls -l file"
 $a
 
 echo \
+
+yacode@DESKTOP-SRM6L10:~/minishell$ env ls
+Makefile  cases.txt  inc  libft  minishell  obj  src
+yacode@DESKTOP-SRM6L10:~/minishell$ env pwd
+/home/yacode/minishell
+
+bash
+yacode@DESKTOP-SRM6L10:~/minishell$ exit 9223372036854775807
+exit
+└─(11:36:56 on master ✹ ✭)──> bash
+yacode@DESKTOP-SRM6L10:~/minishell$ exit 9223372036854775808
+exit
+bash: exit: 9223372036854775808: numeric argument required

@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 13:03:07 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/08 17:18:26 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/09 10:59:42 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	cd(char *absolute_path, t_data **data)
 		return ;
 	if (chdir(absolute_path) != 0)
 	{
-		ft_putstr_fd("cd: ", 2);
+		ft_putstr_fd("minishell: cd: ", 2);
 		write(2, absolute_path, ft_strlen(absolute_path));
 		ft_putstr_fd(": ", 2);
 		write(2, strerror(errno), ft_strlen(strerror(errno)));
