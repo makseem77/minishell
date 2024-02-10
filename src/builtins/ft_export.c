@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 22:28:00 by maxborde          #+#    #+#             */
-/*   Updated: 2024/02/10 15:40:23 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/10 17:14:08 by maxborde         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,20 +79,15 @@ char	*insert_quotes(char *variable)
 
 //Appends the declare -x prefix to every variables and inserts the quotes around the value
 //of the variable.
-void 	append_declare_prefix_and_quotes(t_env_list **expvars)
+char	*append_declare_prefix_and_quotes(char *variable)
 {
-	t_env_list	*tmp;
-	char	*oldvar;
+	char	*newvariable;
+	char	*tmp;
 
-	tmp = *expvars;
-	while (tmp)
-	{
-		tmp->variable = insert_quotes(tmp->variable);
-		oldvar = tmp->variable;
-		tmp->variable = ft_strjoin("declare -x ", tmp->variable);
-		free(oldvar);
-		tmp = tmp->next;
-	}
+	newvariable = insert_quotes(variable);
+	tmp = variable;
+	newvariable = ft_strjoin("declare -x ", newvariable);
+	return (newvariable);
 }
 
 //Returns the variable listed printed when you call export with no arguments.
@@ -101,13 +96,15 @@ t_env_list	**get_export_variables(t_env_list **env)
 {
 	t_env_list	**export_variables;
 	t_env_list	*tmp;	
+	char	*newvariable;
 	
 	export_variables = malloc(sizeof(t_env_list *));
 	*export_variables = NULL;
 	tmp = *env;
 	while (tmp)
 	{
-		lst_add_back(export_variables, lst_new(ft_strdup(tmp->variable)));
+		newvariable = append_declare_prefix_and_quotes(tmp->variable);
+		lst_add_back(export_variables, lst_new(ft_strdup(newvariable)));
 		tmp = tmp->next;
 	}
 	return (export_variables);
@@ -130,8 +127,11 @@ char	*extract_var_name(char *arg)
 	while(arg[len])
 	{
 		len++;
-		if (arg[len++] == '=')
+		if (arg[len] == '=')
+		{
+			len++;
 			break;
+		}
 	}
 	varname = malloc(len + 1);
 	while (i < len)
@@ -158,6 +158,7 @@ int	check_var(char *arg, t_env_list **export_variables)
 	char	*var_name;
 	t_env_list	*tmp;
 
+	printf("arg = %s\n", arg);
 	var_name = extract_var_name(arg);
 	tmp = *export_variables;
 	if (!var_name)
@@ -217,48 +218,67 @@ void	ft_put_unvalidvar_error(char *arg)
 //VAR UNDEFINED is when variable is not in env and export list.
 //VAR DEFINED is when the variable is already in env and export list.
 //VAR INVALID is when the variable name is not a valid one in bash.
-void	add_variable_to_env(t_env_list **env, t_env_list **export_variables, char **args)
+void	add_variables_to_env(t_env_list **env, t_env_list **export_variables, char *arg)
 {
 	t_exportcases	cases;	
 
-	while (*args)
+	if (arg)
 	{
-		cases = check_var(*args, export_variables);
+		cases = check_var(arg + 11, export_variables);
 		if (cases == VAR_DEFINED)
 		{
-			if (ft_strchr(*args, '='))
-				replace_variable_value(env, export_variables, *args);
+			if (ft_strchr(arg, '='))
+				replace_variable_value(env, export_variables, arg);
 		}
 		else if (cases == VAR_UNDEFINED)
 		{
-			if (!ft_strchr(*args, '='))
-				lst_add_back(export_variables, lst_new(ft_strdup(*args)));
+			if (!ft_strchr(arg, '='))
+			{
+				lst_add_back(export_variables, lst_new(ft_strdup(arg)));
+				lst_add_back(env, lst_new(ft_strdup(arg)));
+			}
 			else
 			{
-				lst_add_back(export_variables, lst_new(ft_strdup(*args)));
-				lst_add_back(env, lst_new(ft_strdup(*args)));
+				printf("Hello\n");
+				lst_add_back(export_variables, lst_new(ft_strdup(arg)));
+				lst_add_back(env, lst_new(ft_strdup(arg)));
 			}
 		}
 		else if (cases == VAR_INVALID)
-			ft_put_unvalidvar_error(*args);
-		args++;
+			ft_put_unvalidvar_error(arg);
+		printf("Hxllo\n");
 	}
 }
 
-
-void	export(char **args, t_env_list **env)
+void	print_export(t_env_list **export_variables)
 {
-	t_env_list	**export_variables;
+	t_env_list	*tmp;
 
-	export_variables = get_export_variables(env);
-	if (*args)
-		add_variable_to_env(env, export_variables, args);
-	sort_alphabetically(export_variables, lst_size(export_variables));
-	append_declare_prefix_and_quotes(export_variables);
-	if (!*args)
-		print_export(export_variables);
+	tmp = *export_variables;
+	if (!tmp)
+		return;
+	while (tmp)
+	{
+		ft_putstr_fd(tmp->variable, 1);
+		write(1, "\n", 1);
+		tmp = tmp->next;
+	}
+}
 
-	//export with just a variable name just adds the variable to the export list but with no value. (variables with no value are not showed in the env, but in the export list).
-	//export with a variablename=value will add it to the export list and the env.
-	//export can work with multiple arguments.
+void	export(char **args, t_env_list **env, t_env_list **exp_list)
+{
+	char	*newvariable;
+
+	if (*(++args) == NULL)
+	{
+		sort_alphabetically(exp_list, lst_size(exp_list));
+		print_export(exp_list);
+	}
+	while(*args)
+	{
+		newvariable = append_declare_prefix_and_quotes(*args); 
+		add_variables_to_env(env, exp_list, newvariable);
+		args++;
+	}
+	sort_alphabetically(exp_list, lst_size(exp_list));
 }

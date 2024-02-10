@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 22:29:14 by maxborde          #+#    #+#             */
-/*   Updated: 2024/02/10 15:26:02 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/10 16:56:30 by maxborde         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ bool	set_data(t_data **data, char **envp)
 		return (false);
 	(*data)->old_pwd = get_current_dir();
 	(*data)->env = dup_env(envp);
+	(*data)->exp_list = get_export_variables((*data)->env);
 	home = get_env("HOME", (*data)->env);
 	if(home)
 		(*data)->home_dir = ft_strdup(home);

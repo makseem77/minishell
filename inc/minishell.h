@@ -36,6 +36,7 @@ typedef struct s_data
 	char				*old_pwd;
 	char				*home_dir;
 	struct s_env_list	**env;
+	struct s_env_list	**exp_list;
 }					t_data;
 
 typedef struct s_env_list
@@ -72,8 +73,11 @@ void	listening_loop(t_data **data);
 //	HANDLE_ENV_VARS
 char	*replace_in_line(char *line, t_env_list **env);
 
+//EXPORT
+void	export(char **args, t_env_list **env, t_env_list **exp_list);
+t_env_list	**get_export_variables(t_env_list **env);
+
 //	BUILTINS
-void	export(char **args, t_env_list **env);
 void	unset(char **args, t_env_list **env);
 char	*get_current_dir(void);
 void	pwd(void);
