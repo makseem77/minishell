@@ -6,18 +6,17 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:43:34 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/09 16:52:52 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/10 13:36:33 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	listening_loop(t_env_list **env) //don't forget to free the line
+void	listening_loop(t_data **data) //don't forget to free the line
 {
 	char	*line;
 	t_token **tokenlist;
 	t_token *tmp;
-	(void)env;
 	
 	while(1)
 	{
@@ -26,10 +25,9 @@ void	listening_loop(t_env_list **env) //don't forget to free the line
 			return;
 		if (*line)
 			add_history(line);
-		tokenlist = tokenize(line, env);
-		// set_token_types(tokenlist, env);
-		echo(tokenlist);
-		// execute_line(tokenlist, env);
+		tokenlist = tokenize(line, (*data)->env);
+		set_token_types(tokenlist, (*data)->env);
+		process_tokens(tokenlist, data);
 		free(line);
 		tmp = *tokenlist;
 		while (tmp)

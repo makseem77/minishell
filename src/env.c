@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 15:23:28 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/09 17:44:10 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/10 11:43:20 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,4 +60,33 @@ char	*get_env(char *variable, t_env_list **env)
 		tmp = tmp->next;
 	}
 	return (NULL);
+}
+
+//Converts env of type t_env_list to type char**.
+char **env_list_to_array(t_env_list **env)
+{
+	char	**envp;
+	t_env_list	*tmp;
+	int	i;
+
+	tmp = *env;
+	i = 0;
+	while (tmp)
+	{
+		i++;
+		tmp = tmp->next;
+	}
+	envp = malloc(sizeof(char *) * (i + 1));
+	if (!envp)
+		return (NULL);
+	i = 0;
+	tmp = *env;
+	while (tmp)
+	{
+		envp[i] = ft_strdup(tmp->variable);
+		tmp = tmp->next;
+		i++;
+	}
+	envp[i] = NULL;
+	return (envp);
 }

@@ -61,12 +61,13 @@ int					has_a_variable(char *element);
 t_env_list				**dup_env(char **env);
 char	**find_bin_paths(t_env_list **env);
 char	*get_env(char *variable, t_env_list **env);
+char **env_list_to_array(t_env_list **env);
 
 //	PARSING
 void	set_token_types(t_token **tokenlist, t_env_list **env);
 
 //	LOOP
-void	listening_loop(t_env_list **env);
+void	listening_loop(t_data **data);
 
 //	HANDLE_ENV_VARS
 char	*replace_in_line(char *line, t_env_list **env);
@@ -87,5 +88,8 @@ t_env_list	*lst_last(t_env_list *lst);
 t_env_list	*lst_new(char	*variable);
 void	lst_del_one(t_env_list **lst, char *variable);
 int	lst_size(t_env_list **lst);
+
+// EXECUTION
+void process_tokens(t_token **tokenlist, t_data **data);
 
 #endif
