@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 22:28:00 by maxborde          #+#    #+#             */
-/*   Updated: 2024/02/10 17:14:08 by maxborde         ###   ########.fr       */
+/*   Updated: 2024/02/10 17:27:16 by maxborde         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,6 @@ char	*insert_quotes(char *variable)
 	}
 	newvariable[++i] = '"';
 	newvariable[++i] = 0;
-	free(variable);
 	return (newvariable);
 }
 
