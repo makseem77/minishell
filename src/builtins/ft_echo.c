@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 20:29:50 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/09 16:47:48 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/10 15:29:09 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,14 +36,20 @@ void	echo(t_token **tokenlist)
 
 	tmp = *tokenlist;
 	i = 0;
+	if(!tmp)
+	{
+		write(1, "\n", 1);
+		return ;
+	}
 	flag = check_valid_flag(tmp->element);
 	while(tmp && check_valid_flag(tmp->element) == true)
 		tmp = tmp->next;
+
 	while (tmp)
 	{
 		if (i > 0)
 			write(1, " ", 1);
-        write(1, tmp->element, ft_strlen(tmp->element));
+		write(1, tmp->element, ft_strlen(tmp->element));
 		tmp = tmp->next;
 		i++;
 	}

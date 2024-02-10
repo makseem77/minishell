@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 15:23:28 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/10 11:43:20 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/10 14:20:44 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,8 @@ char	**find_bin_paths(t_env_list **env)
 	bin_paths = NULL;
 	while (tmp && ft_strncmp("PATH", tmp->variable, 4))
 		tmp = tmp->next;
-	bin_paths = ft_split(tmp->variable + 5, ':');
+	if(tmp)
+		bin_paths = ft_split(tmp->variable + 5, ':');
 	return (bin_paths);
 }
 

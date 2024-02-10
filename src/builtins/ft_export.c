@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maxborde <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 22:28:00 by maxborde          #+#    #+#             */
-/*   Updated: 2024/02/09 23:34:01 by maxborde         ###   ########.fr       */
+/*   Updated: 2024/02/10 15:40:23 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -251,27 +251,13 @@ void	export(char **args, t_env_list **env)
 	t_env_list	**export_variables;
 
 	export_variables = get_export_variables(env);
-	add_variable_to_env(env, export_variables, args);
+	if (*args)
+		add_variable_to_env(env, export_variables, args);
 	sort_alphabetically(export_variables, lst_size(export_variables));
 	append_declare_prefix_and_quotes(export_variables);
+	if (!*args)
+		print_export(export_variables);
 
-
-
-	printf("EXPORT: \n\n\n\n");
-	t_env_list	*tmp;
-	tmp = *export_variables;
-	while (tmp)
-	{
-		printf("%s\n", tmp->variable);
-		tmp = tmp->next;
-	}
-	printf("ENV: \n\n\n\n");
-	tmp = *env;
-	while (tmp)
-	{
-		printf("%s\n", tmp->variable);
-		tmp = tmp->next;
-	}
 	//export with just a variable name just adds the variable to the export list but with no value. (variables with no value are not showed in the env, but in the export list).
 	//export with a variablename=value will add it to the export list and the env.
 	//export can work with multiple arguments.

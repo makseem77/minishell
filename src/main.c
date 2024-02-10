@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 22:29:14 by maxborde          #+#    #+#             */
-/*   Updated: 2024/02/10 11:32:55 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/10 15:26:02 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,16 @@
 
 bool	set_data(t_data **data, char **envp)
 {
+	char *home;
+
 	*data = (t_data *)malloc(sizeof(t_data));
 	if (!*data)
 		return (false);
 	(*data)->old_pwd = get_current_dir();
 	(*data)->env = dup_env(envp);
-	(*data)->home_dir = ft_strdup(get_env("HOME", (*data)->env));
+	home = get_env("HOME", (*data)->env);
+	if(home)
+		(*data)->home_dir = ft_strdup(home);
 	return (true);
 }
 
