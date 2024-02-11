@@ -45,6 +45,3 @@ int	main(int argc, char **argv, char **envp)
 	listening_loop(&data);
 	return (0);
 }
-
-
-//New case to handle: when running env -i ./minishell, we have a seg fault caused by set_data that checks for $HOME. 

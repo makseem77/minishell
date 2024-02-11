@@ -81,10 +81,8 @@ char	*insert_quotes(char *variable)
 char	*append_declare_prefix_and_quotes(char *variable)
 {
 	char	*newvariable;
-	char	*tmp;
 
 	newvariable = insert_quotes(variable);
-	tmp = variable;
 	newvariable = ft_strjoin("declare -x ", newvariable);
 	return (newvariable);
 }
@@ -111,7 +109,7 @@ t_env_list	**get_export_variables(t_env_list **env)
 
 //This function will return the extracted variable name from arg (with the = if there is one).
 //Will return NULL if this is not a valid variable name. It does so by calculating the size of 
-//the var name (= included), then it does a duplication of it and at the same time it checks
+//the var name (= excluded), then it does a duplication of it and at the same time it checks
 //if the varname is valid.
 char	*extract_var_name(char *arg)
 {
@@ -123,21 +121,12 @@ char	*extract_var_name(char *arg)
 	i = 0;
 	if (isdigit(*arg) || *arg == '=')
 		return (NULL);
-	while(arg[len])
-	{
+	while(arg[len] && arg[len] != '=')
 		len++;
-		if (arg[len] == '=')
-		{
-			len++;
-			break;
-		}
-	}
 	varname = malloc(len + 1);
 	while (i < len)
 	{
-		if(!ft_isalpha(arg[i]) && !ft_isdigit(arg[i]) && arg[i] != '_' && arg[i] != '=')	
-			return (free(varname), NULL);
-		if (arg[i] == '=' && i < len - 1)
+		if(!ft_isalpha(arg[i]) && !ft_isdigit(arg[i]) && arg[i] != '_')	
 			return (free(varname), NULL);
 		varname[i] = arg[i];	
 		i++;
@@ -152,20 +141,27 @@ char	*extract_var_name(char *arg)
 //We will then check if it exists in the lists. If it doesn't, we just add it to both list with
 //its value. If it does, we change the variable at the node where the old variable was located to
 //the new variable.
-int	check_var(char *arg, t_env_list **export_variables)
+int	check_var(char *arg, t_env_list **export_variables, int offset)
 {
 	char	*var_name;
+	char	*varnameinlist;
 	t_env_list	*tmp;
+	int	bytestocmp;
 
-	printf("arg = %s\n", arg);
-	var_name = extract_var_name(arg);
+	var_name = extract_var_name(arg + offset);
 	tmp = *export_variables;
 	if (!var_name)
 		return (0);
 	while (tmp)
 	{
-		if (ft_strncmp(var_name, tmp->variable, ft_strlen(var_name)) == 0)
+		varnameinlist = extract_var_name(tmp->variable + offset);
+		if (ft_strlen(varnameinlist) > ft_strlen(var_name))
+			bytestocmp = ft_strlen(varnameinlist);	
+		else
+			bytestocmp = ft_strlen(var_name);	
+		if (ft_strncmp(var_name, varnameinlist, bytestocmp) == 0)
 			return (1);
+		free(varnameinlist);
 		tmp = tmp->next;
 	}
 	free(var_name);
@@ -176,23 +172,23 @@ int	check_var(char *arg, t_env_list **export_variables)
 //It does so by by extracting the varname, finding if there is a match in the env and export
 //lists, and if so replacing the variable at the corresponding node by the arg (the full
 //expression like HOME=/newhome for example.
-void	replace_variable_value(t_env_list **env, t_env_list **export_variables, char *arg)
+void	replace_variable_value(t_env_list **list, char *arg, int offset)
 {
 	t_env_list	*tmp;
 	char	*varname;
+	char	*varnameinlist;
+	int	bytestocmp;
 
-	tmp = *env;
-	varname = extract_var_name(arg);
+	tmp = *list;
+	varname = extract_var_name(arg + offset);
 	while (tmp)
 	{
-		if (ft_strncmp(varname, tmp->variable, ft_strlen(varname)) == 0)
-			tmp->variable = arg;
-		tmp = tmp->next;
-	}
-	tmp = *export_variables;
-	while (tmp)
-	{
-		if (ft_strncmp(varname, tmp->variable, ft_strlen(varname)) == 0)
+		varnameinlist = extract_var_name(tmp->variable + offset);
+		if (ft_strlen(varnameinlist) > ft_strlen(varname))
+			bytestocmp = ft_strlen(varnameinlist);	
+		else
+			bytestocmp = ft_strlen(varname);	
+		if (ft_strncmp(varname, varnameinlist, bytestocmp) == 0)
 			tmp->variable = arg;
 		tmp = tmp->next;
 	}
@@ -217,38 +213,49 @@ void	ft_put_unvalidvar_error(char *arg)
 //VAR UNDEFINED is when variable is not in env and export list.
 //VAR DEFINED is when the variable is already in env and export list.
 //VAR INVALID is when the variable name is not a valid one in bash.
-void	add_variables_to_env(t_env_list **env, t_env_list **export_variables, char *arg)
+void	add_variables_to_export(t_env_list **export_variables, char *arg)
 {
 	t_exportcases	cases;	
 
 	if (arg)
 	{
-		cases = check_var(arg + 11, export_variables);
+		cases = check_var(arg, export_variables, 11);
 		if (cases == VAR_DEFINED)
 		{
 			if (ft_strchr(arg, '='))
-				replace_variable_value(env, export_variables, arg);
+				replace_variable_value(export_variables, arg, 11);
 		}
 		else if (cases == VAR_UNDEFINED)
 		{
 			if (!ft_strchr(arg, '='))
-			{
 				lst_add_back(export_variables, lst_new(ft_strdup(arg)));
-				lst_add_back(env, lst_new(ft_strdup(arg)));
-			}
 			else
-			{
-				printf("Hello\n");
 				lst_add_back(export_variables, lst_new(ft_strdup(arg)));
-				lst_add_back(env, lst_new(ft_strdup(arg)));
-			}
 		}
-		else if (cases == VAR_INVALID)
-			ft_put_unvalidvar_error(arg);
-		printf("Hxllo\n");
 	}
 }
 
+void	add_variables_to_env(t_env_list **env, char *arg)
+{
+	t_exportcases	cases;	
+
+	if (arg)
+	{
+		cases = check_var(arg, env, 0);
+		if (cases == VAR_DEFINED)
+		{
+			if (ft_strchr(arg, '='))
+				replace_variable_value(env, arg, 0);
+		}
+		else if (cases == VAR_UNDEFINED)
+		{
+			if (ft_strchr(arg, '='))
+				lst_add_back(env, lst_new(ft_strdup(arg)));
+		}
+		else if (cases == VAR_INVALID)
+			ft_put_unvalidvar_error(arg);
+	}
+}
 void	print_export(t_env_list **export_variables)
 {
 	t_env_list	*tmp;
@@ -276,7 +283,8 @@ void	export(char **args, t_env_list **env, t_env_list **exp_list)
 	while(*args)
 	{
 		newvariable = append_declare_prefix_and_quotes(*args); 
-		add_variables_to_env(env, exp_list, newvariable);
+		add_variables_to_export(exp_list, newvariable);
+		add_variables_to_env(env, *args);
 		args++;
 	}
 	sort_alphabetically(exp_list, lst_size(exp_list));
