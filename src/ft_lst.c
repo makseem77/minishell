@@ -6,13 +6,13 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 13:53:56 by maxborde          #+#    #+#             */
-/*   Updated: 2024/02/12 16:20:00 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/12 17:48:47 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_env_list	*lst_new(char	*variable)
+t_env_list	*lst_new(char *variable)
 {
 	t_env_list	*new;
 
@@ -52,8 +52,8 @@ void	lst_del_one(t_env_list **lst, char *variable, int offset)
 {
 	t_env_list	*tmp;
 	t_env_list	*prev;
-	char	*var_name;
-	int	bytestocmp;
+	char		*var_name;
+	int			bytestocmp;
 
 	if (!lst || !*lst)
 		return ;
@@ -70,7 +70,7 @@ void	lst_del_one(t_env_list **lst, char *variable, int offset)
 	while (tmp)
 	{
 		bytestocmp = compute_bytes_to_cmp(tmp->variable + offset, var_name);
-		if 	(ft_strncmp(tmp->variable + offset, variable, bytestocmp) == 0)
+		if (ft_strncmp(tmp->variable + offset, variable, bytestocmp) == 0)
 			break ;
 		prev = tmp;
 		tmp = tmp->next;
@@ -85,10 +85,10 @@ void	lst_del_one(t_env_list **lst, char *variable, int offset)
 int	lst_size(t_env_list **lst)
 {
 	t_env_list	*tmp;
-	int	i;
+	int			i;
 
 	i = 0;
-	tmp = *lst;	
+	tmp = *lst;
 	while (tmp)
 	{
 		tmp = tmp->next;

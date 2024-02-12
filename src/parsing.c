@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 15:23:35 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/10 14:43:52 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/12 17:47:50 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ int	is_a_meta_char(char *element)
 		!ft_strcmp("<", element) || !ft_strcmp("<<", element) || !ft_strcmp("&",
 				element) || !ft_strcmp("|", element) || !ft_strcmp("&&",
 				element) || !ft_strcmp("||", element) || !ft_strcmp(",",
-				element) || !ft_strcmp("(", element)
-			|| !ft_strcmp(")", element))
+				element) || !ft_strcmp("(", element) || !ft_strcmp(")",
+				element))
 		return (1);
 	return (0);
 }
@@ -44,11 +44,11 @@ int	is_a_meta_char(char *element)
 int	is_a_command(char *element, t_env_list **env)
 {
 	char	*executable;
-	int	fd;
-	char **bin_paths;
+	int		fd;
+	char	**bin_paths;
 
 	fd = open(element, O_DIRECTORY);
-	if (fd == -1) 
+	if (fd == -1)
 	{
 		if (access(element, X_OK) == 0)
 			return (1);
@@ -56,7 +56,7 @@ int	is_a_command(char *element, t_env_list **env)
 	else
 		close(fd);
 	bin_paths = find_bin_paths(env);
-	if(!bin_paths)
+	if (!bin_paths)
 		return (0);
 	executable = NULL;
 	while (*bin_paths)
@@ -64,7 +64,7 @@ int	is_a_command(char *element, t_env_list **env)
 		executable = ft_strjoin(*bin_paths, "/");
 		executable = ft_strjoin(executable, element);
 		fd = open(executable, O_DIRECTORY);
-		if (fd == -1) 
+		if (fd == -1)
 		{
 			if (access(executable, X_OK) == 0)
 				return (1);
@@ -76,10 +76,10 @@ int	is_a_command(char *element, t_env_list **env)
 	return (0);
 }
 
-//Will return 1 if the element is or has a variable ($VAR), 0 if 
-//it is not and -1 if we have unclosed quotes. 
+//Will return 1 if the element is or has a variable ($VAR), 0 if
+//it is not and -1 if we have unclosed quotes.
 //"$VAR" is interpreted as a variable where '$VAR' is not.
-int has_a_variable(char *element)
+int	has_a_variable(char *element)
 {
 	int	dquotesflag;
 	int	squotesflag;
@@ -91,12 +91,13 @@ int has_a_variable(char *element)
 	// printf("This is the ele= %s\n", element);
 	while (element[i])
 	{
-		if (element[i] == '$' && (squotesflag % 2 == 0) && 
-				(isalpha(element[i + 1]) || isdigit(element[i + 1]) || element[i + 1] == '_'))
-			return(1);
-		if(element[i] == '\'' && dquotesflag % 2 == 0)
+		if (element[i] == '$' && (squotesflag % 2 == 0) &&
+			(isalpha(element[i + 1]) || isdigit(element[i + 1]) || element[i
+					+ 1] == '_'))
+			return (1);
+		if (element[i] == '\'' && dquotesflag % 2 == 0)
 			squotesflag++;
-		if(element[i] == '"' && squotesflag % 2 == 0)
+		if (element[i] == '"' && squotesflag % 2 == 0)
 			dquotesflag++;
 		i++;
 	}
@@ -107,22 +108,23 @@ int has_a_variable(char *element)
 void	set_token_types(t_token **tokenlist, t_env_list **env)
 {
 	t_token	*tmp;
+	bool	first;
 
 	tmp = *tokenlist;
-	bool first = true;
+	first = true;
 	while (tmp)
 	{
 		if (is_a_built_in(tmp->element))
 			tmp->ttype = BUILTIN;
 		else if (is_a_meta_char(tmp->element))
 			tmp->ttype = META_CHAR;
-		else if(is_a_command(tmp->element, env))
+		else if (is_a_command(tmp->element, env))
 			tmp->ttype = COMMAND;
-		else if(first)
+		else if (first)
 		{
 			ft_putstr_fd(tmp->element, 2);
 			ft_putstr_fd(": command not found\n", 2);
-			return;
+			return ;
 		}
 		first = false;
 		tmp = tmp->next;

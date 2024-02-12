@@ -6,21 +6,21 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 20:24:16 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/08 20:32:48 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/12 17:49:28 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void   env(t_env_list **env)
+void	env(t_env_list **env)
 {
-    t_env_list *tmp;
+	t_env_list *tmp;
 
-    tmp = *env;
-    while (tmp)
-    {
-        ft_putstr_fd(tmp->variable, 1);
-        write(1, "\n", 1);
-        tmp = tmp->next;
-    }
+	tmp = *env;
+	while (tmp)
+	{
+		ft_putstr_fd(tmp->variable, 1);
+		write(1, "\n", 1);
+		tmp = tmp->next;
+	}
 }

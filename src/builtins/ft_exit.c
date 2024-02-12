@@ -6,27 +6,18 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 10:26:56 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/09 15:24:23 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/12 17:57:20 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	print_exit_error(char *status)
-{
-	ft_putstr_fd("exit\n", 2);
-	ft_putstr_fd("minishell: exit: ", 2);
-	ft_putstr_fd(status, 2);
-	ft_putstr_fd(": numeric argument required\n", 2);
-	exit(255);
-}
-
 void	exit_bash(char *status)
 {
-	int	status_int;
-	int	i;
-	int	is_sign_present;
-	bool overflow;
+	int		status_int;
+	int		i;
+	int		is_sign_present;
+	bool	overflow;
 
 	overflow = false;
 	i = 0;

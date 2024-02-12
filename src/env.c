@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 15:23:28 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/10 14:20:44 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/12 18:06:53 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ t_env_list	**dup_env(char **env)
 	t_env_list	**env_list;
 
 	env_list = malloc(sizeof(t_env_list *));
-	if(!env_list)
+	if (!env_list)
 		return (NULL);
 	*env_list = NULL;
 	while (*env)
@@ -42,16 +42,15 @@ char	**find_bin_paths(t_env_list **env)
 	bin_paths = NULL;
 	while (tmp && ft_strncmp("PATH", tmp->variable, 4))
 		tmp = tmp->next;
-	if(tmp)
+	if (tmp)
 		bin_paths = ft_split(tmp->variable + 5, ':');
 	return (bin_paths);
 }
 
-
 //Returns the value of the variable in the env list.
 char	*get_env(char *variable, t_env_list **env)
 {
-	t_env_list *tmp;
+	t_env_list	*tmp;
 
 	tmp = *env;
 	while (tmp)
@@ -64,11 +63,11 @@ char	*get_env(char *variable, t_env_list **env)
 }
 
 //Converts env of type t_env_list to type char**.
-char **env_list_to_array(t_env_list **env)
+char	**env_list_to_array(t_env_list **env)
 {
-	char	**envp;
+	char		**envp;
 	t_env_list	*tmp;
-	int	i;
+	int i;
 
 	tmp = *env;
 	i = 0;

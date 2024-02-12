@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 18:43:05 by maxborde          #+#    #+#             */
-/*   Updated: 2024/02/12 10:12:37 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/12 17:49:08 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,10 @@ int	compute_var_len(char *line)
 char	*update_line_with_void(char *line, int newlinelen)
 {
 	char	*newline;
-	int	i;
-	int	j;
-	int	flag;
-	
+	int		i;
+	int		j;
+	int		flag;
+
 	i = 0;
 	j = 0;
 	flag = 1;
@@ -67,15 +67,16 @@ char	*update_line_with_void(char *line, int newlinelen)
 	return (newline);
 }
 
-//This function takes care of doing the update of the line in the case where the 
+//This function takes care of doing the update of the line in the case where the
 //$VAR is indeed in env. We replace the line with a newline where $VAR is its value
 //in env.
-char	*update_line_with_value(char *line, t_env_list *env, int newlinelen, int varlen)
+char	*update_line_with_value(char *line, t_env_list *env, int newlinelen,
+		int varlen)
 {
 	char	*newline;
-	int	i;
-	int	j;
-	int	replacedvar;
+	int		i;
+	int		j;
+	int		replacedvar;
 
 	i = 0;
 	j = 0;
@@ -85,7 +86,8 @@ char	*update_line_with_value(char *line, t_env_list *env, int newlinelen, int va
 	{
 		if (line[i] == '$' && replacedvar == 0)
 		{
-			ft_strlcpy(&newline[i], env->variable + varlen + 1, ft_strlen(env->variable + varlen + 1) + 1);
+			ft_strlcpy(&newline[i], env->variable + varlen + 1,
+					ft_strlen(env->variable + varlen + 1) + 1);
 			i += varlen + 1;
 			j += ft_strlen(env->variable + varlen + 1);
 			replacedvar += 1;
@@ -98,7 +100,7 @@ char	*update_line_with_value(char *line, t_env_list *env, int newlinelen, int va
 }
 
 //This function takes care of doing update of the line in the cases when the
-//$VAR is in env. It updates only the first occurence of a $VAR in line. If 
+//$VAR is in env. It updates only the first occurence of a $VAR in line. If
 //there is no $VAR, we just replace with nothing.
 char	*update_line(char *line, t_env_list *env, int newlinelen)
 {
@@ -112,16 +114,18 @@ char	*update_line(char *line, t_env_list *env, int newlinelen)
 }
 
 //This function replaces the line by a newline duplicate that has the $VAR replaced
-//by its value. It will only replace the first $VAR it encounters, and leave the others
+//by its value. It will only replace the first $VAR it encounters,
+//and leave the others
 //unchanged as the function will be called again in the tokenizing if there is still a
-//$VAR in line. Here we check if the $VAR is in the env, and if so we replace it by it's value
+//$VAR in line. Here we check if the $VAR is in the env,
+//and if so we replace it by it's value
 //in update_line. If it's not in the env, we replace it by nothing.
 char	*replace_in_line(char *line, t_env_list **env)
 {
 	t_env_list	*tmp;
-	char	*var;
-	int	newlinelen;
-	int	varlen;
+	char		*var;
+	int			newlinelen;
+	int			varlen;
 
 	tmp = *env;
 	varlen = compute_var_len(line);
@@ -129,7 +133,8 @@ char	*replace_in_line(char *line, t_env_list **env)
 	while (tmp && ft_strncmp(var + 1, tmp->variable, varlen) != 0)
 		tmp = tmp->next;
 	if (tmp)
-		newlinelen = ft_strlen(line) - varlen + ft_strlen(tmp->variable + (varlen + 1));	
+		newlinelen = ft_strlen(line) - varlen + ft_strlen(tmp->variable
+				+ (varlen + 1));
 	else
 		newlinelen = ft_strlen(line) - (varlen + 1);
 	free(var);
