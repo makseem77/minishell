@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 15:23:35 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/12 17:47:50 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/12 23:08:01 by maxborde         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,13 @@ int	is_a_meta_char(char *element)
 int	is_a_command(char *element, t_env_list **env)
 {
 	char	*executable;
+	char	*tmp;
 	int		fd;
 	char	**bin_paths;
+	int	i;
 
 	fd = open(element, O_DIRECTORY);
+	i = 0;
 	if (fd == -1)
 	{
 		if (access(element, X_OK) == 0)
@@ -59,10 +62,12 @@ int	is_a_command(char *element, t_env_list **env)
 	if (!bin_paths)
 		return (0);
 	executable = NULL;
-	while (*bin_paths)
+	while (bin_paths[i])
 	{
-		executable = ft_strjoin(*bin_paths, "/");
+		executable = ft_strjoin(bin_paths[i], "/");
+		tmp = executable;
 		executable = ft_strjoin(executable, element);
+		free(tmp);
 		fd = open(executable, O_DIRECTORY);
 		if (fd == -1)
 		{
@@ -71,8 +76,10 @@ int	is_a_command(char *element, t_env_list **env)
 		}
 		else
 			close(fd);
-		bin_paths++;
+		i++;
+		free(executable);
 	}
+	free_double_array(bin_paths);
 	return (0);
 }
 
@@ -88,7 +95,6 @@ int	has_a_variable(char *element)
 	dquotesflag = 0;
 	squotesflag = 0;
 	i = 0;
-	// printf("This is the ele= %s\n", element);
 	while (element[i])
 	{
 		if (element[i] == '$' && (squotesflag % 2 == 0) &&

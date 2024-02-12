@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 22:28:00 by maxborde          #+#    #+#             */
-/*   Updated: 2024/02/12 18:03:31 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/12 23:21:37 by maxborde         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ t_env_list	**get_export_variables(t_env_list **env)
 	{
 		newvariable = append_declare_prefix_and_quotes(tmp->variable);
 		lst_add_back(export_variables, lst_new(ft_strdup(newvariable)));
+		free(newvariable);
 		tmp = tmp->next;
 	}
 	return (export_variables);

@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 15:23:42 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/12 17:46:57 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/12 22:35:44 by maxborde         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,13 @@ static t_token	*create_new_token(char *element)
 	token = (t_token *)malloc(sizeof(t_token));
 	if (!token)
 		return (NULL);
+	token->ttype = -1;
 	token->element = ft_strdup(element);
+	if (!token->element)
+	{
+		free(token);
+		return (NULL);
+	}
 	token->next = NULL;
 	return (token);
 }

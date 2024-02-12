@@ -117,4 +117,10 @@ void					ft_put_unvalidvar_error(char *arg);
 void					print_exit_error(char *status);
 void					print_export(t_env_list **export_variables);
 
+//FREE
+void	free_token_list(t_token **t_token);
+void	free_double_array(char **darray);
+void	free_variable_lists(t_env_list **export_list, t_env_list **env_list);
+void	free_data_struct(t_data *data);
+
 #endif

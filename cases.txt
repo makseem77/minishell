@@ -1,3 +1,13 @@
+
+
+pressing enter with no input will cause a segfault
+
+
+
+
+
+
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 minishell> YANIS=2
 Element = YANIS=2
 Type = 2
@@ -23,11 +33,3 @@ exit
 yacode@DESKTOP-SRM6L10:~/minishell$ exit 9223372036854775808
 exit
 bash: exit: 9223372036854775808: numeric argument required
-
-ymeziane@c2r7p1:~/Documents/TroncCommun/minishell$ echo -e "1\n2"
-1
-2
-ymeziane@c2r7p1:~/Documents/TroncCommun/minishell$ echo -e 1\n2
-1n2
-
-export in env at the end, real bash doesn't store them specifically at the end

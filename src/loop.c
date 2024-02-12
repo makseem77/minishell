@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:43:34 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/12 17:39:26 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/12 23:44:23 by maxborde         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	listening_loop(t_data **data)
 {
 	char	*line;
 	t_token	**tokenlist;
-	t_token	*tmp;
+	//t_token	*tmp;
 
 	while (1)
 	{
@@ -28,9 +28,11 @@ void	listening_loop(t_data **data)
 		tokenlist = tokenize(line, (*data)->env);
 		set_token_types(tokenlist, (*data)->env);
 		process_tokens(tokenlist, data);
-		free(line);
-		tmp = *tokenlist;
+		/*tmp = *tokenlist;
 		while (tmp)
-			tmp = tmp->next;
+			tmp = tmp->next;*/
 	}
+	free(line);
+	free_token_list(tokenlist);
+	free_data_struct(*data);
 }
