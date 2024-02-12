@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 13:53:56 by maxborde          #+#    #+#             */
-/*   Updated: 2024/02/12 11:05:36 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/12 16:20:00 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,43 +48,32 @@ void	lst_add_back(t_env_list **lst, t_env_list *new)
 	last_el->next = new;
 }
 
-void	lst_del_one(t_env_list **lst, char *variable, bool export)
+void	lst_del_one(t_env_list **lst, char *variable, int offset)
 {
 	t_env_list	*tmp;
 	t_env_list	*prev;
+	char	*var_name;
+	int	bytestocmp;
 
 	if (!lst || !*lst)
 		return ;
+	var_name = extract_var_name(variable);
 	tmp = *lst;
-	if(!export)
+	bytestocmp = compute_bytes_to_cmp(tmp->variable + offset, var_name);
+	if (ft_strncmp(tmp->variable + offset, variable, bytestocmp) == 0)
 	{
-		if (ft_strcmp(tmp->variable, variable) == 0)
-		{
-			*lst = tmp->next;
-			free(tmp->variable);
-			free(tmp);
-			return ;
-		}
-		while (tmp && ft_strncmp(tmp->variable, variable, ft_strlen(variable)) != 0)
-		{
-			prev = tmp;
-			tmp = tmp->next;
-		}
+		*lst = tmp->next;
+		free(tmp->variable);
+		free(tmp);
+		return ;
 	}
-	else
+	while (tmp)
 	{
-		if (ft_strcmp(tmp->variable + ft_strlen("declare -x "), variable) == 0)
-		{
-			*lst = tmp->next;
-			free(tmp->variable);
-			free(tmp);
-			return ;
-		}
-		while (tmp && ft_strncmp(tmp->variable + ft_strlen("declare -x "), variable, ft_strlen(variable)) != 0)
-		{
-			prev = tmp;
-			tmp = tmp->next;
-		}
+		bytestocmp = compute_bytes_to_cmp(tmp->variable + offset, var_name);
+		if 	(ft_strncmp(tmp->variable + offset, variable, bytestocmp) == 0)
+			break ;
+		prev = tmp;
+		tmp = tmp->next;
 	}
 	if (!tmp)
 		return ;
