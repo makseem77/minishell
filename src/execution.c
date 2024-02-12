@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 10:59:54 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/10 16:39:56 by maxborde         ###   ########.fr       */
+/*   Updated: 2024/02/12 11:07:48 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	execute_bultin(t_token **token, t_data **data)
 	else if (ft_strcmp((*token)->element, "pwd") == 0)
 		pwd();
 	else if(ft_strcmp((*token)->element, "unset") == 0)
-	    unset(args, (*data)->env);
+	    unset(args, (*data)->env, (*data)->exp_list);
 }
 
 char	*get_path_cmd(char **paths, char *cmd)

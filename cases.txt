@@ -29,3 +29,5 @@ ymeziane@c2r7p1:~/Documents/TroncCommun/minishell$ echo -e "1\n2"
 2
 ymeziane@c2r7p1:~/Documents/TroncCommun/minishell$ echo -e 1\n2
 1n2
+
+export in env at the end, real bash doesn't store them specifically at the end

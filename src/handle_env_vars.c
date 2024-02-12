@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 18:43:05 by maxborde          #+#    #+#             */
-/*   Updated: 2024/02/10 15:20:09 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/12 10:12:37 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ char	*update_line_with_void(char *line, int newlinelen)
 			newline[j++] = line[i++];
 	}
 	newline[j] = 0;
-	printf("NEWLINE=%s\n", newline);
 	return (newline);
 }
 
@@ -95,7 +94,6 @@ char	*update_line_with_value(char *line, t_env_list *env, int newlinelen, int va
 			newline[j++] = line[i++];
 	}
 	newline[j] = 0;
-	printf("NEWLINE=%s\n", newline);
 	return (newline);
 }
 

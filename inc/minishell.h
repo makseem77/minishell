@@ -78,7 +78,7 @@ void	export(char **args, t_env_list **env, t_env_list **exp_list);
 t_env_list	**get_export_variables(t_env_list **env);
 
 //	BUILTINS
-void	unset(char **args, t_env_list **env);
+void	unset(char **args, t_env_list **env, t_env_list **exp_list);
 char	*get_current_dir(void);
 void	pwd(void);
 void	cd(char *absolute_path, t_data **data);
@@ -90,7 +90,7 @@ void    exit_bash(char *status);
 void	lst_add_back(t_env_list **lst, t_env_list *new);
 t_env_list	*lst_last(t_env_list *lst);
 t_env_list	*lst_new(char	*variable);
-void	lst_del_one(t_env_list **lst, char *variable);
+void	lst_del_one(t_env_list **lst, char *variable, bool export);
 int	lst_size(t_env_list **lst);
 
 // EXECUTION

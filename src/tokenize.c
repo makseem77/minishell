@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 15:23:42 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/10 00:13:17 by maxborde         ###   ########.fr       */
+/*   Updated: 2024/02/12 10:12:25 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,6 @@ char	*add_token(char	*line, t_token **tokenlist, t_env_list **env)
 	elementlen = ft_strlen(element);
 	if (has_a_variable(element))
 	{
-		printf("HAS A VAR\n");
 		free(element);
 		return (replace_in_line(line, env));
 	}
