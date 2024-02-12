@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 11:32:51 by maxborde          #+#    #+#             */
-/*   Updated: 2024/02/12 15:55:38 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/12 17:26:38 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ int compute_bytes_to_cmp(char *variableinlist, char *variablename)
     char    *varnameinlist;
     int     bytestocmp;
 
+    if(!variablename)
+        return (0);
     varnameinlist = extract_var_name(variableinlist);
     if (ft_strlen(varnameinlist) > ft_strlen(variablename))
     {
