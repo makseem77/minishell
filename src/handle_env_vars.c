@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 18:43:05 by maxborde          #+#    #+#             */
-/*   Updated: 2024/02/12 17:49:08 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/13 00:04:50 by maxborde         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,12 +126,18 @@ char	*replace_in_line(char *line, t_env_list **env)
 	char		*var;
 	int			newlinelen;
 	int			varlen;
+	int	bytestocmp;
 
 	tmp = *env;
 	varlen = compute_var_len(line);
 	var = ft_strndup(ft_strchr(line, '$'), varlen + 1);
-	while (tmp && ft_strncmp(var + 1, tmp->variable, varlen) != 0)
+	while (tmp)
+	{
+		bytestocmp= compute_bytes_to_cmp(tmp->variable, var + 1);
+		if (ft_strncmp(var + 1, tmp->variable, bytestocmp) == 0)
+			break;
 		tmp = tmp->next;
+	}
 	if (tmp)
 		newlinelen = ft_strlen(line) - varlen + ft_strlen(tmp->variable
 				+ (varlen + 1));

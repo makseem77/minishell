@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:43:34 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/12 23:44:23 by maxborde         ###   ########.fr       */
+/*   Updated: 2024/02/12 23:56:34 by maxborde         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ void	listening_loop(t_data **data)
 		/*tmp = *tokenlist;
 		while (tmp)
 			tmp = tmp->next;*/
+		/*free(line);
+		free_token_list(tokenlist);
+		free_data_struct(*data);*/
 	}
-	free(line);
-	free_token_list(tokenlist);
-	free_data_struct(*data);
 }

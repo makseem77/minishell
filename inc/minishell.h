@@ -80,8 +80,7 @@ char					*replace_in_line(char *line, t_env_list **env);
 void					export(char **args, t_env_list **env,
 							t_env_list **exp_list);
 t_env_list				**get_export_variables(t_env_list **env);
-int						compute_bytes_to_cmp(char *variableinlist,
-							char *variablename);
+int						compute_bytes_to_cmp(char *variableinlist, char *variablename);
 void					unset(char **args, t_env_list **env,
 							t_env_list **exp_list);
 

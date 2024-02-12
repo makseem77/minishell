@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 17:51:04 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/12 23:04:45 by maxborde         ###   ########.fr       */
+/*   Updated: 2024/02/13 00:24:41 by maxborde         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ char	*append_declare_prefix_and_quotes(char *variable)
 	newvariable = insert_quotes(variable);
 	tmp = newvariable;
 	newvariable = ft_strjoin("declare -x ", newvariable);
-	free(tmp);
+	//free(tmp); //THIS IS BAD
 	return (newvariable);
 }
 
