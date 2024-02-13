@@ -45,11 +45,11 @@ typedef struct s_env_list
 	struct s_env_list	*next;
 }						t_env_list;
 
-//1. start with the listening loop that will read the user-input from the terminal.
-//2. scan the user-input and cut it into tokens. for instance: "cat file.txt" would give 2 tokens: "cat"
+// 1. start with the listening loop that will read the user-input from the terminal.
+// 2. scan the user-input and cut it into tokens. for instance: "cat file.txt" would give 2 tokens: "cat"
 //-> COMMAND and "file.txt" -> FILENAME.
-//Save data on each token in a struct.
-//3. Start executing the user-input by going trough each token one by one.
+// Save data on each token in a struct.
+// 3. Start executing the user-input by going trough each token one by one.
 
 //	TOKENIZE
 t_token					**tokenize(char *line, t_env_list **env);
@@ -68,7 +68,7 @@ char					**env_list_to_array(t_env_list **env);
 
 //	PARSING
 void					set_token_types(t_token **tokenlist, t_env_list **env);
-int						has_a_variable(char *element);
+int						is_or_has_a_variable(char *element);
 
 //	LOOP
 void					listening_loop(t_data **data);
@@ -76,15 +76,14 @@ void					listening_loop(t_data **data);
 //	HANDLE_ENV_VARS
 char					*replace_in_line(char *line, t_env_list **env);
 
-//EXPORT AND UNSET
+//	BUILTINS
 void					export(char **args, t_env_list **env,
 							t_env_list **exp_list);
 t_env_list				**get_export_variables(t_env_list **env);
-int						compute_bytes_to_cmp(char *variableinlist, char *variablename);
+int						compute_bytes_to_cmp(char *variableinlist,
+							char *variablename);
 void					unset(char **args, t_env_list **env,
 							t_env_list **exp_list);
-
-//	BUILTINS
 char					*get_current_dir(void);
 void					pwd(void);
 void					cd(char *absolute_path, t_data **data);
@@ -100,7 +99,7 @@ char					*append_declare_prefix_and_quotes(char *variable);
 char					*insert_quotes(char *variable);
 void					sort_alphabetically(t_env_list **expvars, int size);
 
-//LST UTILS
+// FT LST
 void					lst_add_back(t_env_list **lst, t_env_list *new);
 t_env_list				*lst_last(t_env_list *lst);
 t_env_list				*lst_new(char *variable);
@@ -112,14 +111,14 @@ int						lst_size(t_env_list **lst);
 void					process_tokens(t_token **tokenlist, t_data **data);
 
 // UTILS PRINT
-void					ft_put_unvalidvar_error(char *arg);
-void					print_exit_error(char *status);
+void					print_error(char *command, char *arg, char *error);
 void					print_export(t_env_list **export_variables);
 
-//FREE
-void	free_token_list(t_token **t_token);
-void	free_double_array(char **darray);
-void	free_variable_lists(t_env_list **export_list, t_env_list **env_list);
-void	free_data_struct(t_data *data);
+// FREE
+void					free_token_list(t_token **t_token);
+void					free_double_array(char **darray);
+void					free_variable_lists(t_env_list **export_list,
+							t_env_list **env_list);
+void					free_data_struct(t_data *data);
 
 #endif

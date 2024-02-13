@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maxborde <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 22:17:47 by maxborde          #+#    #+#             */
-/*   Updated: 2024/02/12 23:17:26 by maxborde         ###   ########.fr       */
+/*   Updated: 2024/02/13 11:27:07 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void	free_double_array(char **darray)
 	int	i;
 
 	i = 0;
-	while(darray[i])
+	while (darray[i])
 	{
 		free(darray[i]);
 		i++;

@@ -6,12 +6,13 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 13:53:56 by maxborde          #+#    #+#             */
-/*   Updated: 2024/02/12 17:48:47 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/13 10:35:41 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+// Creates a new node and returns it
 t_env_list	*lst_new(char *variable)
 {
 	t_env_list	*new;
@@ -24,6 +25,7 @@ t_env_list	*lst_new(char *variable)
 	return (new);
 }
 
+// Returns the last element of the list
 t_env_list	*lst_last(t_env_list *lst)
 {
 	if (!lst)
@@ -33,6 +35,7 @@ t_env_list	*lst_last(t_env_list *lst)
 	return (lst);
 }
 
+// Adds a new element to the end of the list
 void	lst_add_back(t_env_list **lst, t_env_list *new)
 {
 	t_env_list	*last_el;
@@ -48,6 +51,7 @@ void	lst_add_back(t_env_list **lst, t_env_list *new)
 	last_el->next = new;
 }
 
+// Deletes an element from the list
 void	lst_del_one(t_env_list **lst, char *variable, int offset)
 {
 	t_env_list	*tmp;
@@ -82,6 +86,7 @@ void	lst_del_one(t_env_list **lst, char *variable, int offset)
 	free(tmp);
 }
 
+// Returns list size
 int	lst_size(t_env_list **lst)
 {
 	t_env_list	*tmp;

@@ -6,13 +6,13 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 15:23:42 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/12 23:54:50 by maxborde         ###   ########.fr       */
+/*   Updated: 2024/02/13 11:34:33 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-//Creates a new token, adds a duplicate of element and returns it.
+// Creates a new token, adds a duplicate of element and returns it.
 static t_token	*create_new_token(char *element)
 {
 	t_token	*token;
@@ -31,9 +31,10 @@ static t_token	*create_new_token(char *element)
 	return (token);
 }
 
-//Takes the pointer to line and extracts and returns the first element  it encounters.
-//We first calculate the lenght of the element and then duplicate it. If the element starts with
-//quote we go until the next quote.
+// Takes the pointer to line and extracts
+// and returns the first element it encounters.
+// We first calculate the lenght of the element and then duplicate it.
+// If the element starts with quote we go until the next quote.
 static char	*get_element(char *line)
 {
 	char	*element;
@@ -55,9 +56,12 @@ static char	*get_element(char *line)
 	return (element);
 }
 
-//Creates and adds a new token to the end of tokenlist. Returns the pointer to line incremented by the len of the element. to the end of the element. If the element is a var ($VAR) it will replace the variable by its value.
-//If the element has a variable in it,
-//we replace it by it's value so we can tokenize it.
+// Creates and adds a new token to the end of tokenlist.
+// Returns the pointer to line incremented by the len of the element 
+// to the end of the element.
+// If the element is a var ($VAR) it will replace the variable by its value.
+// If the element has a variable in it,
+// we replace it by it's value so we can tokenize it.
 static char	*add_token(char *line, t_token **tokenlist, t_env_list **env)
 {
 	t_token	*tmp;
@@ -67,10 +71,10 @@ static char	*add_token(char *line, t_token **tokenlist, t_env_list **env)
 
 	element = get_element(line);
 	elementlen = ft_strlen(element);
-	if (has_a_variable(element))
+	if (is_or_has_a_variable(element))
 	{
 		free(element);
-		newline = replace_in_line(line, env);	
+		newline = replace_in_line(line, env);
 		return (newline);
 	}
 	if (!(*tokenlist))
@@ -87,12 +91,12 @@ static char	*add_token(char *line, t_token **tokenlist, t_env_list **env)
 	return (line + elementlen);
 }
 
-//Returns a pointer to the first element of the linked list of all the tokens in
-//the bash expression.
-//You go trough the line, skip whitespaces,
-//and adds a token every time it encounters
-//an element of a bash expression. The add token while increment the line pointer
-//to the end of the element so you can then continue trough the rest of the line.
+// Returns a pointer to the first element of the linked list
+// of all the tokens in the bash expression.
+// You go trough the line, skip whitespaces,
+// and adds a token every time it encounters an element of a bash expression.
+// The add token while increment the line pointer to the end of the element
+// so you can then continue trough the rest of the line.
 t_token	**tokenize(char *line, t_env_list **env)
 {
 	t_token	**tokenlist;

@@ -6,12 +6,14 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 11:29:19 by maxborde          #+#    #+#             */
-/*   Updated: 2024/02/12 18:06:17 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/13 10:56:59 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+// get_current_dir will return the current directory.
+// If it fails, it will print the error message and return NULL.
 char	*get_current_dir(void)
 {
 	char	current_dir[PATH_MAX];

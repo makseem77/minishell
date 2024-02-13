@@ -6,12 +6,19 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 13:03:07 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/09 10:59:42 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/13 11:37:41 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
+// If the path is "-",
+// it will change the current directory to the previous directory.
+// If the path is "~",
+// it will change the current directory to the home directory.
+// If the path is "",
+// it will change the current directory to the home directory,
+// if the HOME variable is set, otherwise it will print the error message.
 static char	*update_absolute_path(char *absolute_path, char *old_pwd,
 		t_data **data)
 {
@@ -32,10 +39,13 @@ static char	*update_absolute_path(char *absolute_path, char *old_pwd,
 	return (absolute_path);
 }
 
+// cd will change the current directory.
+// If the path is not valid, it will print the error message.
+// If the path is valid, it will change the current directory.
 void	cd(char *absolute_path, t_data **data)
 {
-	static char old_pwd[PATH_MAX];
-	char current_dir[PATH_MAX];
+	static char	old_pwd[PATH_MAX];
+	char		current_dir[PATH_MAX];
 
 	if (!absolute_path)
 		return ;

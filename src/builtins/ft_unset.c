@@ -6,12 +6,28 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 11:32:51 by maxborde          #+#    #+#             */
-/*   Updated: 2024/02/12 18:06:23 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/13 11:44:16 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+// This function will extract the number of bytes to compare
+// from the variable in the list and the variable name.
+// We will compare the two strings byte by byte,
+// and we will return the number of bytes to compare.
+// For example,
+// if the variable in the list is "VAR=123" and the variable name is "VAR",
+// we will return 3, here the length of the variable name.
+// However,
+// if the variable in the list is "VAR" and the variable name is "VAR=123",
+// we will return 3, here the length of the variable in the list.
+// If the variable in the list is longer than the variable name,
+// we will return the length of the variable in the list.
+// If the variable name is longer than the variable in the list,
+// we will return the length of the variable name.
+// If the two strings are the same length,
+// we will return the length of the variable name.
 int	compute_bytes_to_cmp(char *variableinlist, char *variablename)
 {
 	char	*varnameinlist;
@@ -34,6 +50,7 @@ int	compute_bytes_to_cmp(char *variableinlist, char *variablename)
 	}
 }
 
+// This function will check if the variable is in the list.
 static bool	arg_in_list(char *arg, t_env_list **lst, int offset)
 {
 	t_env_list	*tmp;
@@ -52,7 +69,10 @@ static bool	arg_in_list(char *arg, t_env_list **lst, int offset)
 	return (false);
 }
 
-bool	is_valid_variable(char *variable)
+// This function will check if the variable is valid.
+// A variable is valid if it starts with a letter or an underscore,
+// and if it contains only letters, numbers and underscores.
+static bool	is_valid_variable(char *variable)
 {
 	int	i;
 
@@ -68,6 +88,12 @@ bool	is_valid_variable(char *variable)
 	return (true);
 }
 
+// This function will go trough all of the args passed to unset
+// so they can be removed from the env list and the export list.
+// We first check if the variable is a valid one, and if it's not,
+// we print an error.
+// If the variable is valid, we check if it exists in the lists.
+// If it does, we remove it from the lists.
 void	unset(char **args, t_env_list **env, t_env_list **exp_list)
 {
 	while (*args)

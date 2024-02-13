@@ -6,13 +6,20 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 22:29:14 by maxborde          #+#    #+#             */
-/*   Updated: 2024/02/12 17:38:43 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/13 11:24:01 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-bool	set_data(t_data **data, char **envp)
+//Sets the data structure.
+//Returns true if the data structure is set, false otherwise.
+//The data structure is set by allocating memory for it and setting its fields.
+//The old_pwd field is set to the current directory.
+//The env field is set to the environment variables.
+//The exp_list field is set to the export variables.
+//The home_dir field is set to the value of the HOME environment variable.
+static bool	set_data(t_data **data, char **envp)
 {
 	char	*home;
 

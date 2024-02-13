@@ -6,48 +6,49 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 15:23:35 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/12 23:08:01 by maxborde         ###   ########.fr       */
+/*   Updated: 2024/02/13 11:32:34 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-int	is_a_built_in(char *element)
+// Returns 1 if the element is a built-in command, 0 if it is not.
+static int	is_a_built_in(char *element)
 {
-	if (!ft_strcmp("echo", element) || !ft_strcmp("cd", element) ||
-		!ft_strcmp("pwd", element) || !ft_strcmp("export", element)
-			|| !ft_strcmp("unset", element) || !ft_strcmp("env", element)
-			|| !ft_strcmp("exit", element))
+	if (!ft_strcmp("echo", element) || !ft_strcmp("cd", element)
+		|| !ft_strcmp("pwd", element) || !ft_strcmp("export", element)
+		|| !ft_strcmp("unset", element) || !ft_strcmp("env", element)
+		|| !ft_strcmp("exit", element))
 		return (1);
 	return (0);
 }
 
-int	is_a_meta_char(char *element)
+// Returns 1 if the element is a meta character, 0 if it is not.
+static int	is_a_meta_char(char *element)
 {
-	if (!ft_strcmp(">", element) || !ft_strcmp(">>", element) ||
-		!ft_strcmp("<", element) || !ft_strcmp("<<", element) || !ft_strcmp("&",
-				element) || !ft_strcmp("|", element) || !ft_strcmp("&&",
-				element) || !ft_strcmp("||", element) || !ft_strcmp(",",
-				element) || !ft_strcmp("(", element) || !ft_strcmp(")",
-				element))
+	if (!ft_strcmp(">", element) || !ft_strcmp(">>", element) || !ft_strcmp("<",
+			element) || !ft_strcmp("<<", element) || !ft_strcmp("&", element)
+		|| !ft_strcmp("|", element) || !ft_strcmp("&&", element)
+		|| !ft_strcmp("||", element) || !ft_strcmp(",", element)
+		|| !ft_strcmp("(", element) || !ft_strcmp(")", element))
 		return (1);
 	return (0);
 }
 
-//Returns 1 if it's element is actually an executable command,
-//0 if it is not.
-//Here, we go trough the splitted PATH variables, and join element
-//to each of them, then check if they are actually executable.
-//We also do a first check with open to make sure that we are not
-//using access, X_OK on a directory because it would return 0 like
-//an exe.
-int	is_a_command(char *element, t_env_list **env)
+// Returns 1 if it's element is actually an executable command,
+// 0 if it is not.
+// Here, we go trough the splitted PATH variables, and join element
+// to each of them, then check if they are actually executable.
+// We also do a first check with open to make sure that we are not
+// using access, X_OK on a directory because it would return 0 like
+// an exe.
+static int	is_a_command(char *element, t_env_list **env)
 {
 	char	*executable;
 	char	*tmp;
 	int		fd;
 	char	**bin_paths;
-	int	i;
+	int		i;
 
 	fd = open(element, O_DIRECTORY);
 	i = 0;
@@ -83,10 +84,10 @@ int	is_a_command(char *element, t_env_list **env)
 	return (0);
 }
 
-//Will return 1 if the element is or has a variable ($VAR), 0 if
-//it is not and -1 if we have unclosed quotes.
-//"$VAR" is interpreted as a variable where '$VAR' is not.
-int	has_a_variable(char *element)
+// Will return 1 if the element is or has a variable ($VAR), 0 if
+// it is not and -1 if we have unclosed quotes.
+// "$VAR" is interpreted as a variable where '$VAR' is not.
+int	is_or_has_a_variable(char *element)
 {
 	int	dquotesflag;
 	int	squotesflag;
@@ -97,9 +98,9 @@ int	has_a_variable(char *element)
 	i = 0;
 	while (element[i])
 	{
-		if (element[i] == '$' && (squotesflag % 2 == 0) &&
-			(isalpha(element[i + 1]) || isdigit(element[i + 1]) || element[i
-					+ 1] == '_'))
+		if (element[i] == '$' && (squotesflag % 2 == 0)
+			&& (isalpha(element[i + 1]) || isdigit(element[i + 1])
+				|| element[i + 1] == '_'))
 			return (1);
 		if (element[i] == '\'' && dquotesflag % 2 == 0)
 			squotesflag++;
@@ -110,7 +111,8 @@ int	has_a_variable(char *element)
 	return (0);
 }
 
-//Goes trough the token linked list and gives a tokentype to every node of the list.
+// Goes trough the token linked list
+// and gives a tokentype to every node of the list.
 void	set_token_types(t_token **tokenlist, t_env_list **env)
 {
 	t_token	*tmp;

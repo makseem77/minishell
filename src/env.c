@@ -6,15 +6,15 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 15:23:28 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/12 18:06:53 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/13 11:26:26 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-//Returns a duplicate of envp.
-//Goes trough the 2d array envp once to get its size for allocating
-//memory, then goes trough it a second time to duplicate each env variables.
+// Returns a duplicate of envp.
+// Goes trough the 2d array envp once to get its size for allocating
+// memory, then goes trough it a second time to duplicate each env variables.
 t_env_list	**dup_env(char **env)
 {
 	t_env_list	**env_list;
@@ -31,8 +31,8 @@ t_env_list	**dup_env(char **env)
 	return (env_list);
 }
 
-//Returns all the PATHs variables, splitted in a 2d array, without
-//the PATH= prefix.
+// Returns all the PATHs variables, splitted in a 2d array, without
+// the PATH= prefix.
 char	**find_bin_paths(t_env_list **env)
 {
 	char		**bin_paths;
@@ -47,7 +47,7 @@ char	**find_bin_paths(t_env_list **env)
 	return (bin_paths);
 }
 
-//Returns the value of the variable in the env list.
+// Returns the value of the variable in the env list.
 char	*get_env(char *variable, t_env_list **env)
 {
 	t_env_list	*tmp;
@@ -62,12 +62,12 @@ char	*get_env(char *variable, t_env_list **env)
 	return (NULL);
 }
 
-//Converts env of type t_env_list to type char**.
+// Converts env of type t_env_list to type char**.
 char	**env_list_to_array(t_env_list **env)
 {
 	char		**envp;
 	t_env_list	*tmp;
-	int i;
+	int			i;
 
 	tmp = *env;
 	i = 0;

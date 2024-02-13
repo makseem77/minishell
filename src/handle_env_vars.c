@@ -6,15 +6,15 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 18:43:05 by maxborde          #+#    #+#             */
-/*   Updated: 2024/02/13 00:04:50 by maxborde         ###   ########.fr       */
+/*   Updated: 2024/02/13 11:29:45 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-//Returns the size of the first $VAR it encounters in line.
-//A $VAR can only be composed of alphadigits and underscores.
-int	compute_var_len(char *line)
+// Returns the size of the first $VAR it encounters in line.
+// A $VAR can only be composed of alphadigits and underscores.
+static int	compute_var_len(char *line)
 {
 	int	i;
 	int	varlen;
@@ -38,9 +38,10 @@ int	compute_var_len(char *line)
 	return (0);
 }
 
-//This function takes care of doing update of the line in the case when the
-//$VAR is not an env. It updates only the first occurence of a $VAR. And returns the newline.
-char	*update_line_with_void(char *line, int newlinelen)
+// This function takes care of doing update of the line in the case when the
+// $VAR is not an env.
+// It updates only the first occurence of a $VAR. And returns the newline.
+static char	*update_line_with_void(char *line, int newlinelen)
 {
 	char	*newline;
 	int		i;
@@ -67,10 +68,10 @@ char	*update_line_with_void(char *line, int newlinelen)
 	return (newline);
 }
 
-//This function takes care of doing the update of the line in the case where the
-//$VAR is indeed in env. We replace the line with a newline where $VAR is its value
-//in env.
-char	*update_line_with_value(char *line, t_env_list *env, int newlinelen,
+// This function takes care of doing the update of the line in the case
+// where the $VAR is indeed in env. We replace the line with a newline
+// where $VAR is its value in env.
+static char	*update_line_with_value(char *line, t_env_list *env, int newlinelen,
 		int varlen)
 {
 	char	*newline;
@@ -87,7 +88,7 @@ char	*update_line_with_value(char *line, t_env_list *env, int newlinelen,
 		if (line[i] == '$' && replacedvar == 0)
 		{
 			ft_strlcpy(&newline[i], env->variable + varlen + 1,
-					ft_strlen(env->variable + varlen + 1) + 1);
+				ft_strlen(env->variable + varlen + 1) + 1);
 			i += varlen + 1;
 			j += ft_strlen(env->variable + varlen + 1);
 			replacedvar += 1;
@@ -99,10 +100,10 @@ char	*update_line_with_value(char *line, t_env_list *env, int newlinelen,
 	return (newline);
 }
 
-//This function takes care of doing update of the line in the cases when the
-//$VAR is in env. It updates only the first occurence of a $VAR in line. If
-//there is no $VAR, we just replace with nothing.
-char	*update_line(char *line, t_env_list *env, int newlinelen)
+// This function takes care of doing update of the line in the cases when the
+// $VAR is in env. It updates only the first occurence of a $VAR in line. If
+// there is no $VAR, we just replace with nothing.
+static char	*update_line(char *line, t_env_list *env, int newlinelen)
 {
 	int	varlen;
 
@@ -113,29 +114,28 @@ char	*update_line(char *line, t_env_list *env, int newlinelen)
 		return (update_line_with_value(line, env, newlinelen, varlen));
 }
 
-//This function replaces the line by a newline duplicate that has the $VAR replaced
-//by its value. It will only replace the first $VAR it encounters,
-//and leave the others
-//unchanged as the function will be called again in the tokenizing if there is still a
-//$VAR in line. Here we check if the $VAR is in the env,
-//and if so we replace it by it's value
-//in update_line. If it's not in the env, we replace it by nothing.
+// This function replaces the line by a newline duplicate that has the $VAR
+// replaced by its value. It will only replace the first $VAR it encounters,
+// and leave the others unchanged as the function will be called again in the
+// tokenizing if there is still a $VAR in line.
+// Here we check if the $VAR is in the env, and if so we replace it by
+// it's value in update_line. If it's not in the env, we replace it by nothing.
 char	*replace_in_line(char *line, t_env_list **env)
 {
 	t_env_list	*tmp;
 	char		*var;
 	int			newlinelen;
 	int			varlen;
-	int	bytestocmp;
+	int			bytestocmp;
 
 	tmp = *env;
 	varlen = compute_var_len(line);
 	var = ft_strndup(ft_strchr(line, '$'), varlen + 1);
 	while (tmp)
 	{
-		bytestocmp= compute_bytes_to_cmp(tmp->variable, var + 1);
+		bytestocmp = compute_bytes_to_cmp(tmp->variable, var + 1);
 		if (ft_strncmp(var + 1, tmp->variable, bytestocmp) == 0)
-			break;
+			break ;
 		tmp = tmp->next;
 	}
 	if (tmp)

@@ -6,15 +6,16 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 20:24:16 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/12 17:49:28 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/13 11:38:06 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+//Prints the env list.
 void	env(t_env_list **env)
 {
-	t_env_list *tmp;
+	t_env_list	*tmp;
 
 	tmp = *env;
 	while (tmp)

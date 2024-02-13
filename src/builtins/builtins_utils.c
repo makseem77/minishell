@@ -6,20 +6,21 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 17:51:04 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/13 00:24:41 by maxborde         ###   ########.fr       */
+/*   Updated: 2024/02/13 11:36:54 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-//This function goal is to check the var and return ints for each different cases.
-//We will start by duplicating arg until we find a "=" or a NULL to extract the variable
-//name. We check if the variable name is valid during the duplication.
-//We will then check if it exists in the lists. If it doesn't,
-//we just add it to both list with
-//its value. If it does,
-//we change the variable at the node where the old variable was located to
-//the new variable.
+// This function goal is to check the var
+// and return ints for each different cases.
+// We will start by duplicating arg until we find a "="
+// or a NULL to extract the variable name.
+// We check if the variable name is valid during the duplication.
+// We will then check if it exists in the lists. If it doesn't,
+// we just add it to both list with its value.
+// If it does, we change the variable at the node
+// where the old variable was located to the new variable.
 int	check_var(char *arg, t_env_list **export_variables, int offset)
 {
 	char		*var_name;
@@ -47,11 +48,12 @@ int	check_var(char *arg, t_env_list **export_variables, int offset)
 	return (2);
 }
 
-//This function will return the extracted variable name from arg (with the = if there is one).
-//Will return NULL if this is not a valid variable name. It does so by calculating the size of
-//the var name (= excluded),
-//then it does a duplication of it and at the same time it checks
-//if the varname is valid.
+// This function will return the extracted variable name from arg
+// (with the = if there is one).
+// Will return NULL if this is not a valid variable name.
+// It does so by calculating the size of the var name (= excluded),
+// then it does a duplication of it and at the same time it checks
+// if the varname is valid.
 char	*extract_var_name(char *arg)
 {
 	int		len;
@@ -76,25 +78,25 @@ char	*extract_var_name(char *arg)
 	return (varname);
 }
 
-//Appends the declare
+// Appends the declare
 //-x prefix to every variables and inserts the quotes around the value
-//of the variable.
+// of the variable.
 char	*append_declare_prefix_and_quotes(char *variable)
 {
 	char	*newvariable;
-	char	*tmp;
 
+	// char	*tmp;
 	newvariable = insert_quotes(variable);
-	tmp = newvariable;
+	// tmp = newvariable;
 	newvariable = ft_strjoin("declare -x ", newvariable);
-	//free(tmp); //THIS IS BAD
+	// free(tmp); //THIS IS BAD
 	return (newvariable);
 }
 
-//This function takes the variable and returns a duplicate with double quotes
-//inserted around the value of the variable. If it's a variable with no value
-//we just return the variable. Else we allocate memory for 2 quotes and  the
-//NULL byte and insert quotes after the = and at the end of the value.
+// This function takes the variable and returns a duplicate with double quotes
+// inserted around the value of the variable. If it's a variable with no value
+// we just return the variable. Else we allocate memory for 2 quotes and  the
+// NULL byte and insert quotes after the = and at the end of the value.
 char	*insert_quotes(char *variable)
 {
 	char	*newvariable;
@@ -124,14 +126,14 @@ char	*insert_quotes(char *variable)
 	return (newvariable);
 }
 
-//Sorts the linked list expvars alphabetically using a bubble sort algorithm.
+// Sorts the linked list expvars alphabetically using a bubble sort algorithm.
 void	sort_alphabetically(t_env_list **expvars, int size)
 {
-	t_env_list *tmp;
-	t_env_list *head;
-	char *temp;
-	int i;
-	int j;
+	t_env_list	*tmp;
+	t_env_list	*head;
+	char		*temp;
+	int			i;
+	int			j;
 
 	i = 0;
 	tmp = *expvars;

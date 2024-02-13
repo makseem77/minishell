@@ -6,18 +6,21 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:43:34 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/12 23:56:34 by maxborde         ###   ########.fr       */
+/*   Updated: 2024/02/13 11:29:55 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+// The main loop of the program
+// It reads the input from the user and processes it
+// It will keep reading the input until the user exits the program
 void	listening_loop(t_data **data)
 {
 	char	*line;
 	t_token	**tokenlist;
-	//t_token	*tmp;
 
+	// t_token	*tmp;
 	while (1)
 	{
 		line = readline("minishell> ");

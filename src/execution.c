@@ -6,13 +6,14 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 10:59:54 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/13 00:09:03 by maxborde         ###   ########.fr       */
+/*   Updated: 2024/02/13 10:55:23 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	**tokens_to_array(t_token **token)
+//Returns the tokens in the tokenlist as an array of strings.
+static char	**tokens_to_array(t_token **token)
 {
 	size_t	nb_args;
 	t_token	*tmp;
@@ -39,7 +40,8 @@ char	**tokens_to_array(t_token **token)
 	return (args);
 }
 
-void	execute_bultin(t_token **token, t_data **data)
+//Executes the builtin command in the token.
+static void	execute_bultin(t_token **token, t_data **data)
 {
 	char	**args;
 
@@ -60,7 +62,8 @@ void	execute_bultin(t_token **token, t_data **data)
 		unset(args, (*data)->env, (*data)->exp_list);
 }
 
-char	*get_path_cmd(char **paths, char *cmd)
+//Returns the path of the command if it is executable, NULL if it is not.
+static char	*get_path_cmd(char **paths, char *cmd)
 {
 	char	*tmp;
 	char	*command;
@@ -86,7 +89,8 @@ char	*get_path_cmd(char **paths, char *cmd)
 	return (NULL);
 }
 
-void	execute_cmd(t_token *token, t_env_list **env)
+//Executes the command in the token.
+static void	execute_cmd(t_token *token, t_env_list **env)
 {
 	size_t	nb_args;
 	t_token	*tmp;
@@ -121,6 +125,7 @@ void	execute_cmd(t_token *token, t_env_list **env)
 		execve(path_cmd, args, envp);
 }
 
+//Executes the tokens in the tokenlist.
 void	process_tokens(t_token **tokenlist, t_data **data)
 {
 	if (!*tokenlist)

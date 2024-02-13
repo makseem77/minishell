@@ -6,13 +6,15 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 20:29:50 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/12 17:49:25 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/13 11:08:33 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-bool	check_valid_flag(char *flag)
+// Checks if the flag is valid.
+// i.e. if it is -n or not.
+static bool	check_valid_flag(char *flag)
 {
 	if (ft_strncmp(flag, "-n", 2) == 0)
 	{
@@ -28,6 +30,8 @@ bool	check_valid_flag(char *flag)
 	return (false);
 }
 
+// Prints the arguments.
+// If the first argument is -n, we will not print a newline at the end.
 void	echo(t_token **tokenlist)
 {
 	t_token	*tmp;

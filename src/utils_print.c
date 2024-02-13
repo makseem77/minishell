@@ -6,29 +6,27 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 17:56:02 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/12 17:59:16 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/13 11:34:51 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include    "minishell.h"
+#include "minishell.h"
 
-//Prints the error message in case of a unvalid identifier just like bash.
-void	ft_put_unvalidvar_error(char *arg)
+// Prints the error message.
+void	print_error(char *command, char *arg, char *error)
 {
-	ft_putstr_fd("minishell: export: `", 2);
+	if (ft_strcmp(command, "exit") == 0)
+		ft_putstr_fd("exit\n", 2);
+	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd(command, 2);
+	ft_putstr_fd(": ", 2);
 	ft_putstr_fd(arg, 2);
-	ft_putstr_fd("': not a valid identifier\n", 2);
+	ft_putstr_fd(": ", 2);
+	ft_putstr_fd(error, 2);
+	ft_putstr_fd("\n", 2);
 }
 
-void	print_exit_error(char *status)
-{
-	ft_putstr_fd("exit\n", 2);
-	ft_putstr_fd("minishell: exit: ", 2);
-	ft_putstr_fd(status, 2);
-	ft_putstr_fd(": numeric argument required\n", 2);
-	exit(255);
-}
-
+// Prints the export list.
 void	print_export(t_env_list **export_variables)
 {
 	t_env_list	*tmp;
@@ -43,4 +41,3 @@ void	print_export(t_env_list **export_variables)
 		tmp = tmp->next;
 	}
 }
-

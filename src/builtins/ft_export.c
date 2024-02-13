@@ -6,14 +6,14 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 22:28:00 by maxborde          #+#    #+#             */
-/*   Updated: 2024/02/13 00:22:10 by maxborde         ###   ########.fr       */
+/*   Updated: 2024/02/13 11:41:58 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-//Returns the variable listed printed when you call export with no arguments.
-//It makes a copy of the dupenv, then sorts it alphabetically and adds the
+// Returns the variable listed printed when you call export with no arguments.
+// It makes a copy of the dupenv, then sorts it alphabetically and adds the
 //-x prefix.
 t_env_list	**get_export_variables(t_env_list **env)
 {
@@ -34,13 +34,13 @@ t_env_list	**get_export_variables(t_env_list **env)
 	return (export_variables);
 }
 
-//This function replaces the value of a variable in the env and in the export list.
-//It does so by by extracting the varname,
-//finding if there is a match in the env and export
-//lists,
-//and if so replacing the variable at the corresponding node by the arg (the full
-//expression like HOME=/newhome for example.
-void	replace_variable_value(t_env_list **list, char *arg, int offset)
+// This function replaces the value of a variable in the env
+// and in the export list.
+// It does so by by extracting the varname,
+// finding if there is a match in the env and export lists,
+// and if so replacing the variable at the corresponding node by the arg
+// (the full expression like HOME=/newhome for example).
+static void	replace_variable_value(t_env_list **list, char *arg, int offset)
 {
 	t_env_list	*tmp;
 	char		*varname;
@@ -61,20 +61,20 @@ void	replace_variable_value(t_env_list **list, char *arg, int offset)
 	free(varname);
 }
 
-//This function will go trough all of the args passed to export so they can be added to
-//the env list and the export list. To do so,
-//we first check if the variable exists in the
-//lists so we can replace the value. If it doesn't exist,
-//we add it to the two lists.
-//We have to keep in mind that you can export variable without values and it will show
-//in the export list but not in the env list. Also,
-//if we export a variable that already
-//exists, but we don't give it a value,
-//it will not replace the one that already exists.
-//VAR UNDEFINED is when variable is not in env and export list.
-//VAR DEFINED is when the variable is already in env and export list.
-//VAR INVALID is when the variable name is not a valid one in bash.
-void	add_variables_to_export(t_env_list **export_variables, char *arg)
+// This function will go trough all of the args passed to export
+// so they can be added to the env list and the export list.
+// To do so, we first check if the variable exists in the lists
+// so we can replace the value.
+// If it doesn't exist, we add it to the two lists.
+// We have to keep in mind that you can export variable without values
+// and it will show in the export list but not in the env list.
+// Also, if we export a variable that already exists,
+// but we don't give it a value,
+// it will not replace the one that already exists.
+// VAR UNDEFINED is when variable is not in env and export list.
+// VAR DEFINED is when the variable is already in env and export list.
+// VAR INVALID is when the variable name is not a valid one in bash.
+static void	add_variables_to_export(t_env_list **export_variables, char *arg)
 {
 	t_exportcases	cases;
 
@@ -96,7 +96,12 @@ void	add_variables_to_export(t_env_list **export_variables, char *arg)
 	}
 }
 
-void	add_variables_to_env(t_env_list **env, char *arg)
+// This function will add the variables to the env list.
+// It will check if the variable is already in the list,
+// and if so, it will replace the value.
+// If the variable is not in the list, it will add it to the list.
+// If the variable is not a valid one, it will print an error.
+static void	add_variables_to_env(t_env_list **env, char *arg)
 {
 	t_exportcases	cases;
 
@@ -114,10 +119,14 @@ void	add_variables_to_env(t_env_list **env, char *arg)
 				lst_add_back(env, lst_new(ft_strdup(arg)));
 		}
 		else if (cases == VAR_INVALID)
-			ft_put_unvalidvar_error(arg);
+			print_error("export", arg, "not a valid identifier");
 	}
 }
 
+// If export is called on its own,
+// this function will print the export list in the order of the alphabet.
+// It will also print the declare -x prefix and the quotes.
+// else, it will add the variables to the export list and the env list.
 void	export(char **args, t_env_list **env, t_env_list **exp_list)
 {
 	char	*newvariable;
