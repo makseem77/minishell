@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 11:29:19 by maxborde          #+#    #+#             */
-/*   Updated: 2024/02/13 10:56:59 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/13 22:25:18 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,5 +35,6 @@ void	pwd(void)
 
 	current_dir = get_current_dir();
 	printf("%s\n", current_dir);
+	free(current_dir);
 	return ;
 }

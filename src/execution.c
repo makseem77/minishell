@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 10:59:54 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/13 18:05:01 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/13 22:59:29 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,13 +47,23 @@ static void	execute_bultin(t_token **token, t_data **data)
 
 	args = tokens_to_array(token);
 	if (ft_strcmp((*token)->element, "cd") == 0)
-		cd((*token)->next->element, data);
+	{
+		if((*token)->next)
+			cd((*token)->next->element, data);
+		else
+			cd("", data);
+	}
 	else if (ft_strcmp((*token)->element, "echo") == 0)
 		echo(&(*token)->next);
 	else if (ft_strcmp((*token)->element, "env") == 0)
 		env((*data)->env);
 	else if (ft_strcmp((*token)->element, "exit") == 0)
-		exit_bash((*token)->next->element);
+	{
+		if((*token)->next)
+			exit_bash((*token)->next->element);
+		else
+			exit_bash(NULL);
+	}
 	else if (ft_strcmp((*token)->element, "export") == 0)
 		export(args, (*data)->env, (*data)->exp_list);
 	else if (ft_strcmp((*token)->element, "pwd") == 0)

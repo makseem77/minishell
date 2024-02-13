@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 13:03:07 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/13 11:37:41 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/13 22:45:12 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ void	cd(char *absolute_path, t_data **data)
 	else
 	{
 		ft_strlcpy(old_pwd, current_dir, PATH_MAX);
+		free((*data)->old_pwd);
 		(*data)->old_pwd = ft_strdup(old_pwd);
 	}
 }
