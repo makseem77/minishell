@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 15:23:35 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/13 11:32:34 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/13 16:47:41 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,11 @@ static int	is_a_command(char *element, t_env_list **env)
 		if (fd == -1)
 		{
 			if (access(executable, X_OK) == 0)
+			{
+				free_double_array(bin_paths);
+				free(executable);
 				return (1);
+			}
 		}
 		else
 			close(fd);

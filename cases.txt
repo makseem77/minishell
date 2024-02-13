@@ -33,3 +33,6 @@ exit
 yacode@DESKTOP-SRM6L10:~/minishell$ exit 9223372036854775808
 exit
 bash: exit: 9223372036854775808: numeric argument required
+
+
+Builtins solo segfault

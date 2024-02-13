@@ -6,8 +6,11 @@
 # include <fcntl.h>
 # include <readline/history.h>
 # include <readline/readline.h>
+# include <signal.h>
 # include <stdio.h>
 # include <stdlib.h>
+# include <strings.h>
+# include <sys/wait.h>
 # include <unistd.h>
 
 typedef enum e_type
@@ -80,7 +83,7 @@ char					*replace_in_line(char *line, t_env_list **env);
 void					export(char **args, t_env_list **env,
 							t_env_list **exp_list);
 t_env_list				**get_export_variables(t_env_list **env);
-int						compute_bytes_to_cmp(char *variableinlist,
+int	compute_bytes_to_cmp(char *variableinlist,
 							char *variablename);
 void					unset(char **args, t_env_list **env,
 							t_env_list **exp_list);
@@ -120,5 +123,9 @@ void					free_double_array(char **darray);
 void					free_variable_lists(t_env_list **export_list,
 							t_env_list **env_list);
 void					free_data_struct(t_data *data);
+
+// SIGNALS
+
+void    handle_signals(t_token **token);
 
 #endif

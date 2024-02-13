@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 17:51:04 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/13 11:36:54 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/13 16:56:20 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,11 @@ int	check_var(char *arg, t_env_list **export_variables, int offset)
 		else
 			bytestocmp = ft_strlen(var_name);
 		if (ft_strncmp(var_name, varnameinlist, bytestocmp) == 0)
+		{
+			free(varnameinlist);
+			free(var_name);
 			return (1);
+		}
 		free(varnameinlist);
 		tmp = tmp->next;
 	}
@@ -85,11 +89,11 @@ char	*append_declare_prefix_and_quotes(char *variable)
 {
 	char	*newvariable;
 
-	// char	*tmp;
+	char	*tmp;
 	newvariable = insert_quotes(variable);
-	// tmp = newvariable;
+	tmp = newvariable;
 	newvariable = ft_strjoin("declare -x ", newvariable);
-	// free(tmp); //THIS IS BAD
+	free(tmp); //THIS IS BAD
 	return (newvariable);
 }
 

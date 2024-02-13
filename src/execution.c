@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 10:59:54 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/13 10:55:23 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/13 18:05:01 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ static void	execute_bultin(t_token **token, t_data **data)
 		pwd();
 	else if (ft_strcmp((*token)->element, "unset") == 0)
 		unset(args, (*data)->env, (*data)->exp_list);
+	free(args);
 }
 
 //Returns the path of the command if it is executable, NULL if it is not.
@@ -99,6 +100,7 @@ static void	execute_cmd(t_token *token, t_env_list **env)
 	char	**envp;
 	char	**bin_paths;
 	char	*path_cmd;
+	pid_t	pid;
 
 	envp = env_list_to_array(env);
 	tmp = token;
@@ -121,8 +123,21 @@ static void	execute_cmd(t_token *token, t_env_list **env)
 	args[i] = NULL;
 	bin_paths = find_bin_paths(env);
 	path_cmd = get_path_cmd(bin_paths, token->element);
-	if (path_cmd)
-		execve(path_cmd, args, envp);
+	free_double_array(bin_paths);
+	pid = fork();
+	if(pid == 0)
+	{
+		if (path_cmd)
+			execve(path_cmd, args, envp);
+		exit(1);
+	}
+	else
+	{
+		free_double_array(envp);
+		free(args);
+		free(path_cmd);
+		waitpid(pid, NULL, 0);
+	}
 }
 
 //Executes the tokens in the tokenlist.

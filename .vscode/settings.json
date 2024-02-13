@@ -12,6 +12,8 @@
         "limits": "c",
         "*.tcc": "c",
         "typeinfo": "c",
-        "limits.h": "c"
+        "limits.h": "c",
+        "wait.h": "c",
+        "stdlib.h": "c"
     }
 }

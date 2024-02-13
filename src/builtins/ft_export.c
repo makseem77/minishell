@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 22:28:00 by maxborde          #+#    #+#             */
-/*   Updated: 2024/02/13 11:41:58 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/13 16:59:46 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,6 +141,7 @@ void	export(char **args, t_env_list **env, t_env_list **exp_list)
 		newvariable = append_declare_prefix_and_quotes(*args);
 		printf("ARG = %s\n", *args);
 		add_variables_to_export(exp_list, newvariable);
+		free(newvariable);
 		add_variables_to_env(env, *args);
 		args++;
 	}
