@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 15:23:42 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/13 11:34:33 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/14 14:22:10 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,33 @@ static char	*get_element(char *line)
 	}
 	element[j] = '\0';
 	return (element);
+}
+
+// Will return 1 if the element is or has a variable ($VAR), 0 if
+// it is not and -1 if we have unclosed quotes.
+// "$VAR" is interpreted as a variable where '$VAR' is not.
+static int	is_or_has_a_variable(char *element)
+{
+	int	dquotesflag;
+	int	squotesflag;
+	int	i;
+
+	dquotesflag = 0;
+	squotesflag = 0;
+	i = 0;
+	while (element[i])
+	{
+		if (element[i] == '$' && (squotesflag % 2 == 0)
+			&& (isalpha(element[i + 1]) || isdigit(element[i + 1])
+				|| element[i + 1] == '_'))
+			return (1);
+		if (element[i] == '\'' && dquotesflag % 2 == 0)
+			squotesflag++;
+		if (element[i] == '"' && squotesflag % 2 == 0)
+			dquotesflag++;
+		i++;
+	}
+	return (0);
 }
 
 // Creates and adds a new token to the end of tokenlist.

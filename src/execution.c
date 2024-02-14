@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 10:59:54 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/13 22:59:29 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/14 15:18:48 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static void	execute_bultin(t_token **token, t_data **data)
 	args = tokens_to_array(token);
 	if (ft_strcmp((*token)->element, "cd") == 0)
 	{
-		if((*token)->next)
+		if ((*token)->next)
 			cd((*token)->next->element, data);
 		else
 			cd("", data);
@@ -56,10 +56,10 @@ static void	execute_bultin(t_token **token, t_data **data)
 	else if (ft_strcmp((*token)->element, "echo") == 0)
 		echo(&(*token)->next);
 	else if (ft_strcmp((*token)->element, "env") == 0)
-		env((*data)->env);
+		env(args, (*data)->env);
 	else if (ft_strcmp((*token)->element, "exit") == 0)
 	{
-		if((*token)->next)
+		if ((*token)->next)
 			exit_bash((*token)->next->element);
 		else
 			exit_bash(NULL);
@@ -135,7 +135,7 @@ static void	execute_cmd(t_token *token, t_env_list **env)
 	path_cmd = get_path_cmd(bin_paths, token->element);
 	free_double_array(bin_paths);
 	pid = fork();
-	if(pid == 0)
+	if (pid == 0)
 	{
 		if (path_cmd)
 			execve(path_cmd, args, envp);

@@ -71,7 +71,6 @@ char					**env_list_to_array(t_env_list **env);
 
 //	PARSING
 void					set_token_types(t_token **tokenlist, t_env_list **env);
-int						is_or_has_a_variable(char *element);
 
 //	LOOP
 void					listening_loop(t_data **data);

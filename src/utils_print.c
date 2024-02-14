@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 17:56:02 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/14 11:57:17 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/14 13:58:29 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ void	print_error(char *command, char *arg, char *error_message)
 	ft_putstr_fd(error_message, 2);
 	ft_putstr_fd("\n", 2);
 }
-
 
 // Prints the export list.
 void	print_export(t_env_list **export_variables)
