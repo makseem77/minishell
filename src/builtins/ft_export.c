@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 22:28:00 by maxborde          #+#    #+#             */
-/*   Updated: 2024/02/13 16:59:46 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/14 01:35:49 by maxborde         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ static void	replace_variable_value(t_env_list **list, char *arg, int offset)
 	char		*varnameinlist;
 	int			bytestocmp;
 
-	printf("RPV\n");
 	tmp = *list;
 	varname = extract_var_name(arg + offset);
 	while (tmp)
@@ -55,8 +54,12 @@ static void	replace_variable_value(t_env_list **list, char *arg, int offset)
 		varnameinlist = extract_var_name(tmp->variable + offset);
 		bytestocmp = compute_bytes_to_cmp(varnameinlist, varname);
 		if (ft_strncmp(varname, varnameinlist, bytestocmp) == 0)
+		{
+			free(tmp->variable);
 			tmp->variable = arg;
+		}
 		tmp = tmp->next;
+		free(varnameinlist);
 	}
 	free(varname);
 }
@@ -84,7 +87,7 @@ static void	add_variables_to_export(t_env_list **export_variables, char *arg)
 		if (cases == VAR_DEFINED)
 		{
 			if (ft_strchr(arg, '='))
-				replace_variable_value(export_variables, arg, 11);
+				replace_variable_value(export_variables, ft_strdup(arg), 11);
 		}
 		else if (cases == VAR_UNDEFINED)
 		{
@@ -111,7 +114,7 @@ static void	add_variables_to_env(t_env_list **env, char *arg)
 		if (cases == VAR_DEFINED)
 		{
 			if (ft_strchr(arg, '='))
-				replace_variable_value(env, arg, 0);
+				replace_variable_value(env, ft_strdup(arg), 0);
 		}
 		else if (cases == VAR_UNDEFINED)
 		{
@@ -139,7 +142,6 @@ void	export(char **args, t_env_list **env, t_env_list **exp_list)
 	while (*args)
 	{
 		newvariable = append_declare_prefix_and_quotes(*args);
-		printf("ARG = %s\n", *args);
 		add_variables_to_export(exp_list, newvariable);
 		free(newvariable);
 		add_variables_to_env(env, *args);

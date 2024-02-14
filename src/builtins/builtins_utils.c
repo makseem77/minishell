@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 17:51:04 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/13 16:56:20 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/14 01:18:55 by maxborde         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,12 +66,12 @@ char	*extract_var_name(char *arg)
 
 	len = 0;
 	i = 0;
-	if (isdigit(*arg) || *arg == '=')
+	if (!arg || isdigit(*arg) || *arg == '=')
 		return (NULL);
 	while (arg[len] && arg[len] != '=')
 		len++;
 	varname = malloc(len + 1);
-	while (i < len)
+	while (i < len && arg[i] != '=')
 	{
 		if (!ft_isalpha(arg[i]) && !ft_isdigit(arg[i]) && arg[i] != '_')
 			return (free(varname), NULL);
@@ -87,13 +87,12 @@ char	*extract_var_name(char *arg)
 // of the variable.
 char	*append_declare_prefix_and_quotes(char *variable)
 {
+	char	*tmp;
 	char	*newvariable;
 
-	char	*tmp;
-	newvariable = insert_quotes(variable);
-	tmp = newvariable;
-	newvariable = ft_strjoin("declare -x ", newvariable);
-	free(tmp); //THIS IS BAD
+	tmp = insert_quotes(variable);
+	newvariable = ft_strjoin("declare -x ", tmp);
+	free(tmp);
 	return (newvariable);
 }
 
@@ -111,9 +110,9 @@ char	*insert_quotes(char *variable)
 	i = 0;
 	j = 0;
 	flag = 0;
-	newvariable = malloc(sizeof(char) * (ft_strlen(variable) + 3));
 	if (!ft_strchr(variable, '='))
-		return (variable);
+		return (ft_strdup(variable));
+	newvariable = malloc(sizeof(char) * (ft_strlen(variable) + 3));
 	while (variable[i])
 	{
 		newvariable[j] = variable[i];

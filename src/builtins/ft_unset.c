@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 11:32:51 by maxborde          #+#    #+#             */
-/*   Updated: 2024/02/13 11:44:16 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/14 01:40:40 by maxborde         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,9 +63,13 @@ static bool	arg_in_list(char *arg, t_env_list **lst, int offset)
 	{
 		bytestocmp = compute_bytes_to_cmp(tmp->variable + offset, var_name);
 		if (ft_strncmp(tmp->variable + offset, var_name, bytestocmp) == 0)
+		{
+			free(var_name);
 			return (true);
+		}
 		tmp = tmp->next;
 	}
+	free(var_name);
 	return (false);
 }
 
