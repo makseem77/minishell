@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 10:59:54 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/14 15:18:48 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/14 16:01:52 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,12 +40,8 @@ static char	**tokens_to_array(t_token **token)
 	return (args);
 }
 
-//Executes the builtin command in the token.
-static void	execute_bultin(t_token **token, t_data **data)
+static void handle_cd_exit(t_token **token, t_data **data)
 {
-	char	**args;
-
-	args = tokens_to_array(token);
 	if (ft_strcmp((*token)->element, "cd") == 0)
 	{
 		if ((*token)->next)
@@ -53,10 +49,6 @@ static void	execute_bultin(t_token **token, t_data **data)
 		else
 			cd("", data);
 	}
-	else if (ft_strcmp((*token)->element, "echo") == 0)
-		echo(&(*token)->next);
-	else if (ft_strcmp((*token)->element, "env") == 0)
-		env(args, (*data)->env);
 	else if (ft_strcmp((*token)->element, "exit") == 0)
 	{
 		if ((*token)->next)
@@ -64,12 +56,25 @@ static void	execute_bultin(t_token **token, t_data **data)
 		else
 			exit_bash(NULL);
 	}
+}
+
+//Executes the builtin command in the token.
+static void	execute_bultin(t_token **token, t_data **data)
+{
+	char	**args;
+
+	args = tokens_to_array(token);
+	if (ft_strcmp((*token)->element, "echo") == 0)
+		echo(&(*token)->next);
+	else if (ft_strcmp((*token)->element, "env") == 0)
+		env(args, (*data)->env);
 	else if (ft_strcmp((*token)->element, "export") == 0)
 		export(args, (*data)->env, (*data)->exp_list);
 	else if (ft_strcmp((*token)->element, "pwd") == 0)
 		pwd();
 	else if (ft_strcmp((*token)->element, "unset") == 0)
 		unset(args, (*data)->env, (*data)->exp_list);
+	handle_cd_exit(token, data);
 	free(args);
 }
 
@@ -139,7 +144,7 @@ static void	execute_cmd(t_token *token, t_env_list **env)
 	{
 		if (path_cmd)
 			execve(path_cmd, args, envp);
-		exit(1);
+		exit(EXIT_FAILURE);
 	}
 	else
 	{

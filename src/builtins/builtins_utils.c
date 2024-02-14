@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 17:51:04 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/14 12:06:33 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/14 15:43:36 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,14 +42,12 @@ int	check_var(char *arg, t_env_list **export_variables, int offset)
 		if (ft_strncmp(var_name, varnameinlist, bytestocmp) == 0)
 		{
 			free(varnameinlist);
-			free(var_name);
-			return (1);
+			return (free(var_name), 1);
 		}
 		free(varnameinlist);
 		tmp = tmp->next;
 	}
-	free(var_name);
-	return (2);
+	return (free(var_name), 2);
 }
 
 // This function will return the extracted variable name from arg
@@ -138,14 +136,14 @@ void	sort_alphabetically(t_env_list **expvars, int size)
 	int			i;
 	int			j;
 
-	i = 0;
+	i = -1;
 	tmp = *expvars;
 	head = *expvars;
-	while (i < size)
+	while (++i < size)
 	{
-		j = 0;
+		j = -1;
 		tmp = head;
-		while (j < size - i - 1)
+		while (++j < size - i - 1)
 		{
 			if (ft_strcmp(tmp->variable, tmp->next->variable) > 0)
 			{
@@ -153,9 +151,7 @@ void	sort_alphabetically(t_env_list **expvars, int size)
 				tmp->variable = tmp->next->variable;
 				tmp->next->variable = temp;
 			}
-			j++;
 			tmp = tmp->next;
 		}
-		i++;
 	}
 }

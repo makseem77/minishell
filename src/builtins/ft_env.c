@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 20:24:16 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/14 14:57:45 by maxborde         ###   ########.fr       */
+/*   Updated: 2024/02/14 15:31:14 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	env(char **args, t_env_list **env)
 	if (*(args + 1) != NULL)
 	{
 		print_error("env", *(args + 1), "Too many arguments");
-	 	return ;
+		return ;
 	}
 	while (tmp)
 	{
