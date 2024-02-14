@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 22:17:47 by maxborde          #+#    #+#             */
-/*   Updated: 2024/02/13 11:27:07 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/14 17:10:40 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,4 +75,11 @@ void	free_double_array(char **darray)
 		i++;
 	}
 	free(darray);
+}
+
+void	free_lst_content(t_env_list *lst, char *var_name)
+{
+	free(lst->variable);
+	free(lst);
+	free(var_name);
 }

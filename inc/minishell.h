@@ -101,12 +101,14 @@ char					*append_declare_prefix_and_quotes(char *variable);
 char					*insert_quotes(char *variable);
 void					sort_alphabetically(t_env_list **expvars, int size);
 
-// FT LST
-void					lst_add_back(t_env_list **lst, t_env_list *new);
-t_env_list				*lst_last(t_env_list *lst);
-t_env_list				*lst_new(char *variable);
-void					lst_del_one(t_env_list **lst, char *variable,
+// LST MODIFS
+int						lst_del_one(t_env_list **lst, char *variable,
 							int offset);
+void					lst_add_back(t_env_list **lst, t_env_list *new);
+t_env_list				*lst_new(char *variable);
+
+// LST UTILS
+t_env_list				*lst_last(t_env_list *lst);
 int						lst_size(t_env_list **lst);
 
 // EXECUTION
@@ -123,6 +125,7 @@ void					free_double_array(char **darray);
 void					free_variable_lists(t_env_list **export_list,
 							t_env_list **env_list);
 void					free_data_struct(t_data *data);
+void					free_lst_content(t_env_list *lst, char *var_name);
 
 // SIGNALS
 void					handle_signals(t_token **token);

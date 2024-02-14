@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:43:34 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/14 11:00:48 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/14 16:20:03 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	listening_loop(t_data **data)
 
 	tokenlist = NULL;
 	handle_signals(tokenlist);
-	while (1)
+	while (true)
 	{
 		line = readline("minishell> ");
 		if (!line)
@@ -33,8 +33,6 @@ void	listening_loop(t_data **data)
 				free_token_list(tokenlist);
 			exit_bash(0);
 		}
-		if (!line)
-			return ;
 		if (*line)
 			add_history(line);
 		if (tokenlist)

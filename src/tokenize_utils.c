@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 17:40:09 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/14 16:07:32 by maxborde         ###   ########.fr       */
+/*   Updated: 2024/02/14 16:19:26 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,18 +63,13 @@ size_t	count_del_quotes(char *element)
 	return (single_quote + double_quote);
 }
 
-// This function takes the element and returns it cleaned from the quotes.
-char	*clean_up_quotes(char *element)
+static void	new_element_clean_up(char *element, char *new_element)
 {
-	int		i;
-	int		j;
-	char	*new_element;
+	int	i;
+	int	j;
 
 	i = 0;
 	j = 0;
-	new_element = malloc(ft_strlen(element) - count_del_quotes(element) + 1);
-	if (!new_element)
-		return (NULL);
 	while (element[i])
 	{
 		if (element[i] == '\'')
@@ -94,6 +89,17 @@ char	*clean_up_quotes(char *element)
 		i++;
 	}
 	new_element[j] = '\0';
+}
+
+// This function takes the element and returns it cleaned from the quotes.
+char	*clean_up_quotes(char *element)
+{
+	char	*new_element;
+
+	new_element = malloc(ft_strlen(element) - count_del_quotes(element) + 1);
+	if (!new_element)
+		return (NULL);
+	new_element_clean_up(element, new_element);
 	free(element);
 	return (new_element);
 }

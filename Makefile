@@ -11,7 +11,7 @@ LIBFT_DIR = libft
 SRC_DIR = src
 OBJ_DIR = obj
 
-SRC_FILES = main env parsing tokenize tokenize_utils loop execution handle_env_vars ft_lst\
+SRC_FILES = main env parsing tokenize tokenize_utils loop execution handle_env_vars lst_utils lst_modif \
 			utils_print signals free\
 			builtins/ft_unset builtins/ft_pwd builtins/ft_cd builtins/ft_export \
 			builtins/ft_env builtins/ft_echo builtins/ft_exit builtins/builtins_utils
