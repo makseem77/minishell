@@ -6,16 +6,16 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 17:40:09 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/14 13:58:39 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/14 16:07:32 by maxborde         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// Returns the len of the element,
-// but without quoting the double quotes and single quotes.
-// We only count the dquotes or squotes that are inside quotes.
-size_t	compute_len(char *element)
+// Returns the len of the element it encounters in the line.
+// Elements in line are separated by whitespaces, but we have to check
+// that the whitespaces are not inside quotes.
+size_t	compute_len(char *line)
 {
 	size_t	len;
 	int		flag_double_quotes;
@@ -24,14 +24,14 @@ size_t	compute_len(char *element)
 	len = 0;
 	flag_double_quotes = 0;
 	flag_single_quotes = 0;
-	while (element[len])
+	while (line[len])
 	{
-		if (element[len] == ' ' && flag_double_quotes % 2 == 0
+		if (line[len] == ' ' && flag_double_quotes % 2 == 0
 			&& flag_single_quotes % 2 == 0)
 			break ;
-		if (element[len] == '"' && flag_single_quotes % 2 == 0)
+		if (line[len] == '"' && flag_single_quotes % 2 == 0)
 			flag_double_quotes++;
-		if (element[len] == '\'' && flag_double_quotes % 2 == 0)
+		if (line[len] == '\'' && flag_double_quotes % 2 == 0)
 			flag_single_quotes++;
 		len++;
 	}
@@ -106,8 +106,6 @@ void	clean_up_tokens(t_token **tokenlist)
 	tmp = *tokenlist;
 	while (tmp)
 	{
-		if (ft_strcmp(tmp->element, "\"\"") == 0)
-			return ;
 		tmp->element = clean_up_quotes(tmp->element);
 		if (tmp->element == NULL)
 			return ;
