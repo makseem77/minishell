@@ -1,0 +1,25 @@
+
+static void handle_cd_exit(t_token **token, t_data **data)
+{
+	if (ft_strcmp((*token)->element, "cd") == 0)
+	{
+		if ((*token)->next)
+		{
+			if ((*token)->next->next != NULL)
+			{
+				print_error("cd", NULL, "too many arguments");
+				return ;
+			}
+			cd((*token)->next->element, data);
+		}
+		else
+			cd(NULL, data);
+	}
+	else if (ft_strcmp((*token)->element, "exit") == 0)
+	{
+		if ((*token)->next)
+			exit_bash((*token)->next->element);
+		else
+			exit_bash(NULL);
+	}
+}

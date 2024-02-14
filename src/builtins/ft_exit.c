@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 10:26:56 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/14 17:20:45 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/14 18:26:15 by maxborde         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,9 @@ void	exit_bash(char *status)
 
 	ft_putstr_fd("exit\n", 2);
 	is_valid = is_valid_status(status, &exit_status);
-	if (!is_valid || !status || !status[0])
+	if (!status)
+		exit(0);
+	if (!is_valid || !status[0])
 	{
 		print_error("exit", status, "numeric argument required");
 		exit(EXIT_FAILURE);
