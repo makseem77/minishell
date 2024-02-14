@@ -111,8 +111,12 @@ t_env_list				*lst_new(char *variable);
 t_env_list				*lst_last(t_env_list *lst);
 int						lst_size(t_env_list **lst);
 
-// EXECUTION
+// EXECUTION_BUILTINS
+void					execute_bultin(t_token **token, t_data **data);
+
+// EXECUTION_CMD
 void					process_tokens(t_token **tokenlist, t_data **data);
+
 
 // UTILS PRINT
 void					print_error(char *command, char *arg,

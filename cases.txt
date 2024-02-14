@@ -1,6 +1,5 @@
 
 
-pressing enter with no input will cause a segfault
 
 
 
@@ -36,6 +35,9 @@ bash: exit: 9223372036854775808: numeric argument required
 
 
 env + args => print env when it should display an error message
+
+pressing enter with no input will cause a segfault
+
 
 minishell> exit ""
 exit
