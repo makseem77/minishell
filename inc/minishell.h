@@ -90,7 +90,7 @@ void					unset(char **args, t_env_list **env,
 char					*get_current_dir(void);
 void					pwd(void);
 void					cd(char *absolute_path, t_data **data);
-void					env(t_env_list **env);
+void					env(char **args, t_env_list **env);
 void					echo(t_token **tokenlist);
 void					exit_bash(char *status);
 
