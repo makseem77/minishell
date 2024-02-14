@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 17:40:09 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/13 11:33:00 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/14 12:20:37 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,13 +68,13 @@ char	*clean_up_quotes(char *element)
 {
 	int		i;
 	int		j;
-	size_t	quotes_count;
 	char	*new_element;
 
 	i = 0;
 	j = 0;
-	quotes_count = count_del_quotes(element);
-	new_element = malloc(ft_strlen(element) - quotes_count + 1);
+	new_element = malloc(ft_strlen(element) - count_del_quotes(element) + 1);
+	if(!new_element)
+		return(NULL);
 	while (element[i])
 	{
 		if (element[i] == '\'')
@@ -109,6 +109,8 @@ void	clean_up_tokens(t_token **tokenlist)
 		if (ft_strcmp(tmp->element, "\"\"") == 0)
 			return ;
 		tmp->element = clean_up_quotes(tmp->element);
+		if(tmp->element == NULL)
+			return;
 		tmp = tmp->next;
 	}
 }

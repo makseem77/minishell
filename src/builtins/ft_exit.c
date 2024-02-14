@@ -6,49 +6,50 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 10:26:56 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/13 11:22:42 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/14 12:04:31 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-//exit_bash will exit the shell.
-//If no argument is given, it will exit with the status 0.
-//If the argument is not a number, or has a sign, or is bigger than long long,
-//it will print an error message and return.
-//If the argument is a number, it will exit with the status % 256,
-//because the status is an 8-bit number.
-void	exit_bash(char *status)
+// Checks if the status is a valid number
+// and sets the exit_status to the number.
+int	is_valid_status(char *status, int *exit_status)
 {
-	int		status_int;
 	int		i;
-	int		is_sign_present;
 	bool	overflow;
 
 	overflow = false;
 	i = 0;
-	is_sign_present = 0;
-	if (status == NULL || status[0] == '\0')
-	{
-		ft_putstr_fd("exit\n", 2);
-		exit(0);
-	}
-	if (status[i] == '-' || status[i] == '+')
-	{
-		is_sign_present = 1;
-		i++;
-	}
-	if (is_sign_present && !status[i])
-		return (print_error("exit", status, "numeric argument required"));
+	if (!status || !status[0])
+		return (1);
+	if ((status[0] == '-' || status[0] == '+') && !status[1])
+		return (0);
 	while (status[i])
 	{
 		if (!ft_isdigit(status[i]))
-			return (print_error("exit", status, "numeric argument required"));
+			return (0);
 		i++;
 	}
-	status_int = ft_atoll(status, &overflow);
+	*exit_status = ft_atoll(status, &overflow);
 	if (overflow)
-		return (print_error("exit", status, "numeric argument required"));
+		return (0);
+	return (1);
+}
+
+// Exits the program with the given status.
+// If the status is not a valid number, it will print the error message.
+void	exit_bash(char *status)
+{
+	int	exit_status;
+	int	is_valid;
+
 	ft_putstr_fd("exit\n", 2);
-	exit(status_int % 256);
+	is_valid = is_valid_status(status, &exit_status);
+	if (!is_valid)
+	{
+		print_error("exit", status, "numeric argument required");
+		exit(EXIT_FAILURE);
+	}
+	exit(exit_status % 256);
 }

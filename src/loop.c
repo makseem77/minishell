@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:43:34 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/14 10:57:31 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/14 11:00:48 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,11 @@ void	listening_loop(t_data **data)
 	while (1)
 	{
 		line = readline("minishell> ");
-		if(!line)
+		if (!line)
 		{
 			free(line);
 			free_data_struct(*data);
-			if(tokenlist)
+			if (tokenlist)
 				free_token_list(tokenlist);
 			exit_bash(0);
 		}
@@ -37,7 +37,7 @@ void	listening_loop(t_data **data)
 			return ;
 		if (*line)
 			add_history(line);
-		if(tokenlist)
+		if (tokenlist)
 			free_token_list(tokenlist);
 		tokenlist = tokenize(line, (*data)->env);
 		set_token_types(tokenlist, (*data)->env);
