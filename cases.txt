@@ -42,3 +42,5 @@ pressing enter with no input will cause a segfault
 minishell> exit ""
 exit
 minishell: exit: "": numeric argument required
+
+NEED TO FREE BEFORE EXIT FOR STILL RECHEABLE

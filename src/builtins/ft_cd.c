@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 13:03:07 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/14 16:53:51 by maxborde         ###   ########.fr       */
+/*   Updated: 2024/02/14 19:27:07 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,11 @@ static char	*update_absolute_path(char *absolute_path, char *old_pwd,
 		if (!absolute_path)
 			return (ft_putstr_fd("cd: HOME not set\n", 2), NULL);
 	}
-	if (ft_strcmp(absolute_path, "-") == 0 && old_pwd[0])
+	if (ft_strcmp(absolute_path, "-") == 0)
 	{
 		absolute_path = old_pwd;
 		ft_putstr_fd(absolute_path, 1);
-		write(2, "\n", 1);
+		ft_putstr_fd("\n", 1);
 	}
 	else if (ft_strcmp(absolute_path, "~") == 0)
 		absolute_path = (*data)->home_dir;
@@ -46,7 +46,7 @@ static char	*update_absolute_path(char *absolute_path, char *old_pwd,
 // If the path is valid, it will change the current directory.
 void	cd(char *absolute_path, t_data **data)
 {
-	static char	old_pwd[PATH_MAX];
+	char		old_pwd[PATH_MAX];
 	char		current_dir[PATH_MAX];
 
 	if (!getcwd(current_dir, sizeof(current_dir)))
@@ -55,7 +55,7 @@ void	cd(char *absolute_path, t_data **data)
 		ft_putstr_fd("\n", 2);
 		return ;
 	}
-	absolute_path = update_absolute_path(absolute_path, old_pwd, data);
+	absolute_path = update_absolute_path(absolute_path, (*data)->old_pwd, data);
 	if (!absolute_path)
 		absolute_path = current_dir;
 	if (chdir(absolute_path) != 0)
