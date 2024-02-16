@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:43:34 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/14 16:20:03 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/16 15:58:39 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,18 +28,17 @@ void	listening_loop(t_data **data)
 		if (!line)
 		{
 			free(line);
-			free_data_struct(*data);
 			if (tokenlist)
 				free_token_list(tokenlist);
-			exit_bash(0);
+			exit_bash(EXIT_SUCCESS, data, NULL);
 		}
 		if (*line)
 			add_history(line);
 		if (tokenlist)
 			free_token_list(tokenlist);
 		tokenlist = tokenize(line, (*data)->env);
-		set_token_types(tokenlist, (*data)->env);
-		process_tokens(tokenlist, data);
+		if(!set_token_types(tokenlist, (*data)->env))
+			process_tokens(tokenlist, data);
 		free(line);
 	}
 }

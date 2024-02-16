@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:23:46 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/14 18:18:33 by maxborde         ###   ########.fr       */
+/*   Updated: 2024/02/16 11:31:20 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,9 +59,9 @@ static void	handle_cd_exit(t_token **token, t_data **data)
 	else if (ft_strcmp((*token)->element, "exit") == 0)
 	{
 		if ((*token)->next)
-			exit_bash((*token)->next->element);
+			exit_bash((*token)->next->element, data, token);
 		else
-			exit_bash(NULL);
+			exit_bash(NULL, data, token);
 	}
 }
 

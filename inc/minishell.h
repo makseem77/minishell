@@ -70,7 +70,7 @@ char					*get_env(char *variable, t_env_list **env);
 char					**env_list_to_array(t_env_list **env);
 
 //	PARSING
-void					set_token_types(t_token **tokenlist, t_env_list **env);
+int						set_token_types(t_token **tokenlist, t_env_list **env);
 
 //	LOOP
 void					listening_loop(t_data **data);
@@ -91,7 +91,7 @@ void					pwd(void);
 void					cd(char *absolute_path, t_data **data);
 void					env(char **args, t_env_list **env);
 void					echo(t_token **tokenlist);
-void					exit_bash(char *status);
+void					exit_bash(char *status, t_data **data, t_token **token);
 
 // BULTINS UTILS
 int						check_var(char *arg, t_env_list **export_variables,
@@ -116,7 +116,6 @@ void					execute_bultin(t_token **token, t_data **data);
 
 // EXECUTION_CMD
 void					process_tokens(t_token **tokenlist, t_data **data);
-
 
 // UTILS PRINT
 void					print_error(char *command, char *arg,

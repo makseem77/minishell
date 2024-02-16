@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 15:23:35 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/14 15:10:00 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/16 15:58:01 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ static int	type(char *element, t_env_list **env)
 
 // Goes trough the token linked list
 // and gives a tokentype to every node of the list.
-void	set_token_types(t_token **tokenlist, t_env_list **env)
+int	set_token_types(t_token **tokenlist, t_env_list **env)
 {
 	t_token	*tmp;
 	bool	first;
@@ -91,7 +91,14 @@ void	set_token_types(t_token **tokenlist, t_env_list **env)
 	first = true;
 	while (tmp)
 	{
-		if (type(tmp->element, env) == BUILTIN)
+		if (ft_strcmp(tmp->element, ";") == 0 || ft_strcmp(tmp->element,
+				"\\") == 0)
+		{
+			ft_putstr_fd(": special characters ';' or '\\' are not authorized\n",
+				2);
+			return (1);
+		}
+		else if (type(tmp->element, env) == BUILTIN)
 			tmp->ttype = BUILTIN;
 		else if (type(tmp->element, env) == META_CHAR)
 			tmp->ttype = META_CHAR;
@@ -101,9 +108,10 @@ void	set_token_types(t_token **tokenlist, t_env_list **env)
 		{
 			ft_putstr_fd(tmp->element, 2);
 			ft_putstr_fd(": command not found\n", 2);
-			return ;
+			return (1);
 		}
 		first = false;
 		tmp = tmp->next;
 	}
+	return (0);
 }

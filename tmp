@@ -18,8 +18,8 @@ static void handle_cd_exit(t_token **token, t_data **data)
 	else if (ft_strcmp((*token)->element, "exit") == 0)
 	{
 		if ((*token)->next)
-			exit_bash((*token)->next->element);
+			exit_bash((*token)->next->element, data, token);
 		else
-			exit_bash(NULL);
+			exit_bash(NULL, data, token);
 	}
 }
