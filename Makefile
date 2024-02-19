@@ -12,7 +12,7 @@ SRC_DIR = src
 OBJ_DIR = obj
 
 SRC_FILES = main env parsing tokenize tokenize_utils loop execution_cmd execution_builtins handle_env_vars lst_utils lst_modif \
-			utils_print signals free\
+			utils_print signals pipe child free\
 			builtins/ft_unset builtins/ft_pwd builtins/ft_cd builtins/ft_export \
 			builtins/ft_env builtins/ft_echo builtins/ft_exit builtins/builtins_utils
 SRC = $(addprefix $(SRC_DIR)/, $(addsuffix .c, $(SRC_FILES)))

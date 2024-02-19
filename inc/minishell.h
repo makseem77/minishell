@@ -40,6 +40,8 @@ typedef struct s_data
 	char				*home_dir;
 	struct s_env_list	**env;
 	struct s_env_list	**exp_list;
+	int					nb_pipe;
+	int					*pipe_fd;
 }						t_data;
 
 typedef struct s_env_list
@@ -70,7 +72,8 @@ char					*get_env(char *variable, t_env_list **env);
 char					**env_list_to_array(t_env_list **env);
 
 //	PARSING
-int						set_token_types(t_token **tokenlist, t_env_list **env);
+int						set_token_types(t_token **tokenlist, t_env_list **env,
+							int *nb_pipe);
 
 //	LOOP
 void					listening_loop(t_data **data);
@@ -132,5 +135,8 @@ void					free_lst_content(t_env_list *lst, char *var_name);
 
 // SIGNALS
 void					handle_signals(t_token **token);
+
+// PIPE
+int						init_pipe(int nb_pipe, int **pipefd);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 15:23:35 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/16 15:58:01 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/16 16:42:27 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ static int	type(char *element, t_env_list **env)
 
 // Goes trough the token linked list
 // and gives a tokentype to every node of the list.
-int	set_token_types(t_token **tokenlist, t_env_list **env)
+int	set_token_types(t_token **tokenlist, t_env_list **env, int* nb_pipe)
 {
 	t_token	*tmp;
 	bool	first;
@@ -91,6 +91,8 @@ int	set_token_types(t_token **tokenlist, t_env_list **env)
 	first = true;
 	while (tmp)
 	{
+		if(ft_strcmp(tmp->element, "|") == 0)
+			(*nb_pipe)++;
 		if (ft_strcmp(tmp->element, ";") == 0 || ft_strcmp(tmp->element,
 				"\\") == 0)
 		{

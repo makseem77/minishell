@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 22:17:47 by maxborde          #+#    #+#             */
-/*   Updated: 2024/02/14 17:10:40 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/17 19:50:08 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,8 @@ void	free_data_struct(t_data *data)
 	free(data->old_pwd);
 	free(data->home_dir);
 	free_variable_lists(data->exp_list, data->env);
+	if(data->pipe_fd)
+		free(data->pipe_fd);
 	free(data);
 }
 
