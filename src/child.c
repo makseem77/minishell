@@ -6,55 +6,69 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 17:50:58 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/18 20:35:02 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/20 21:59:07 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-//  
-
-static void	child(char *cmd, int index_cmd, int nb_cmds, int *pipe_fd)
+// Cette fonction configure les descripteurs de fichiers pour l'entrée et la sortie d'un processus enfant
+void configure_io(int *pipe_fd, int index_cmd, int nb_cmds)
 {
-	pid_t	pid;
-
-	(void)cmd;
-	pid = fork();
-	if (pid == -1)
-	{
-		ft_putstr_fd("Error:\nFork failed\n", 2);
-		exit(EXIT_FAILURE);
-	}
-	else if (pid == 0)
-	{
-		// configure_io();
-		// execute_cmd(cmd);
-	}
-	if (index_cmd != 1)
-		close(pipe_fd[(index_cmd - 1) * 2]);
-	if (index_cmd != nb_cmds - 1)
-		close(pipe_fd[index_cmd * 2 + 1]);
+    printf("index_cmd: %d\n", index_cmd);
+	// Si la commande n'est pas la première, redirige l'entrée standard vers la lecture du pipe précédent
+    if (index_cmd != 0)
+    {
+        if(dup2(pipe_fd[(index_cmd - 1) * 2], STDIN_FILENO) == -1)
+            perror("dup2, STDIN_FILENO");
+        close(pipe_fd[(index_cmd - 1) * 2]);
+    }
+	// Si la commande n'est pas la dernière, redirige la sortie standard vers l'écriture du pipe suivant
+    if (index_cmd != nb_cmds - 1)
+    {
+        if(dup2(pipe_fd[index_cmd * 2 + 1], STDOUT_FILENO) == -1)
+            perror("dup2, STDOUT_FILENO");
+        close(pipe_fd[index_cmd * 2 + 1]);
+    }
+    // Fermez les descripteurs de fichiers inutilisés
+    printf("index_cmd: %d\n", index_cmd);
 }
 
-void	children(int nb_pipe, t_token **tokenlist, int *pipe_fd)
+// Crée un processus enfant pour exécuter une commande
+void child(t_token **tokenlist, t_data **data, int index_cmd, int nb_cmds)
 {
-	int		status;
-	pid_t	pid_child;
-    int nb_cmds;
-	t_token	*tmp;
-	int		i;
-
-    nb_cmds = nb_pipe + 1;
-	tmp = *tokenlist;
-	i = 0;
-	while (tmp)
-	{
-		if (tmp->ttype == COMMAND)
-			child(tmp->element, i++, nb_cmds, pipe_fd);
-		tmp = tmp->next;
-	}
-	pid_child = wait(&status);
-	while (pid_child > 0)
-		pid_child = wait(&status);
+    pid_t pid = fork();
+    if (pid == -1) {
+        perror("Fork failed");
+        exit(EXIT_FAILURE);
+    }
+    else if (pid == 0) { // Processus enfant
+        configure_io((*data)->pipe_fd, index_cmd, nb_cmds);
+        process_tokens(tokenlist, data); // Exécute la commande
+        exit(EXIT_SUCCESS);
+    }
 }
 
+// Gère la création de tous les processus enfants pour les commandes
+void children(t_token **tokenlist, t_data **data)
+{
+    int nb_cmds = (*data)->nb_pipe + 1;
+    t_token	*tmp = *tokenlist;
+    int		i = 0;
+
+    while (tmp && i < nb_cmds)
+    {
+        if (tmp->ttype == COMMAND || tmp->ttype == BUILTIN)
+            child(&tmp, data, i++, nb_cmds);
+        tmp = tmp->next;
+    }
+    
+    // Fermez les descripteurs de fichiers dans le processus parent ici
+    i = 0;
+     // Attend la fin de tous les processus enfants
+    while (wait(NULL) > 0);
+    while (i < 2 * (*data)->nb_pipe) {
+        close((*data)->pipe_fd[i]);
+        i++;    
+    }
+}

@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 15:23:35 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/16 16:42:27 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/19 11:01:24 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ static int	type(char *element, t_env_list **env)
 			element) || !ft_strcmp("<<", element) || !ft_strcmp("&", element)
 		|| !ft_strcmp("|", element) || !ft_strcmp("&&", element)
 		|| !ft_strcmp("||", element) || !ft_strcmp(",", element)
-		|| !ft_strcmp("(", element) || !ft_strcmp(")", element))
+		|| !ft_strcmp("(", element) || ! ft_strcmp(")", element))
 		return (META_CHAR);
 	if (is_a_command(element, env))
 		return (COMMAND);

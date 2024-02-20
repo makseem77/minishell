@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 10:59:54 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/18 20:20:04 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/19 17:17:37 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static char	**fill_args(t_token *token)
 	args = malloc(sizeof(char *) * (nb_args + 1));
 	tmp = token;
 	i = 0;
-	while (tmp)
+	while (tmp && tmp->ttype != META_CHAR)
 	{
 		args[i] = tmp->element;
 		i++;
@@ -73,27 +73,20 @@ static void	execute_cmd(t_token *token, t_env_list **env)
 	char	**bin_paths;
 	char	*path_cmd;
 	char	**envp;
-	pid_t	pid;
 
 	args = fill_args(token);
+	for(int i = 0; args[i]; i++)
+		printf("args[%d] = %s\n", i, args[i]);
 	bin_paths = find_bin_paths(env);
 	path_cmd = get_path_cmd(bin_paths, token->element);
 	free_double_array(bin_paths);
 	envp = env_list_to_array(env);
-	pid = fork();
-	if (pid == 0)
-	{
-		if (path_cmd)
-			execve(path_cmd, args, envp);
-		exit(EXIT_FAILURE);
-	}
-	else
-	{
-		free_double_array(envp);
-		free(args);
-		free(path_cmd);
-		waitpid(pid, NULL, 0);
-	}
+	if (path_cmd)
+		execve(path_cmd, args, envp);
+	exit(EXIT_FAILURE);
+	free_double_array(envp);
+	free(args);
+	free(path_cmd);
 }
 
 //Executes the tokens in the tokenlist.

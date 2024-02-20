@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 16:20:27 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/17 20:31:33 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/20 10:45:33 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,10 @@ int init_pipe(int nb_pipe, int **pipefd)
 			while (i > 0)
 			{
 				i--;
-				close(*pipefd[i * 2]);
-				close(*pipefd[i * 2 + 1]);
+				close((*pipefd)[i * 2]);
+                close((*pipefd)[i * 2 + 1]);
 			}
-			free(pipefd);
+			free(*pipefd);
 			return (0);
 		}
 		i++;

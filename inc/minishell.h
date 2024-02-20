@@ -139,4 +139,7 @@ void					handle_signals(t_token **token);
 // PIPE
 int						init_pipe(int nb_pipe, int **pipefd);
 
+// CHILDREN
+void					children(t_token **tokenlist, t_data **data);
+
 #endif
