@@ -6,14 +6,14 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 10:59:54 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/19 17:17:37 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/21 13:00:29 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 //Returns the path of the command if it is executable, NULL if it is not.
-static char	*get_path_cmd(char **paths, char *cmd)
+char	*get_path_cmd(char **paths, char *cmd)
 {
 	char	*tmp;
 	char	*command;
@@ -83,10 +83,10 @@ static void	execute_cmd(t_token *token, t_env_list **env)
 	envp = env_list_to_array(env);
 	if (path_cmd)
 		execve(path_cmd, args, envp);
-	exit(EXIT_FAILURE);
 	free_double_array(envp);
 	free(args);
 	free(path_cmd);
+	exit(EXIT_FAILURE);
 }
 
 //Executes the tokens in the tokenlist.

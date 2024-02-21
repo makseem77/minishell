@@ -41,7 +41,6 @@ typedef struct s_data
 	struct s_env_list	**env;
 	struct s_env_list	**exp_list;
 	int					nb_pipe;
-	int					*pipe_fd;
 }						t_data;
 
 typedef struct s_env_list
@@ -85,7 +84,7 @@ char					*replace_in_line(char *line, t_env_list **env);
 void					export(char **args, t_env_list **env,
 							t_env_list **exp_list);
 t_env_list				**get_export_variables(t_env_list **env);
-int						compute_bytes_to_cmp(char *variableinlist,
+int	compute_bytes_to_cmp(char *variableinlist,
 							char *variablename);
 void					unset(char **args, t_env_list **env,
 							t_env_list **exp_list);
@@ -116,9 +115,11 @@ int						lst_size(t_env_list **lst);
 
 // EXECUTION_BUILTINS
 void					execute_bultin(t_token **token, t_data **data);
+char					**tokens_to_array(t_token **token);
 
 // EXECUTION_CMD
 void					process_tokens(t_token **tokenlist, t_data **data);
+char					*get_path_cmd(char **paths, char *cmd);
 
 // UTILS PRINT
 void					print_error(char *command, char *arg,
@@ -128,7 +129,7 @@ void					print_export(t_env_list **export_variables);
 // FREE
 void					free_token_list(t_token **t_token);
 void					free_double_array(char **darray);
-void					free_variable_lists(t_env_list **export_list,
+void	free_variable_lists(t_env_list **export_list,
 							t_env_list **env_list);
 void					free_data_struct(t_data *data);
 void					free_lst_content(t_env_list *lst, char *var_name);

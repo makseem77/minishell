@@ -6,14 +6,14 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:23:46 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/18 20:19:57 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/21 12:39:14 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 //Returns the tokens in the tokenlist as an array of strings.
-static char	**tokens_to_array(t_token **token)
+char	**tokens_to_array(t_token **token)
 {
 	size_t	nb_args;
 	t_token	*tmp;
