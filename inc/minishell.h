@@ -141,6 +141,6 @@ void					handle_signals(t_token **token);
 int						init_pipe(int nb_pipe, int **pipefd);
 
 // CHILDREN
-void					children(t_token **tokenlist, t_data **data);
+void					execute_line(t_token **tokenlist, t_data **data);
 
 #endif
