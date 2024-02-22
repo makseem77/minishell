@@ -73,6 +73,7 @@ char					**env_list_to_array(t_env_list **env);
 //	PARSING
 int						set_token_types(t_token **tokenlist, t_env_list **env,
 							int *nb_pipe);
+int						type(char *element, t_env_list **env);
 
 //	LOOP
 void					listening_loop(t_data **data);
@@ -114,7 +115,8 @@ t_env_list				*lst_last(t_env_list *lst);
 int						lst_size(t_env_list **lst);
 
 // EXECUTION_BUILTINS
-void					execute_bultin(t_token **token, t_data **data);
+void					execute_bultin(t_token **tokenlist, t_data **data,
+							char *cmd);
 char					**tokens_to_array(t_token **token);
 
 // EXECUTION_CMD

@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 10:59:54 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/21 13:00:29 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/22 17:27:50 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,5 +97,5 @@ void	process_tokens(t_token **tokenlist, t_data **data)
 	if ((*tokenlist)->ttype == COMMAND)
 		execute_cmd(*tokenlist, (*data)->env);
 	else if ((*tokenlist)->ttype == BUILTIN)
-		execute_bultin(tokenlist, data);
+		execute_bultin(tokenlist, data, (*tokenlist)->element);
 }

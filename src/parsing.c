@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 15:23:35 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/19 11:01:24 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/22 16:27:22 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ static int	is_a_command(char *element, t_env_list **env)
 	return (0);
 }
 
-static int	type(char *element, t_env_list **env)
+int	type(char *element, t_env_list **env)
 {
 	if (!ft_strcmp("echo", element) || !ft_strcmp("cd", element)
 		|| !ft_strcmp("pwd", element) || !ft_strcmp("export", element)

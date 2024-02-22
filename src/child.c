@@ -6,13 +6,13 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 17:50:58 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/21 14:09:30 by maxborde         ###   ########.fr       */
+/*   Updated: 2024/02/22 17:02:10 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	execute_command(char* cmd, char** argv, t_data **data)
+void	execute_command(char* cmd, char** argv, t_data **data, t_token **tokenlist)
 {
 	int pipefd[2];
 	int	f;
@@ -31,8 +31,18 @@ void	execute_command(char* cmd, char** argv, t_data **data)
 		if (dup2(pipefd[0], STDIN_FILENO) < 0)
 			perror("dup2 failed");
         	close(pipefd[1]);
-		if (execve(cmd, argv, env_list_to_array((*data)->env)) < 0)
-			perror("execvp failed");
+        if(type(cmd, (*data)->env) == BUILTIN)
+        {
+            printf("Builtin\n");
+            execute_bultin(tokenlist, data, cmd);
+        }
+        else if(type(cmd, (*data)->env) == COMMAND)
+        {
+		    printf("Builtin\n");
+            if (execve(cmd, argv, env_list_to_array((*data)->env)) < 0)
+		    	perror("execvp failed");
+        }
+
 	}
 }
 
@@ -52,14 +62,14 @@ void	execute_line(t_token **tokenlist, t_data **data)
 	int	i;
 	char	**args;
 	size_t	nb_args;
-	int	f;
+	pid_t	pid;
 	char **bin_paths;
 	
-	bin_paths = find_bin_paths((*data)->env);
-	f = fork();
-	if (f == 0)
-	{
-		args = tokens_to_array(tokenlist);
+    bin_paths = find_bin_paths((*data)->env);
+    pid = fork();
+    if (pid == 0)
+    {
+        args = tokens_to_array(tokenlist);
 		nb_args = count_args(args);
 		i = nb_args - 1;
 		while (i >= 1)
@@ -67,15 +77,23 @@ void	execute_line(t_token **tokenlist, t_data **data)
 			if (ft_strcmp(args[i], "|") == 0)
 			{
 				args[i] = NULL;
-				execute_command(get_path_cmd(bin_paths, args[i + 1]), &args[i + 1], data);
+				execute_command(get_path_cmd(bin_paths, args[i + 1]), &args[i + 1], data, tokenlist);
 				nb_args = i;
 			}
 			i--;
 		}
-		if(execve(get_path_cmd(bin_paths, args[0]), args, env_list_to_array((*data)->env)) == -1)
-		{
-			perror("execve failed");
-			exit(EXIT_FAILURE);
+        if(type(args[0], (*data)->env) == BUILTIN)
+        {
+            execute_bultin(tokenlist, data, args[0]);
+            exit(EXIT_SUCCESS);
+        }
+		else if((type(args[0], (*data)->env) == COMMAND))
+        {
+            if(execve(get_path_cmd(bin_paths, args[0]), args, env_list_to_array((*data)->env)) == -1)
+            {
+                perror("execve failed");
+			    exit(EXIT_FAILURE);
+            }
 		}
 	}
 }

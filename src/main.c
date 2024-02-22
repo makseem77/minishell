@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 22:29:14 by maxborde          #+#    #+#             */
-/*   Updated: 2024/02/17 19:50:01 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/22 16:07:15 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ static bool	set_data(t_data **data, char **envp)
 	if (home)
 		(*data)->home_dir = ft_strdup(home);
 	(*data)->nb_pipe = 0;
-	(*data)->pipe_fd = NULL;
 	return (true);
 }
 

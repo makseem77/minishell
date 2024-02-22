@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:23:46 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/21 12:39:14 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/22 16:41:54 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,47 +40,56 @@ char	**tokens_to_array(t_token **token)
 	return (args);
 }
 
-static void	handle_cd_exit(t_token **token, t_data **data)
+static void	handle_cd_exit(t_token **tokenlist, t_data **data)
 {
-	if (ft_strcmp((*token)->element, "cd") == 0)
+	if (ft_strcmp((*tokenlist)->element, "cd") == 0)
 	{
-		if ((*token)->next)
+		if ((*tokenlist)->next)
 		{
-			if ((*token)->next->next)
+			if ((*tokenlist)->next->next)
 			{
 				print_error("cd", NULL, "too many arguments");
 				return ;
 			}
-			cd((*token)->next->element, data);
+			cd((*tokenlist)->next->element, data);
 		}
 		else
 			cd(NULL, data);
 	}
-	else if (ft_strcmp((*token)->element, "exit") == 0)
+	else if (ft_strcmp((*tokenlist)->element, "exit") == 0)
 	{
-		if ((*token)->next)
-			exit_bash((*token)->next->element, data, token);
+		if ((*tokenlist)->next)
+			exit_bash((*tokenlist)->next->element, data, tokenlist);
 		else
-			exit_bash(NULL, data, token);
+			exit_bash(NULL, data, tokenlist);
 	}
 }
 
 //Executes the builtin command in the token.
-void	execute_bultin(t_token **token, t_data **data)
+void	execute_bultin(t_token **tokenlist, t_data **data, char *cmd)
 {
 	char	**args;
+	t_token	*tmp;
+	int		i;
 
-	args = tokens_to_array(token);
-	if (ft_strcmp((*token)->element, "echo") == 0)
-		echo(&(*token)->next);
-	else if (ft_strcmp((*token)->element, "env") == 0)
+	tmp = *tokenlist;
+	i = 0;
+	while (tmp && ft_strcmp(tmp->element, cmd) != 0)
+	{
+		i++;
+		tmp = tmp->next;
+	}
+	args = tokens_to_array(tokenlist);
+	if (ft_strcmp(tmp->element, "echo") == 0)
+		echo(&(tmp)->next);
+	else if (ft_strcmp(tmp->element, "env") == 0)
 		env(args, (*data)->env);
-	else if (ft_strcmp((*token)->element, "export") == 0)
+	else if (ft_strcmp(tmp->element, "export") == 0)
 		export(args, (*data)->env, (*data)->exp_list);
-	else if (ft_strcmp((*token)->element, "pwd") == 0)
+	else if (ft_strcmp(tmp->element, "pwd") == 0)
 		pwd();
-	else if (ft_strcmp((*token)->element, "unset") == 0)
+	else if (ft_strcmp(tmp->element, "unset") == 0)
 		unset(args, (*data)->env, (*data)->exp_list);
-	handle_cd_exit(token, data);
+	handle_cd_exit(tokenlist, data);
 	free(args);
 }
