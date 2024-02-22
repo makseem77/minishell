@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 15:47:33 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/14 11:02:53 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/22 18:09:24 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,25 @@
 
 void	sigint_handler(int sig)
 {
+	printf("%d\n", state);
 	(void)sig;
-	ft_putstr_fd("\n", 1);
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
+	if(state == 0)
+	{
+		ft_putstr_fd("\n", 1);
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
+	}
+	else
+		ft_putstr_fd("\n", 1);
+	printf("%d\n", state);
 }
 
-void	handle_signals(t_token **token)
+void	handle_signals()
 {
 	struct sigaction	sa_sigint;
 	struct sigaction	sa_sigquit;
 
-	(void)token;
 	sa_sigint.sa_handler = sigint_handler;
 	sigemptyset(&sa_sigint.sa_mask);
 	sa_sigint.sa_flags = 0;

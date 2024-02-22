@@ -6,11 +6,13 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:43:34 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/21 14:06:50 by maxborde         ###   ########.fr       */
+/*   Updated: 2024/02/22 18:12:23 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+bool	state;
 
 // The main loop of the program
 // It reads the input from the user and processes it
@@ -21,9 +23,11 @@ void	listening_loop(t_data **data)
 	t_token	**tokenlist;
 
 	tokenlist = NULL;
-	handle_signals(tokenlist);
+	state = 0;
+	handle_signals();
 	while (true)
 	{
+		state = 0;
 		line = readline("minishell> ");
 		if (!line)
 		{

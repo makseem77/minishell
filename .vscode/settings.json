@@ -15,6 +15,7 @@
         "limits.h": "c",
         "wait.h": "c",
         "stdlib.h": "c",
-        "tmp": "cpp"
+        "tmp": "cpp",
+        "readline.h": "c"
     }
 }

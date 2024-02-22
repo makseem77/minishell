@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 10:59:54 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/22 17:27:50 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/22 18:04:46 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,9 +74,8 @@ static void	execute_cmd(t_token *token, t_env_list **env)
 	char	*path_cmd;
 	char	**envp;
 
+	
 	args = fill_args(token);
-	for(int i = 0; args[i]; i++)
-		printf("args[%d] = %s\n", i, args[i]);
 	bin_paths = find_bin_paths(env);
 	path_cmd = get_path_cmd(bin_paths, token->element);
 	free_double_array(bin_paths);

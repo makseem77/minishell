@@ -13,6 +13,8 @@
 # include <sys/wait.h>
 # include <unistd.h>
 
+extern bool state;
+
 typedef enum e_type
 {
 	COMMAND,
@@ -137,7 +139,7 @@ void					free_data_struct(t_data *data);
 void					free_lst_content(t_env_list *lst, char *var_name);
 
 // SIGNALS
-void					handle_signals(t_token **token);
+void					handle_signals(void);
 
 // PIPE
 int						init_pipe(int nb_pipe, int **pipefd);

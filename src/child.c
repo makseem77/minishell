@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 17:50:58 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/22 17:02:10 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/22 18:08:46 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,9 @@ void	execute_command(char* cmd, char** argv, t_data **data, t_token **tokenlist)
 			perror("dup2 failed");
         	close(pipefd[1]);
         if(type(cmd, (*data)->env) == BUILTIN)
-        {
-            printf("Builtin\n");
             execute_bultin(tokenlist, data, cmd);
-        }
         else if(type(cmd, (*data)->env) == COMMAND)
         {
-		    printf("Builtin\n");
             if (execve(cmd, argv, env_list_to_array((*data)->env)) < 0)
 		    	perror("execvp failed");
         }
@@ -84,11 +80,15 @@ void	execute_line(t_token **tokenlist, t_data **data)
 		}
         if(type(args[0], (*data)->env) == BUILTIN)
         {
+            state = 1;
+            printf("state = %d\n", state);
             execute_bultin(tokenlist, data, args[0]);
             exit(EXIT_SUCCESS);
         }
 		else if((type(args[0], (*data)->env) == COMMAND))
         {
+            state = 1;
+            printf("state = %d\n", state);
             if(execve(get_path_cmd(bin_paths, args[0]), args, env_list_to_array((*data)->env)) == -1)
             {
                 perror("execve failed");
