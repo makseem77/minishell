@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 15:47:33 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/22 18:09:24 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/23 00:38:38 by maxborde         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 void	sigint_handler(int sig)
 {
-	printf("%d\n", state);
 	(void)sig;
 	if(state == 0)
 	{
@@ -25,7 +24,6 @@ void	sigint_handler(int sig)
 	}
 	else
 		ft_putstr_fd("\n", 1);
-	printf("%d\n", state);
 }
 
 void	handle_signals()
