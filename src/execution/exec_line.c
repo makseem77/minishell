@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 17:50:58 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/23 17:55:56 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/23 22:49:25 by maxborde         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,9 @@ static void	exec_cmd(char **bin_paths, char **args, t_data **data,
 	if (type(args[0], (*data)->env) == BUILTIN)
 	{
 		state = 1;
+		free(path_cmd);
 		execute_bultin(tokenlist, data, args[0]);
-		exit(EXIT_SUCCESS);
+		//exit(EXIT_SUCCESS);
 	}
 	else if (type(args[0], (*data)->env) == COMMAND)
 	{
@@ -88,13 +89,19 @@ void	execute_line(t_token **tokenlist, t_data **data)
 
 	bin_paths = find_bin_paths((*data)->env);
 	state = 1;
-	pid = fork();
+	args = tokens_to_array(tokenlist);
+	if (type(*args, (*data)->env) == BUILTIN)
+	{
+		pid = -1;
+		exec_cmd(bin_paths, args, data, tokenlist);
+	}
+	else
+		pid = fork();
 	if (pid == 0)
 	{
-		args = tokens_to_array(tokenlist);
 		handle_pipes(args, bin_paths, data, tokenlist);
 		exec_cmd(bin_paths, args, data, tokenlist);
 	}
 	while(wait(NULL) > 0);
-	free(bin_paths);
+	free_double_array(bin_paths);
 }
