@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   execution_builtins.c                               :+:      :+:    :+:   */
+/*   exec_builtins.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:23:46 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/22 18:07:51 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/23 22:59:08 by maxborde         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void	execute_bultin(t_token **tokenlist, t_data **data, char *cmd)
 		i++;
 		tmp = tmp->next;
 	}
-	args = tokens_to_array(tokenlist);
+	args = tokens_to_array(&tmp);
 	if (ft_strcmp(tmp->element, "echo") == 0)
 		echo(&(tmp)->next);
 	else if (ft_strcmp(tmp->element, "env") == 0)

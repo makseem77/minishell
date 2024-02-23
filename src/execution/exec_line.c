@@ -6,14 +6,14 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 17:50:58 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/23 22:49:25 by maxborde         ###   ########.fr       */
+/*   Updated: 2024/02/23 23:01:56 by maxborde         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 static void	exec_cmd(char **bin_paths, char **args, t_data **data,
-		t_token **tokenlist)
+		t_token **tokenlist, bool first_command)
 {
 	char	*path_cmd;
 
@@ -23,7 +23,8 @@ static void	exec_cmd(char **bin_paths, char **args, t_data **data,
 		state = 1;
 		free(path_cmd);
 		execute_bultin(tokenlist, data, args[0]);
-		//exit(EXIT_SUCCESS);
+		if (!first_command)
+			exit(EXIT_SUCCESS);
 	}
 	else if (type(args[0], (*data)->env) == COMMAND)
 	{
@@ -56,7 +57,7 @@ static void	run_pipe(char **bin_paths, char **argv, t_data **data,
 		if (dup2(pipefd[0], STDIN_FILENO) < 0)
 			perror("dup2 failed");
 		close(pipefd[1]);
-		exec_cmd(bin_paths, argv, data, tokenlist);
+		exec_cmd(bin_paths, argv, data, tokenlist, 0);
 	}
 }
 
@@ -93,14 +94,14 @@ void	execute_line(t_token **tokenlist, t_data **data)
 	if (type(*args, (*data)->env) == BUILTIN)
 	{
 		pid = -1;
-		exec_cmd(bin_paths, args, data, tokenlist);
+		exec_cmd(bin_paths, args, data, tokenlist, 1);
 	}
 	else
 		pid = fork();
 	if (pid == 0)
 	{
 		handle_pipes(args, bin_paths, data, tokenlist);
-		exec_cmd(bin_paths, args, data, tokenlist);
+		exec_cmd(bin_paths, args, data, tokenlist, 0);
 	}
 	while(wait(NULL) > 0);
 	free_double_array(bin_paths);
