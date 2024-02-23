@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:23:46 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/23 22:59:08 by maxborde         ###   ########.fr       */
+/*   Updated: 2024/02/24 00:03:40 by maxborde         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ static void	handle_cd_exit(t_token **tokenlist, t_data **data)
 void	execute_bultin(t_token **tokenlist, t_data **data, char *cmd)
 {
 	char	**args;
+	char	**temp;
 	t_token	*tmp;
 	int		i;
 
@@ -79,9 +80,10 @@ void	execute_bultin(t_token **tokenlist, t_data **data, char *cmd)
 		i++;
 		tmp = tmp->next;
 	}
-	args = tokens_to_array(&tmp);
+	temp = tokens_to_array(&tmp);
+	args = cut_args_at_pipe(temp);
 	if (ft_strcmp(tmp->element, "echo") == 0)
-		echo(&(tmp)->next);
+		echo(args);
 	else if (ft_strcmp(tmp->element, "env") == 0)
 		env(args, (*data)->env);
 	else if (ft_strcmp(tmp->element, "export") == 0)

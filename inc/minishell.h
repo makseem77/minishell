@@ -89,7 +89,7 @@ void					sort_alphabetically(t_env_list **expvars, int size);
 //	CD
 void					cd(char *absolute_path, t_data **data);
 //	ECHO
-void					echo(t_token **tokenlist);
+void					echo(char **args);
 //	ENV
 void					env(char **args, t_env_list **env);
 //	EXIT
@@ -116,6 +116,7 @@ void					execute_line(t_token **tokenlist, t_data **data);
 //	EXEC_UTILS
 size_t					count_args(char **args);
 char					*get_path_cmd(char **paths, char *cmd);
+char					**cut_args_at_pipe(char **args);
 //////////////////////////////////////////////////////////////////////////////////////
 
 //////////////////////////////////////////////////////////////////////////////////////

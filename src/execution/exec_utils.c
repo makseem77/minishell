@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 10:59:37 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/23 10:59:56 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/23 23:58:38 by maxborde         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,30 @@ size_t	count_args(char **args)
 	while (args[i])
 		i++;
 	return (i);
+}
+
+char	**cut_args_at_pipe(char **args)
+{
+	char	**newargs;
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	while (args[i])
+	{
+		if (ft_strcmp(args[i], "|") == 0)
+			break;
+		i++;
+	}
+	newargs = malloc(sizeof(char *) * (i + 1));
+	while (j < i)
+	{
+		newargs[j] = ft_strdup(args[j]);
+		j++;
+	}	
+	newargs[j] = 0;
+	return (newargs);
 }
 
 char	*get_path_cmd(char **paths, char *cmd)

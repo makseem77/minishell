@@ -8,6 +8,8 @@ cat | ls JUST DOES LS, SHOULD ALSO OPEN THE INTERACTION MODE FOR CAT
 
 
 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+tout les builtins + | vont consider | comme un argument
+
 minishell> YANIS=2
 Element = YANIS=2
 Type = 2
