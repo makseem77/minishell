@@ -44,15 +44,12 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 clean:
 	@make clean -C $(LIBFT_DIR)
 	@echo "$(RED)Cleaning $(NAME) objects...$(NO_COLOR)"
-	@rm -f $(OBJ)
-	@echo "$(RED)Cleaning $(NAME) object directory...$(NO_COLOR)"
 	@rm -rf $(OBJ_DIR)
 
 fclean:
 	@make fclean -C $(LIBFT_DIR)
 	@echo "$(RED)Cleaning $(NAME) objects...$(NO_COLOR)"
-	@rm -f $(OBJ)
-	@echo "$(RED)Cleaning $(NAME) object directory...$(NO_COLOR)"
+	@rm -rf $(OBJ_DIR)
 	@echo "$(RED)Deleting executable $(NAME)...$(NO_COLOR)"
 	@rm -f $(NAME)
 
