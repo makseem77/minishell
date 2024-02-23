@@ -13,7 +13,7 @@
 # include <sys/wait.h>
 # include <unistd.h>
 
-extern bool state;
+extern bool				state;
 
 typedef enum e_type
 {
@@ -57,94 +57,104 @@ typedef struct s_env_list
 // Save data on each token in a struct.
 // 3. Start executing the user-input by going trough each token one by one.
 
+//////////////////////////////////////////////////////////////////////////////////////
+//	TOKENIZE FOLDER
 //	TOKENIZE
 t_token					**tokenize(char *line, t_env_list **env);
 
-// TOKENIZE UTILS
+//	TOKENIZE UTILS
 size_t					compute_len(char *element);
 size_t					count_del_quotes(char *element);
 char					*clean_up_quotes(char *element);
 void					clean_up_tokens(t_token **tokenlist);
 
+//	HANDLE_ENV_VARS
+char					*replace_in_line(char *line, t_env_list **env);
+//////////////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////////////
+//	BUILTINS FOLDER
+
+//	EXPORT FOLDER
+//	EXPORT
+t_env_list				**get_export_variables(t_env_list **env);
+void					export(char **args, t_env_list **env,
+							t_env_list **exp_list);
+//	EXPORT UTILS
+int						check_var(char *arg, t_env_list **export_variables,
+							int offset);
+char					*append_declare_prefix_and_quotes(char *variable);
+void					sort_alphabetically(t_env_list **expvars, int size);
+
+//	CD
+void					cd(char *absolute_path, t_data **data);
+//	ECHO
+void					echo(t_token **tokenlist);
 //	ENV
+void					env(char **args, t_env_list **env);
+//	EXIT
+void					exit_bash(char *status, t_data **data, t_token **token);
+//	PWD
+void					pwd(void);
+char					*get_current_dir(void);
+//	UNSET
+char					*extract_var_name(char *arg);
+void					unset(char **args, t_env_list **env,
+							t_env_list **exp_list);
+int						compute_bytes_to_cmp(char *variableinlist,
+							char *variablename);
+//////////////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////////////
+//	EXECUTION FOLDER
+//	EXEC_BUILTINS
+void					execute_bultin(t_token **tokenlist, t_data **data,
+							char *cmd);
+char					**tokens_to_array(t_token **token);
+//	EXEC_LINE
+void					execute_line(t_token **tokenlist, t_data **data);
+//	EXEC_UTILS
+size_t					count_args(char **args);
+char					*get_path_cmd(char **paths, char *cmd);
+//////////////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////////////
+//	UTILS FOLDER
+//	LST UTILS
+int						lst_del_one(t_env_list **lst, char *variable,
+							int offset);
+void					lst_add_back(t_env_list **lst, t_env_list *new);
+t_env_list				*lst_new(char *variable);
+t_env_list				*lst_last(t_env_list *lst);
+int						lst_size(t_env_list **lst);
+//	PRINT UTILS
+void					print_error(char *command, char *arg,
+							char *error_message);
+void					print_export(t_env_list **export_variables);
+//	ENV UTILS
 t_env_list				**dup_env(char **env);
 char					**find_bin_paths(t_env_list **env);
 char					*get_env(char *variable, t_env_list **env);
 char					**env_list_to_array(t_env_list **env);
+//////////////////////////////////////////////////////////////////////////////////////
+
+//	FREE
+void					free_token_list(t_token **t_token);
+void					free_double_array(char **darray);
+void					free_variable_lists(t_env_list **export_list,
+							t_env_list **env_list);
+void					free_data_struct(t_data *data);
+void					free_lst_content(t_env_list *lst, char *var_name);
+
+//	LOOP
+void					listening_loop(t_data **data);
 
 //	PARSING
 int						set_token_types(t_token **tokenlist, t_env_list **env,
 							int *nb_pipe);
 int						type(char *element, t_env_list **env);
 
-//	LOOP
-void					listening_loop(t_data **data);
-
-//	HANDLE_ENV_VARS
-char					*replace_in_line(char *line, t_env_list **env);
-
-//	BUILTINS
-void					export(char **args, t_env_list **env,
-							t_env_list **exp_list);
-t_env_list				**get_export_variables(t_env_list **env);
-int	compute_bytes_to_cmp(char *variableinlist,
-							char *variablename);
-void					unset(char **args, t_env_list **env,
-							t_env_list **exp_list);
-char					*get_current_dir(void);
-void					pwd(void);
-void					cd(char *absolute_path, t_data **data);
-void					env(char **args, t_env_list **env);
-void					echo(t_token **tokenlist);
-void					exit_bash(char *status, t_data **data, t_token **token);
-
-// BULTINS UTILS
-int						check_var(char *arg, t_env_list **export_variables,
-							int offset);
-char					*extract_var_name(char *arg);
-char					*append_declare_prefix_and_quotes(char *variable);
-char					*insert_quotes(char *variable);
-void					sort_alphabetically(t_env_list **expvars, int size);
-
-// LST MODIFS
-int						lst_del_one(t_env_list **lst, char *variable,
-							int offset);
-void					lst_add_back(t_env_list **lst, t_env_list *new);
-t_env_list				*lst_new(char *variable);
-
-// LST UTILS
-t_env_list				*lst_last(t_env_list *lst);
-int						lst_size(t_env_list **lst);
-
-// EXECUTION_BUILTINS
-void					execute_bultin(t_token **tokenlist, t_data **data,
-							char *cmd);
-char					**tokens_to_array(t_token **token);
-
-// EXECUTION_CMD
-void					process_tokens(t_token **tokenlist, t_data **data);
-char					*get_path_cmd(char **paths, char *cmd);
-
-// UTILS PRINT
-void					print_error(char *command, char *arg,
-							char *error_message);
-void					print_export(t_env_list **export_variables);
-
-// FREE
-void					free_token_list(t_token **t_token);
-void					free_double_array(char **darray);
-void	free_variable_lists(t_env_list **export_list,
-							t_env_list **env_list);
-void					free_data_struct(t_data *data);
-void					free_lst_content(t_env_list *lst, char *var_name);
-
-// SIGNALS
+//	SIGNALS
 void					handle_signals(void);
-
-// PIPE
-int						init_pipe(int nb_pipe, int **pipefd);
-
-// CHILDREN
-void					execute_line(t_token **tokenlist, t_data **data);
 
 #endif

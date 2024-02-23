@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtins_utils.c                                   :+:      :+:    :+:   */
+/*   export_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/12 17:51:04 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/14 15:43:36 by ymeziane         ###   ########.fr       */
+/*   Created: 2024/02/23 10:18:04 by ymeziane          #+#    #+#             */
+/*   Updated: 2024/02/23 10:19:59 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,55 +50,11 @@ int	check_var(char *arg, t_env_list **export_variables, int offset)
 	return (free(var_name), 2);
 }
 
-// This function will return the extracted variable name from arg
-// (with the = if there is one).
-// Will return NULL if this is not a valid variable name.
-// It does so by calculating the size of the var name (= excluded),
-// then it does a duplication of it and at the same time it checks
-// if the varname is valid.
-char	*extract_var_name(char *arg)
-{
-	int		len;
-	int		i;
-	char	*varname;
-
-	len = 0;
-	i = 0;
-	if (!arg || isdigit(*arg) || *arg == '=')
-		return (NULL);
-	while (arg[len] && arg[len] != '=')
-		len++;
-	varname = malloc(len + 1);
-	while (i < len && arg[i] != '=')
-	{
-		if (!ft_isalpha(arg[i]) && !ft_isdigit(arg[i]) && arg[i] != '_')
-			return (free(varname), NULL);
-		varname[i] = arg[i];
-		i++;
-	}
-	varname[i] = 0;
-	return (varname);
-}
-
-// Appends the declare
-//-x prefix to every variables and inserts the quotes around the value
-// of the variable.
-char	*append_declare_prefix_and_quotes(char *variable)
-{
-	char	*tmp;
-	char	*newvariable;
-
-	tmp = insert_quotes(variable);
-	newvariable = ft_strjoin("declare -x ", tmp);
-	free(tmp);
-	return (newvariable);
-}
-
 // This function takes the variable and returns a duplicate with double quotes
 // inserted around the value of the variable. If it's a variable with no value
 // we just return the variable. Else we allocate memory for 2 quotes and  the
 // NULL byte and insert quotes after the = and at the end of the value.
-char	*insert_quotes(char *variable)
+static char	*insert_quotes(char *variable)
 {
 	char	*newvariable;
 	int		i;
@@ -124,6 +80,21 @@ char	*insert_quotes(char *variable)
 	}
 	newvariable[++i] = '"';
 	newvariable[++i] = 0;
+	return (newvariable);
+}
+
+
+// Appends the declare
+//-x prefix to every variables and inserts the quotes around the value
+// of the variable.
+char	*append_declare_prefix_and_quotes(char *variable)
+{
+	char	*tmp;
+	char	*newvariable;
+
+	tmp = insert_quotes(variable);
+	newvariable = ft_strjoin("declare -x ", tmp);
+	free(tmp);
 	return (newvariable);
 }
 

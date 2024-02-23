@@ -6,11 +6,41 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 11:32:51 by maxborde          #+#    #+#             */
-/*   Updated: 2024/02/14 01:40:40 by maxborde         ###   ########.fr       */
+/*   Updated: 2024/02/23 10:24:01 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+// This function will return the extracted variable name from arg
+// (with the = if there is one).
+// Will return NULL if this is not a valid variable name.
+// It does so by calculating the size of the var name (= excluded),
+// then it does a duplication of it and at the same time it checks
+// if the varname is valid.
+char	*extract_var_name(char *arg)
+{
+	int		len;
+	int		i;
+	char	*varname;
+
+	len = 0;
+	i = 0;
+	if (!arg || isdigit(*arg) || *arg == '=')
+		return (NULL);
+	while (arg[len] && arg[len] != '=')
+		len++;
+	varname = malloc(len + 1);
+	while (i < len && arg[i] != '=')
+	{
+		if (!ft_isalpha(arg[i]) && !ft_isdigit(arg[i]) && arg[i] != '_')
+			return (free(varname), NULL);
+		varname[i] = arg[i];
+		i++;
+	}
+	varname[i] = 0;
+	return (varname);
+}
 
 // This function will extract the number of bytes to compare
 // from the variable in the list and the variable name.

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lst_modif.c                                        :+:      :+:    :+:   */
+/*   lst_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/14 16:30:44 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/14 17:14:58 by ymeziane         ###   ########.fr       */
+/*   Created: 2024/02/07 13:53:56 by maxborde          #+#    #+#             */
+/*   Updated: 2024/02/23 10:33:32 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,4 +69,31 @@ t_env_list	*lst_new(char *variable)
 	new->variable = variable;
 	new->next = NULL;
 	return (new);
+}
+
+
+// Returns the last element of the list
+t_env_list	*lst_last(t_env_list *lst)
+{
+	if (!lst)
+		return (NULL);
+	while (lst->next)
+		lst = lst->next;
+	return (lst);
+}
+
+// Returns list size
+int	lst_size(t_env_list **lst)
+{
+	t_env_list	*tmp;
+	int			i;
+
+	i = 0;
+	tmp = *lst;
+	while (tmp)
+	{
+		tmp = tmp->next;
+		i++;
+	}
+	return (i);
 }
