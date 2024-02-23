@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:43:34 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/22 18:12:23 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/23 17:55:43 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,7 @@ void	listening_loop(t_data **data)
 			free_token_list(tokenlist);
 		tokenlist = tokenize(line, (*data)->env);
 		if (!set_token_types(tokenlist, (*data)->env, &(*data)->nb_pipe))
-		{
 			execute_line(tokenlist, data);
-			waitpid(-1, NULL, 0);
-		}
 		free(line);
 	}
 }

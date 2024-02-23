@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 17:50:58 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/23 11:38:11 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/23 17:55:56 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,6 @@ void	execute_line(t_token **tokenlist, t_data **data)
 		handle_pipes(args, bin_paths, data, tokenlist);
 		exec_cmd(bin_paths, args, data, tokenlist);
 	}
-	wait(NULL);
+	while(wait(NULL) > 0);
 	free(bin_paths);
 }
