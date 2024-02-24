@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 17:50:58 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/24 00:03:54 by maxborde         ###   ########.fr       */
+/*   Updated: 2024/02/24 12:18:46 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ void	execute_line(t_token **tokenlist, t_data **data)
 	bin_paths = find_bin_paths((*data)->env);
 	state = 1;
 	args = tokens_to_array(tokenlist);
-	if (type(*args, (*data)->env) == BUILTIN)
+	if (type(*args, (*data)->env) == BUILTIN && (*data)->nb_pipe == 0)
 	{
 		pid = -1;
 		exec_cmd(bin_paths, args, data, tokenlist, 1);
@@ -106,3 +106,4 @@ void	execute_line(t_token **tokenlist, t_data **data)
 	while(wait(NULL) > 0);
 	free_double_array(bin_paths);
 }
+  

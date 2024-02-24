@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:23:46 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/24 00:03:40 by maxborde         ###   ########.fr       */
+/*   Updated: 2024/02/24 12:35:35 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static void	handle_cd_exit(t_token **tokenlist, t_data **data)
 	{
 		if ((*tokenlist)->next)
 		{
-			if ((*tokenlist)->next->next)
+			if ((*tokenlist)->next->next && !ft_strcmp((*tokenlist)->next->next->element, "|") == 0)
 			{
 				print_error("cd", NULL, "too many arguments");
 				return ;

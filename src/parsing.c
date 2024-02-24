@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 15:23:35 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/22 16:27:22 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/24 12:38:04 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,9 +91,10 @@ int	set_token_types(t_token **tokenlist, t_env_list **env, int* nb_pipe)
 	first = true;
 	while (tmp)
 	{
+		printf("element: %s\n", tmp->element);
 		if(ft_strcmp(tmp->element, "|") == 0)
 			(*nb_pipe)++;
-		if (ft_strcmp(tmp->element, ";") == 0 || ft_strcmp(tmp->element,
+		else if (ft_strcmp(tmp->element, ";") == 0 || ft_strcmp(tmp->element,
 				"\\") == 0)
 		{
 			ft_putstr_fd(": special characters ';' or '\\' are not authorized\n",
