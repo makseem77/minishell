@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:43:34 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/24 19:07:45 by maxborde         ###   ########.fr       */
+/*   Updated: 2024/02/24 20:11:26 by maxborde         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ void	listening_loop(t_data **data)
 	handle_signals();
 	while (true)
 	{
-		printf("IN LOOP:\nPID = %ld\nPPID = %ld\n\n\n\n", (long)getpid(), (long)getppid());
 		state = 0;
 		line = readline("minishell> ");
 		if (!line)
@@ -47,7 +46,9 @@ void	listening_loop(t_data **data)
 		{
 			while (tmp)
 				tmp = tmp->next;
-			execute_line(tokenlist, data);
+			if (*tokenlist)
+				execute_line(tokenlist, data);
+			wait(NULL);
 		}
 		free(line);
 	}

@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 17:50:58 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/24 19:15:22 by maxborde         ###   ########.fr       */
+/*   Updated: 2024/02/24 19:58:15 by maxborde         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static void	exec_cmd(char **bin_paths, char **args, t_data **data,
 	}
 	else if(type(args[0], (*data)->env) == -1)
 	{
-		print_error(args[0], NULL, "command not found");
+		print_error(args[0], NULL, "Command not found");
 		exit(127);
 	}
 }
@@ -103,6 +103,7 @@ void	execute_line(t_token **tokenlist, t_data **data)
 	}
 	else
 		pid = fork();
+	printf("BEFORE WAIT: PID = %ld\nPPID = %ld\n\n\n\n", (long)getpid(), (long)getppid());
 	if (pid == 0)
 	{
 		handle_pipes(args, bin_paths, data, tokenlist);
@@ -110,7 +111,7 @@ void	execute_line(t_token **tokenlist, t_data **data)
 	}
 	while(wait(NULL) > 0)
 	{
-		//sleep(1);
+		printf("DID ONE WAIT\n");
 		;
 	}
 	free_double_array(bin_paths);
