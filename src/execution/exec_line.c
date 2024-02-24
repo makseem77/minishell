@@ -6,14 +6,14 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 17:50:58 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/24 19:58:15 by maxborde         ###   ########.fr       */
+/*   Updated: 2024/02/24 21:10:17 by maxborde         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 static void	exec_cmd(char **bin_paths, char **args, t_data **data,
-		t_token **tokenlist, bool first_command)
+		t_token **tokenlist, bool only_cmd)
 {
 	char	*path_cmd;
 
@@ -23,8 +23,11 @@ static void	exec_cmd(char **bin_paths, char **args, t_data **data,
 		state = 1;
 		free(path_cmd);
 		execute_bultin(tokenlist, data, args[0]);
-		if (!first_command)
+		if (!only_cmd)
+		{
+			//printf("EXIT BI\n");
 			exit(EXIT_SUCCESS);
+		}
 	}
 	else if (type(args[0], (*data)->env) == COMMAND)
 	{
@@ -37,7 +40,7 @@ static void	exec_cmd(char **bin_paths, char **args, t_data **data,
 	}
 	else if(type(args[0], (*data)->env) == -1)
 	{
-		print_error(args[0], NULL, "Command not found");
+		print_error(args[0], NULL, "command not found");
 		exit(127);
 	}
 }
@@ -96,24 +99,23 @@ void	execute_line(t_token **tokenlist, t_data **data)
 	bin_paths = find_bin_paths((*data)->env);
 	state = 1;
 	args = tokens_to_array(tokenlist);
+	//printf("ARG = %s\n", *args);
 	if (type(*args, (*data)->env) == BUILTIN && (*data)->nb_pipe == 0)
 	{
 		pid = -1;
+		//printf("ONLY CMD\n");
 		exec_cmd(bin_paths, args, data, tokenlist, 1);
 	}
 	else
 		pid = fork();
-	printf("BEFORE WAIT: PID = %ld\nPPID = %ld\n\n\n\n", (long)getpid(), (long)getppid());
+	//printf("JUST AFTER FORK: PID = %ld PPID = %ld\n\n\n", (long)getpid(), (long)getppid());
 	if (pid == 0)
 	{
 		handle_pipes(args, bin_paths, data, tokenlist);
 		exec_cmd(bin_paths, args, data, tokenlist, 0);
 	}
-	while(wait(NULL) > 0)
-	{
-		printf("DID ONE WAIT\n");
-		;
-	}
+	//printf("JUST BEFORE WAIT: PID = %ld PPID = %ld\n\n\n", (long)getpid(), (long)getppid());
+	while(wait(NULL) > 0);
 	free_double_array(bin_paths);
 	(*data)->nb_pipe = 0;
 }

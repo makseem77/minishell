@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 15:23:35 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/24 15:04:53 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/24 20:21:43 by maxborde         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,11 +90,20 @@ int	set_token_types(t_token **tokenlist, t_env_list **env, int* nb_pipe)
 	while (tmp)
 	{
 		if(ft_strcmp(tmp->element, "|") == 0)
-			(*nb_pipe)++;
+		{
+			if (!tmp->next)
+			{
+				ft_putstr_fd("minishell: pipe should be followed by a command\n",
+					2);
+				return (1);
+			}
+			else
+				(*nb_pipe)++;
+		}
 		else if (ft_strcmp(tmp->element, ";") == 0 || ft_strcmp(tmp->element,
 				"\\") == 0)
 		{
-			ft_putstr_fd(": special characters ';' or '\\' are not authorized\n",
+			ft_putstr_fd("minishell: special characters ';' or '\\' are not authorized\n",
 				2);
 			return (1);
 		}
