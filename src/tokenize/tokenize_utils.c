@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 17:40:09 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/23 18:05:50 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/24 15:01:55 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ size_t	count_del_quotes(char *element)
 	}
 	if (single_quote % 2 != 0 || double_quote % 2 != 0)
 	{
-		printf("Error: Unmatched quotes\n");
+		ft_putstr_fd("Error: Unmatched quotes\n", 2);
 		exit(EXIT_FAILURE);
 	}
 	return (single_quote + double_quote);

@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 17:50:58 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/24 12:18:46 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/24 16:46:13 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,18 +35,23 @@ static void	exec_cmd(char **bin_paths, char **args, t_data **data,
 			exit(EXIT_FAILURE);
 		}
 	}
+	else if(type(args[0], (*data)->env) == -1)
+	{
+		print_error(args[0], NULL, "command not found");
+		exit(127);
+	}
 }
 
 static void	run_pipe(char **bin_paths, char **argv, t_data **data,
 		t_token **tokenlist)
 {
 	int	pipefd[2];
-	int	f;
+	pid_t	pid;
 
 	if (pipe(pipefd) < 0)
 		perror("pipe creation failed");
-	f = fork();
-	if (f == 0)
+	pid = fork();
+	if (pid == 0)
 	{
 		if (dup2(pipefd[1], STDOUT_FILENO) < 0)
 			perror("dup2 failed");
@@ -103,7 +108,12 @@ void	execute_line(t_token **tokenlist, t_data **data)
 		handle_pipes(args, bin_paths, data, tokenlist);
 		exec_cmd(bin_paths, args, data, tokenlist, 0);
 	}
-	while(wait(NULL) > 0);
+	
+	while(wait(NULL) > 0)
+	{
+		// sleep(1);
+		;
+	}
 	free_double_array(bin_paths);
 }
   

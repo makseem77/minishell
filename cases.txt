@@ -2,8 +2,9 @@ echo |  SHOULD SYNTAX ERROR
 cat | ls JUST DOES LS, SHOULD ALSO OPEN THE INTERACTION MODE FOR CAT
 => "interactive command" WITH AT LEAST ONE PIPE
 
-
-
+incorrect command followed by at least one pipe and at least one existing command, this relaunches readline too early.
+I managed to fix this by using sleep() but the function is forbidden (I commented), so I need to find another alternative
+case of error : zefze | ls
 
 
 

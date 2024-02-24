@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 15:23:35 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/24 12:38:04 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/24 15:04:53 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,13 +85,10 @@ int	type(char *element, t_env_list **env)
 int	set_token_types(t_token **tokenlist, t_env_list **env, int* nb_pipe)
 {
 	t_token	*tmp;
-	bool	first;
 
 	tmp = *tokenlist;
-	first = true;
 	while (tmp)
 	{
-		printf("element: %s\n", tmp->element);
 		if(ft_strcmp(tmp->element, "|") == 0)
 			(*nb_pipe)++;
 		else if (ft_strcmp(tmp->element, ";") == 0 || ft_strcmp(tmp->element,
@@ -107,13 +104,6 @@ int	set_token_types(t_token **tokenlist, t_env_list **env, int* nb_pipe)
 			tmp->ttype = META_CHAR;
 		else if (type(tmp->element, env) == COMMAND)
 			tmp->ttype = COMMAND;
-		else if (first)
-		{
-			ft_putstr_fd(tmp->element, 2);
-			ft_putstr_fd(": command not found\n", 2);
-			return (1);
-		}
-		first = false;
 		tmp = tmp->next;
 	}
 	return (0);
