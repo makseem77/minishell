@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:23:46 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/24 12:35:35 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/24 19:07:20 by maxborde         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static void	handle_cd_exit(t_token **tokenlist, t_data **data)
 	{
 		if ((*tokenlist)->next)
 		{
-			if ((*tokenlist)->next->next && !ft_strcmp((*tokenlist)->next->next->element, "|") == 0)
+			if ((*tokenlist)->next->next && !(ft_strcmp((*tokenlist)->next->next->element, "|") == 0))
 			{
 				print_error("cd", NULL, "too many arguments");
 				return ;
@@ -73,6 +73,7 @@ void	execute_bultin(t_token **tokenlist, t_data **data, char *cmd)
 	t_token	*tmp;
 	int		i;
 
+	printf("IN BUILTIN:\n PID = %ld\nPPID = %ld\n\n\n\n", (long)getpid(), (long)getppid());
 	tmp = *tokenlist;
 	i = 0;
 	while (tmp && ft_strcmp(tmp->element, cmd) != 0)
