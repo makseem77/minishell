@@ -1,12 +1,43 @@
-#include <unistd.h>
+# include  "inc/minishell.h"
 
-int main(int argc, char const *argv[], char **envp)
+void exec_exemple(char **argv)
 {
-    char *argvperso[] = {"ls", "-l", NULL};
-    execve("/bin/ls", argvperso, envp);
-    // if(access("/bin/ls",  X_OK) == 0)
-    //     write(1, "yes\n", 4);
-    // else
-    //     write(1, "no\n", 3);
+    pid_t pid;
+
+    pid = fork();
+    if (pid == 0)
+    {
+        printf("I'm the little child\n");
+    }
+    else
+    {
+
+        execve("/bin/ls", argv, NULL);
+    }
+}
+
+void exmple_loop(char **argv)
+{
+    int i = 0;
+
+    while (i < 5)
+    {
+        exec_exemple(argv);
+        i++;
+    }
+}
+
+int main(int argc, char **argv)
+{
+    pid_t pid;
+
+    pid = fork();
+    if (pid == 0)
+    {
+        exmple_loop(argv);
+        execve("/bin/ls", argv, NULL);
+    }
+    while (wait(NULL) > 0);
+    printf("I WANT TO CONTINUE ONLY IF ALL THE CHILDREN ARE DEAD\n");
     return 0;
 }

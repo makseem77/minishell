@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 17:50:58 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/24 21:10:17 by maxborde         ###   ########.fr       */
+/*   Updated: 2024/02/25 22:28:12 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,15 +56,16 @@ static void	run_pipe(char **bin_paths, char **argv, t_data **data,
 	pid = fork();
 	if (pid == 0)
 	{
+		printf("JUST AFTER FORK IN RUN PIPE: PID = %ld PPID = %ld\n\n\n", (long)getpid(), (long)getppid());
 		if (dup2(pipefd[1], STDOUT_FILENO) < 0)
 			perror("dup2 failed");
-		close(pipefd[0]);
 	}
 	else
 	{
 		if (dup2(pipefd[0], STDIN_FILENO) < 0)
 			perror("dup2 failed");
 		close(pipefd[1]);
+		printf("JUST BEFORE EXEC CMD = %s, IN RUN PIPE: PID = %ld PPID = %ld\n\n\n", *argv, (long)getpid(), (long)getppid());
 		exec_cmd(bin_paths, argv, data, tokenlist, 0);
 	}
 }
@@ -111,11 +112,17 @@ void	execute_line(t_token **tokenlist, t_data **data)
 	//printf("JUST AFTER FORK: PID = %ld PPID = %ld\n\n\n", (long)getpid(), (long)getppid());
 	if (pid == 0)
 	{
+		printf("JUST AFTER FORK IN EXEC LINE: PID = %ld PPID = %ld\n\n\n", (long)getpid(), (long)getppid());
 		handle_pipes(args, bin_paths, data, tokenlist);
+		printf("JUST BEFORE EXEC CMD = %s IN EXEC LINE: PID = %ld PPID = %ld\n\n\n", *args, (long)getpid(), (long)getppid());
 		exec_cmd(bin_paths, args, data, tokenlist, 0);
+		exit(EXIT_SUCCESS);
 	}
-	//printf("JUST BEFORE WAIT: PID = %ld PPID = %ld\n\n\n", (long)getpid(), (long)getppid());
-	while(wait(NULL) > 0);
+	printf("I'M WAITING THE PID = %ld\n", (long)pid);
+	while((waitpid(pid, NULL, 0)) > 0)
+		;
+	printf("JUST AFTER WAIT\n");
+	printf("I CONTINUE\n");
 	free_double_array(bin_paths);
 	(*data)->nb_pipe = 0;
 }
