@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:23:46 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/24 19:07:20 by maxborde         ###   ########.fr       */
+/*   Updated: 2024/02/26 02:49:41 by maxborde         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,26 +40,26 @@ char	**tokens_to_array(t_token **token)
 	return (args);
 }
 
-static void	handle_cd_exit(t_token **tokenlist, t_data **data)
+static void	handle_cd_exit(t_token **tokenlist, char **args, t_data **data)
 {
-	if (ft_strcmp((*tokenlist)->element, "cd") == 0)
+	if (ft_strcmp(*args, "cd") == 0)
 	{
-		if ((*tokenlist)->next)
+		if (*(args + 1))
 		{
-			if ((*tokenlist)->next->next && !(ft_strcmp((*tokenlist)->next->next->element, "|") == 0))
+			if (*(args + 2))
 			{
 				print_error("cd", NULL, "too many arguments");
 				return ;
 			}
-			cd((*tokenlist)->next->element, data);
+			cd(*(args + 1), data);
 		}
 		else
 			cd(NULL, data);
 	}
-	else if (ft_strcmp((*tokenlist)->element, "exit") == 0)
+	else if (ft_strcmp(*args, "exit") == 0)
 	{
-		if ((*tokenlist)->next)
-			exit_bash((*tokenlist)->next->element, data, tokenlist);
+		if (*(args + 1))
+			exit_bash(*(args + 1), data, tokenlist);
 		else
 			exit_bash(NULL, data, tokenlist);
 	}
@@ -93,6 +93,7 @@ void	execute_bultin(t_token **tokenlist, t_data **data, char *cmd)
 		pwd();
 	else if (ft_strcmp(tmp->element, "unset") == 0)
 		unset(args, (*data)->env, (*data)->exp_list);
-	handle_cd_exit(tokenlist, data);
-	free(args);
+	handle_cd_exit(tokenlist, args, data);
+	free_double_array(args);
+	free(temp);
 }
