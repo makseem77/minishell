@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 17:50:58 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/26 02:38:18 by maxborde         ###   ########.fr       */
+/*   Updated: 2024/02/26 17:10:14 by maxborde         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ void	execute_line(t_token **tokenlist, t_data **data)
 	//printf("JUST AFTER FORK: PID = %ld PPID = %ld\n\n\n", (long)getpid(), (long)getppid());
 	if (pid == 0)
 	{
-		//printf("JUST AFTER FORK IN EXEC LINE: PID = %ld PPID = %ld\n\n\n", (long)getpid(), (long)getppid());
+		//printf("JUST AFTER FORK IN EXEC LINE: PID = %ld PPID = %ld\n\n\n", (long)getpid(), (long)getppid())e
 		handle_pipes(args, bin_paths, data, tokenlist);
 		//printf("JUST BEFORE EXEC CMD = %s IN EXEC LINE: PID = %ld PPID = %ld\n\n\n", *args, (long)getpid(), (long)getppid());
 		printf("ARG IN MAIN = %s\n", *args);

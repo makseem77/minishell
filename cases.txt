@@ -15,7 +15,7 @@ builtins alone -> 2 leaks, from how we handle builtins alone.
 
 builtins in pipe -> lot of valgrind errors, still reachable for some reason.
 
-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 tout les builtins + | vont consider | comme un argument
 
 minishell> YANIS=2
