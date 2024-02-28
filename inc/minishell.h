@@ -101,7 +101,7 @@ char					*get_current_dir(void);
 char					*extract_var_name(char *arg);
 void					unset(char **args, t_env_list **env,
 							t_env_list **exp_list);
-int						compute_bytes_to_cmp(char *variableinlist,
+int	compute_bytes_to_cmp(char *variableinlist,
 							char *variablename);
 //////////////////////////////////////////////////////////////////////////////////////
 
@@ -117,6 +117,8 @@ void					execute_line(t_token **tokenlist, t_data **data);
 size_t					count_args(char **args);
 char					*get_path_cmd(char **paths, char *cmd);
 char					**cut_args_at_pipe(char **args);
+// INIT PIPES
+int						**init_pipes(t_data **data);
 //////////////////////////////////////////////////////////////////////////////////////
 
 //////////////////////////////////////////////////////////////////////////////////////
@@ -142,7 +144,7 @@ char					**env_list_to_array(t_env_list **env);
 //	FREE
 void					free_token_list(t_token **t_token);
 void					free_double_array(char **darray);
-void					free_variable_lists(t_env_list **export_list,
+void	free_variable_lists(t_env_list **export_list,
 							t_env_list **env_list);
 void					free_data_struct(t_data *data);
 void					free_lst_content(t_env_list *lst, char *var_name);

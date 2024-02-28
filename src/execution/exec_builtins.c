@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:23:46 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/27 22:17:14 by maxborde         ###   ########.fr       */
+/*   Updated: 2024/02/28 17:21:00 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,12 @@ char	**tokens_to_array(t_token **token)
 		nb_args++;
 		tmp = tmp->next;
 	}
-	args = malloc(sizeof(char *) * (nb_args + 1));
+	args = (char **)malloc(sizeof(char *) * (nb_args + 1));
 	tmp = *token;
 	i = 0;
 	while (tmp)
 	{
-		args[i] = tmp->element;
+		args[i] = ft_strdup(tmp->element);
 		i++;
 		tmp = tmp->next;
 	}

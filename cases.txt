@@ -1,11 +1,3 @@
-echo |  SHOULD SYNTAX ERROR 
-cat | ls JUST DOES LS, SHOULD ALSO OPEN THE INTERACTION MODE FOR CAT
-=> "interactive command" WITH AT LEAST ONE PIPE
-
-incorrect command followed by at least one pipe and at least one existing command, this relaunches readline too early.
-I managed to fix this by using sleep() but the function is forbidden (I commented), so I need to find another alternative
-case of error : zefze | ls
-
 LEAKS / VALGRIND ERRORS: 
 valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --suppressions=ignore_readline.supp -s ./minishell
 
@@ -15,7 +7,18 @@ builtins alone -> 2 leaks, from how we handle builtins alone.
 
 builtins in pipe -> lot of valgrind errors, still reachable for some reason.
 
+cat | ls => ^M
+
 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+cat | ls JUST DOES LS, SHOULD ALSO OPEN THE INTERACTION MODE FOR CAT
+=> "interactive command" WITH AT LEAST ONE PIPE
+
+echo |  SHOULD SYNTAX ERROR 
+
+incorrect command followed by at least one pipe and at least one existing command, this relaunches readline too early.
+I managed to fix this by using sleep() but the function is forbidden (I commented), so I need to find another alternative
+case of error : zefze | ls
+
 tout les builtins + | vont consider | comme un argument
 
 minishell> YANIS=2

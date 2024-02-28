@@ -1,133 +1,154 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   exec_line.c                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/16 17:50:58 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/26 17:10:14 by maxborde         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 
-static void	exec_cmd(char **bin_paths, char **args, t_data **data,
-		t_token **tokenlist, bool only_cmd)
+char	**cut_arrays_into_expression(char **array, int index)
 {
+	int	i;	
+	int	pipecount;
+	char	**expression;
+
+	i = 0;
+	pipecount = 0;
+	while(*array && index > 0)
+	{
+		if (ft_strcmp(*array, "|") == 0)
+		{
+			if (pipecount == index - 1)
+			{
+				array++;
+				break;
+			}
+			else
+				pipecount++;
+		}
+		array++;
+	}
+	while (array[i] && ft_strcmp(array[i], "|"))
+		i++;
+	expression = malloc(sizeof(char *) * (i + 1));	
+	i = 0;
+	while (array[i] && ft_strcmp(array[i], "|"))
+	{
+		expression[i] = ft_strdup(array[i]);
+		i++;
+	}
+	expression[i] = 0;
+	return (expression);
+}
+
+void	close_all_pipes(int **fds, int nb_pipe)
+{
+	int	i = 0;
+
+	while(i < nb_pipe)
+	{
+		close(fds[i][0]);
+		close(fds[i][1]);
+		i++;
+	}
+}
+
+void	exec_loop(int index, int **fds, t_data **data, char **bin_paths, char **argv)
+{	
+	//char	*argv1[] = {"ls", NULL};
+	//char	*argv2[] = {"rev", NULL};
+	//char	*argv3[] = {"sort", NULL};
 	char	*path_cmd;
+	char	**expression;
 
-	path_cmd = get_path_cmd(bin_paths, args[0]);
-	if (type(args[0], (*data)->env) == BUILTIN)
+	expression = cut_arrays_into_expression(argv, index);
+	for(int i = 0; expression[i]; i++)
+		printf("expression[%d]: %s et index = %d\n", i, expression[i], index);
+	path_cmd = get_path_cmd(bin_paths, expression[0]);
+	if (index == 0)
 	{
-		state = 1;
-		free(path_cmd);
-		execute_bultin(tokenlist, data, args[0]);
-		if (!only_cmd)
+		int c = fork();
+		if (c == 0)
 		{
-			//printf("EXIT BI\n");
-			exit(EXIT_SUCCESS);
+			//In exec child process 1
+			dup2(fds[0][1], STDOUT_FILENO);
+			close_all_pipes(fds, (*data)->nb_pipe);
+			execve(path_cmd, expression, env_list_to_array((*data)->env));
+			ft_putstr_fd("Error: command not found\n", 2);
+			exit(1);
 		}
 	}
-	else if (type(args[0], (*data)->env) == COMMAND)
+	else if (index != (*data)->nb_pipe)
 	{
-		state = 1;
-		if (execve(path_cmd, args, env_list_to_array((*data)->env)) < 0)
+		int d = fork();
+		if (d == 0)
 		{
-			perror("execve failed");
-			exit(EXIT_FAILURE);
+			//In exec child process 2
+			dup2(fds[index - 1][0], STDIN_FILENO);
+			dup2(fds[index][1], STDOUT_FILENO);
+			close_all_pipes(fds, (*data)->nb_pipe);
+			execve(path_cmd, expression, env_list_to_array((*data)->env));
+			ft_putstr_fd("Error: command not found\n", 2);
+			exit(1);
 		}
 	}
-	else if(type(args[0], (*data)->env) == -1)
+	else if (index == (*data)->nb_pipe)
 	{
-		print_error(args[0], NULL, "command not found");
-		exit(127);
+		int x = fork();
+		if (x == 0)
+		{
+			dup2(fds[index - 1][0], STDIN_FILENO);
+			close_all_pipes(fds, (*data)->nb_pipe);
+			execve(path_cmd, expression, env_list_to_array((*data)->env));
+			ft_putstr_fd("Error: command not found\n", 2);
+			exit(1);
+		}
 	}
 }
 
-static void	run_pipe(char **bin_paths, char **argv, t_data **data,
-		t_token **tokenlist)
+void	execute_single_command(t_data **data, char **argv)
 {
-	int	pipefd[2];
-	pid_t	pid;
-
-	if (pipe(pipefd) < 0)
-		perror("pipe creation failed");
-	pid = fork();
-	if (pid == 0)
-	{
-		//printf("JUST AFTER FORK IN RUN PIPE: PID = %ld PPID = %ld\n\n\n", (long)getpid(), (long)getppid());
-		if (dup2(pipefd[1], STDOUT_FILENO) < 0)
-			perror("dup2 failed");
-	}
-	else
-	{
-		if (dup2(pipefd[0], STDIN_FILENO) < 0)
-			perror("dup2 failed");
-		close(pipefd[1]);
-		printf("JUST BEFORE EXEC CMD = %s, IN RUN PIPE: PID = %ld PPID = %ld\n\n\n", *argv, (long)getpid(), (long)getppid());
-		int w = wait(&pid);
-		printf("%d\n", w);
-		exec_cmd(bin_paths, argv, data, tokenlist, 0);
-	}
-}
-
-static void	handle_pipes(char **args, char **bin_paths, t_data **data,
-		t_token **tokenlist)
-{
-	int		i;
-	size_t	nb_args;
-
-	nb_args = count_args(args);
-	i = nb_args - 1;
-	while (i >= 0)
-	{
-		if (ft_strcmp(args[i], "|") == 0)
-		{
-			args[i] = NULL;
-			run_pipe(bin_paths, &args[i + 1], data, tokenlist);
-			nb_args = i;
-		}
-		i--;
-	}
-}
-
-// Gère la création de tous les processus enfants pour les commandes
-void	execute_line(t_token **tokenlist, t_data **data)
-{
-	char	**args;
-	pid_t	pid;
+	int	f;	
+	char	*path_cmd;
 	char	**bin_paths;
 
 	bin_paths = find_bin_paths((*data)->env);
-	state = 1;
-	args = tokens_to_array(tokenlist);
-	//printf("ARG = %s\n", *args);
-	if (type(*args, (*data)->env) == BUILTIN && (*data)->nb_pipe == 0)
+	f = fork();
+	if (f == 0)
 	{
-		pid = -1;
-		//printf("ONLY CMD\n");
-		exec_cmd(bin_paths, args, data, tokenlist, 1);
+		path_cmd = get_path_cmd(bin_paths, argv[0]);
+		execve(path_cmd, argv, env_list_to_array((*data)->env));
 	}
-	else
-		pid = fork();
-	//printf("JUST AFTER FORK: PID = %ld PPID = %ld\n\n\n", (long)getpid(), (long)getppid());
-	if (pid == 0)
-	{
-		//printf("JUST AFTER FORK IN EXEC LINE: PID = %ld PPID = %ld\n\n\n", (long)getpid(), (long)getppid())e
-		handle_pipes(args, bin_paths, data, tokenlist);
-		//printf("JUST BEFORE EXEC CMD = %s IN EXEC LINE: PID = %ld PPID = %ld\n\n\n", *args, (long)getpid(), (long)getppid());
-		printf("ARG IN MAIN = %s\n", *args);
-		exec_cmd(bin_paths, args, data, tokenlist, 0);
-		exit(EXIT_SUCCESS);
-	}
-	//printf("I'M WAITING THE PID = %ld\n", (long)pid);
-	wait(NULL);
-	//while((waitpid(pid, NULL, 0)) > 0);
-	//printf("JUST AFTER WAIT\n");
-	//printf("I CONTINUE\n");
-	free_double_array(bin_paths);
-	free(args);
-	(*data)->nb_pipe = 0;
 }
-  
+
+void	handle_single_command(char **argv, t_data **data, t_token **tokenlist)
+{
+	if (type(argv[0], (*data)->env) == BUILTIN)	
+		execute_bultin(tokenlist, data, argv[0]); 
+ 	else if (type(argv[0], (*data)->env) == COMMAND)
+		execute_single_command(data, argv);
+}
+
+void	execute_line(t_token **tokenlist, t_data **data)
+{
+	(void)tokenlist;
+	int	i;
+	int	**fds;
+	char	**argv;
+	char	**bin_paths;
+	
+	argv = tokens_to_array(tokenlist);
+	state = 1;
+	if ((*data)->nb_pipe == 0)
+		handle_single_command(argv, data, tokenlist);
+	else
+	{
+		fds = init_pipes(data);
+		bin_paths = find_bin_paths((*data)->env);
+		i = (*data)->nb_pipe;
+		while (i >= 0)
+		{
+			exec_loop(i, fds, data, bin_paths, argv);	
+			i--;
+		}
+		printf("End of execute line in main process\n");
+		close_all_pipes(fds, (*data)->nb_pipe);
+	}
+	while (wait(NULL) > 0);
+	(*data)->nb_pipe = 0;
+	state = 0;
+}
