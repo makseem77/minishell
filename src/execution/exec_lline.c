@@ -95,8 +95,8 @@ void	close_all_pipes(int **fds, int nb_pipe)
 void	exec_loop(int index, int **fds, t_data **data, char **bin_paths, char **argv)
 {	
 	//char	*argv1[] = {"ls", NULL};
-	//char	*argv2[] = {"cat", NULL};
-	//char	*argv3[] = {"rev", NULL};
+	//char	*argv2[] = {"rev", NULL};
+	//char	*argv3[] = {"sort", NULL};
 	char	*path_cmd;
 	char	**expression;
 
@@ -113,7 +113,7 @@ void	exec_loop(int index, int **fds, t_data **data, char **bin_paths, char **arg
 			execve(path_cmd, expression, env_list_to_array((*data)->env));
 		}
 	}
-	else
+	else if (index != (*data)->nb_pipe)
 	{
 		int d = fork();
 		if (d == 0)
@@ -127,8 +127,10 @@ void	exec_loop(int index, int **fds, t_data **data, char **bin_paths, char **arg
 			execve(path_cmd, expression, env_list_to_array((*data)->env));
 		}
 	}
-	if (index == (*data)->nb_pipe)
+	else if (index == (*data)->nb_pipe)
 	{
+		int x = fork();
+		if (x == 0)
 		{
 			dup2(fds[index - 1][0], STDIN_FILENO);
 			close_all_pipes(fds, (*data)->nb_pipe);
@@ -149,6 +151,7 @@ int	**init_pipes(t_data **data)
 
 	fds = malloc(sizeof(int *) * (*data)->nb_pipe);
 	i = 0;
+	printf("pipe = %d\n", (*data)->nb_pipe);
 	while (i < (*data)->nb_pipe)
 	{
 		fds[i] = malloc(sizeof(int) * 2);
@@ -156,6 +159,29 @@ int	**init_pipes(t_data **data)
 		i++;
 	}
 	return (fds);
+}
+
+void	execute_single_command(t_data **data, char **argv)
+{
+	int	f;	
+	char	*path_cmd;
+	char	**bin_paths;
+
+	bin_paths = find_bin_paths((*data)->env);
+	f = fork();
+	if (f == 0)
+	{
+		path_cmd = get_path_cmd(bin_paths, argv[0]);
+		execve(path_cmd, argv, env_list_to_array((*data)->env));
+	}
+}
+
+void	handle_single_command(char **argv, t_data **data, t_token **tokenlist)
+{
+	if (type(argv[0], (*data)->env) == BUILTIN)	
+		execute_bultin(tokenlist, data, argv[0]); 
+ 	else if (type(argv[0], (*data)->env) == COMMAND)
+		execute_single_command(data, argv);
 }
 
 void	execute_line(t_token **tokenlist, t_data **data)
@@ -166,24 +192,24 @@ void	execute_line(t_token **tokenlist, t_data **data)
 	char	**argv;
 	char	**bin_paths;
 	
-	fds = init_pipes(data);
 	argv = split_tokens_into_array(tokenlist);
-	bin_paths = find_bin_paths((*data)->env);
-	int f = fork();
-	i = 0;
-	if (f == 0)
+	state = 1;
+	if ((*data)->nb_pipe == 0)
+		handle_single_command(argv, data, tokenlist);
+	else
 	{
+		fds = init_pipes(data);
+		bin_paths = find_bin_paths((*data)->env);
+		i = 0;
 		while (i <= (*data)->nb_pipe)
 		{
 			exec_loop(i, fds, data, bin_paths, argv);	
 			i++;
 		}
-	}
-	else
-	{
 		printf("End of execute line in main process\n");
+		close_all_pipes(fds, (*data)->nb_pipe);
 	}
-	close_all_pipes(fds, (*data)->nb_pipe);
-	while(wait(NULL) > 0);
+	while (wait(NULL) > 0);
 	(*data)->nb_pipe = 0;
+	state = 0;
 }
