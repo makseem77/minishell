@@ -1,23 +1,23 @@
 
-char	**find_expression_in_argv(char **argv, int index, int nb_pipe)
+char	**find_expression_in_argv(char **args, int index, int nb_pipe)
 {
 	int	pipe_count;
 	int	i;
 
 	pipe_count = 0;
 	i = 0;
-	while (*argv)
+	while (*args)
 	{
 		if (pipe_count == (nb_pipe - index))
 			break;
-		if (ft_strcmp(*argv, "|") == 0)
+		if (ft_strcmp(*args, "|") == 0)
 			pipe_count++;
-		argv++;
+		args++;
 	}
-	return (argv);
+	return (args);
 }
 
-char	**cut_expression_from_argv(char **argv)
+char	**cut_expression_from_argv(char **args)
 {
 	char	**expression;
 	int	size;
@@ -25,24 +25,24 @@ char	**cut_expression_from_argv(char **argv)
 
 	size = 0;
 	i = 0;
-	while (argv[size] && ft_strcmp(argv[size], "|"))
+	while (args[size] && ft_strcmp(args[size], "|"))
 		size++;
 	expression = malloc(sizeof(char *) * (i + 1));
 	while (i < size)
 	{
-		expression[i] = ft_strdup(argv[i]);
+		expression[i] = ft_strdup(args[i]);
 		i++;
 	}
 	expression[i] = 0;
 	return (expression);
 }
 
-char	**get_expression(char **argv, int index, int nb_pipe)
+char	**get_expression(char **args, int index, int nb_pipe)
 {
 	char	**exp_pointer;
 	char	**expression;
 
-	exp_pointer = find_expression_in_argv(argv, index, nb_pipe);
+	exp_pointer = find_expression_in_argv(args, index, nb_pipe);
 	expression = cut_expression_from_argv(exp_pointer);
 	return (expression);
 }

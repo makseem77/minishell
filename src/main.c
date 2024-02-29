@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 22:29:14 by maxborde          #+#    #+#             */
-/*   Updated: 2024/02/24 19:02:25 by maxborde         ###   ########.fr       */
+/*   Updated: 2024/02/29 13:25:20 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,13 @@ static bool	set_data(t_data **data, char **envp)
 	return (true);
 }
 
-int	main(int argc, char **argv, char **envp)
+int	main(int argc, char **args, char **envp)
 {
 	t_data	*data;
 
 	data = NULL;
 	printf("IN MAIN:\nPID = %ld\nPPID = %ld\n", (long)getpid(), (long)getppid());
-	if (argc > 1 || ft_strcmp(argv[0], "./minishell"))
+	if (argc > 1 || ft_strcmp(args[0], "./minishell"))
 		return (ft_putstr_fd("Usage: ./minishell\n", 2), 0);
 	if (!set_data(&data, envp))
 		return (ft_putstr_fd("Error: malloc failed\n", 2), 1);
