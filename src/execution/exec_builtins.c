@@ -6,28 +6,37 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:23:46 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/28 17:21:00 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/02/29 15:58:27 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+size_t	count_tokens(t_token **token)
+{
+	int	i;
+	t_token	*tmp;
+
+	i = 0;
+	tmp = *token;
+	while (tmp)
+	{
+		i++;
+		tmp = tmp->next;
+	}
+	return (i);
+}
+
 //Returns the tokens in the tokenlist as an array of strings.
 char	**tokens_to_array(t_token **token)
 {
-	size_t	nb_args;
+	size_t	nb_tokens;
 	t_token	*tmp;
 	char	**args;
 	size_t	i;
 
-	tmp = *token;
-	nb_args = 0;
-	while (tmp)
-	{
-		nb_args++;
-		tmp = tmp->next;
-	}
-	args = (char **)malloc(sizeof(char *) * (nb_args + 1));
+	nb_tokens = count_tokens(token);
+	args = (char **)malloc(sizeof(char *) * (nb_tokens + 1));
 	tmp = *token;
 	i = 0;
 	while (tmp)
@@ -69,31 +78,30 @@ static void	handle_cd_exit(t_token **tokenlist, char **args, t_data **data)
 void	execute_bultin(t_token **tokenlist, t_data **data, char *cmd)
 {
 	char	**args;
-	char	**temp;
-	t_token	*tmp;
-	int		i;
+	char	**tmp_tokens;
+	t_token	*tmp_token;
+	t_token	*token_to_be_exec;
 
-	printf("IN BUILTIN:\n PID = %ld\nPPID = %ld\n\n\n\n", (long)getpid(), (long)getppid());
-	tmp = *tokenlist;
-	i = 0;
-	while (tmp && ft_strcmp(tmp->element, cmd) != 0)
+	tmp_tokens = tokens_to_array(tokenlist);
+	tmp_token = *tokenlist;
+	while (tmp_token)
 	{
-		i++;
-		tmp = tmp->next;
+		if(ft_strcmp(tmp_token->element, cmd) == 0)
+			token_to_be_exec = tmp_token;
+		tmp_token = tmp_token->next;
 	}
-	temp = tokens_to_array(&tmp);
-	args = cut_args_at_pipe(temp);
-	if (ft_strcmp(tmp->element, "echo") == 0)
+	args = cut_args_at_pipe(tmp_tokens, token_to_be_exec->element);
+	if (ft_strcmp(token_to_be_exec->element, "echo") == 0)
 		echo(args);
-	else if (ft_strcmp(tmp->element, "env") == 0)
+	else if (ft_strcmp(token_to_be_exec->element, "env") == 0)
 		env(args, (*data)->env);
-	else if (ft_strcmp(tmp->element, "export") == 0)
+	else if (ft_strcmp(token_to_be_exec->element, "export") == 0)
 		export(args, (*data)->env, (*data)->exp_list);
-	else if (ft_strcmp(tmp->element, "pwd") == 0)
+	else if (ft_strcmp(token_to_be_exec->element, "pwd") == 0)
 		pwd();
-	else if (ft_strcmp(tmp->element, "unset") == 0)
+	else if (ft_strcmp(token_to_be_exec->element, "unset") == 0)
 		unset(args, (*data)->env, (*data)->exp_list);
 	handle_cd_exit(tokenlist, args, data);
 	free_double_array(args);
-	free(temp);
+	free(tmp_tokens);
 }

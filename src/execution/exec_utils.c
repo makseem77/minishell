@@ -6,13 +6,13 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 10:59:37 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/27 16:26:34 by maxborde         ###   ########.fr       */
+/*   Updated: 2024/02/29 15:58:03 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-size_t	count_args(char **args)
+static size_t	count_args(char **args)
 {
 	size_t	i;
 
@@ -22,26 +22,31 @@ size_t	count_args(char **args)
 	return (i);
 }
 
-char	**cut_args_at_pipe(char **args)
+char	**cut_args_at_pipe(char **args, char *token_to_be_exec)
 {
 	char	**newargs;
-	int	i;
-	int	j;
+	int		i;
+	int		j;
+	size_t	nb_args;
+	size_t	cmd_len;
 
-	i = 0;
+	nb_args = count_args(args);
+	i = nb_args - 1;
 	j = 0;
 	while (args[i])
 	{
-		if (ft_strcmp(args[i], "|") == 0)
-			break;
+		if (ft_strcmp(args[i], token_to_be_exec) == 0)
+			break ;
+		i--;
+	}
+	cmd_len = nb_args - i;
+	newargs = malloc(sizeof(char *) * (cmd_len + 1));
+	while (j < (int)(cmd_len))
+	{
+		newargs[j] = ft_strdup(args[i]);
+		j++;
 		i++;
 	}
-	newargs = malloc(sizeof(char *) * (i + 1));
-	while (j < i)
-	{
-		newargs[j] = ft_strdup(args[j]);
-		j++;
-	}	
 	newargs[j] = 0;
 	return (newargs);
 }
