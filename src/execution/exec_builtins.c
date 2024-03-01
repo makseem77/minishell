@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:23:46 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/29 15:58:27 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/01 11:47:49 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,33 @@ char	**tokens_to_array(t_token **token)
 	}
 	args[i] = NULL;
 	return (args);
+}
+
+static void del_token(t_token **tokenlist, t_token *token)
+{
+	t_token	*tmp;
+	t_token	*prev;
+
+	tmp = *tokenlist;
+	if (tmp == token)
+	{
+		*tokenlist = tmp->next;
+		free(tmp->element);
+		free(tmp);
+		return ;
+	}
+	while (tmp)
+	{
+		if (tmp == token)
+		{
+			prev->next = tmp->next;
+			free(tmp->element);
+			free(tmp);
+			return ;
+		}
+		prev = tmp;
+		tmp = tmp->next;
+	}
 }
 
 static void	handle_cd_exit(t_token **tokenlist, char **args, t_data **data)
@@ -91,6 +118,8 @@ void	execute_bultin(t_token **tokenlist, t_data **data, char *cmd)
 		tmp_token = tmp_token->next;
 	}
 	args = cut_args_at_pipe(tmp_tokens, token_to_be_exec->element);
+	// for(int i = 0; args[i]; i++)
+	// 	printf("after cut_args_at_pipe args[%d] = %s\n", i, args[i]);
 	if (ft_strcmp(token_to_be_exec->element, "echo") == 0)
 		echo(args);
 	else if (ft_strcmp(token_to_be_exec->element, "env") == 0)
@@ -102,6 +131,7 @@ void	execute_bultin(t_token **tokenlist, t_data **data, char *cmd)
 	else if (ft_strcmp(token_to_be_exec->element, "unset") == 0)
 		unset(args, (*data)->env, (*data)->exp_list);
 	handle_cd_exit(tokenlist, args, data);
+	del_token(tokenlist, token_to_be_exec);
 	free_double_array(args);
 	free(tmp_tokens);
 }

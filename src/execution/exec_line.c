@@ -17,6 +17,8 @@ void	execute_line(t_token **tokenlist, t_data **data)
 	char	**args;
 	
 	args = tokens_to_array(tokenlist);
+	for(int i = 0; args[i]; i++)
+		printf("args[%d] = %s\n", i, args[i]);
 	state = 1;
 	fds = init_pipes(data);
 	i = (*data)->nb_pipe;
