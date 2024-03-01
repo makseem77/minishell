@@ -34,25 +34,61 @@ static char	**cut_arrays_into_expression(char **array, int index)
 	return (expression);
 }
 
+static void	configure_io(int index, int **fds, t_data **data)
+{
+	if (index == 0)
+		dup2(fds[index][1], STDOUT_FILENO);
+	else if (index == (*data)->nb_pipe)
+		dup2(fds[index - 1][0], STDIN_FILENO);
+	else
+	{
+		dup2(fds[index - 1][0], STDIN_FILENO);
+		dup2(fds[index][1], STDOUT_FILENO);
+	}
+}
+
 void	exec(t_token **tokenlist, t_data **data, int index, int **fds, char **args)
 {
+	char **bin_paths;
+	char *path_cmd;
+	pid_t pid;
 	char **expression;
 
-	
-	for(int i = 0; args[i]; i++)
-		printf("args[%d] = %s\n", i, args[i]);
+	bin_paths = find_bin_paths((*data)->env);
 	if ((*data)->nb_pipe == 0)
+	{
 		expression = args;
+		if(type(expression[0], (*data)->env) == BUILTIN)
+		{
+			execute_bultin(tokenlist, data, expression);
+			return ;
+		}
+	}
 	else
 		expression = cut_arrays_into_expression(args, index);
-	printf("index = %d\n", index);
-	printf("expression[0] = %s\n", expression[0]);
-	if (type(expression[0], (*data)->env) == BUILTIN)	
-		execute_bultin(tokenlist, data, expression); 
- 	else if (type(expression[0], (*data)->env) == COMMAND)
-		exec_cmd(data, index, fds, expression);
-	else
-		print_error(expression[0], NULL, "command not found");
+	path_cmd = get_path_cmd(bin_paths, expression[0]);
+	pid = fork();
+	if (pid == 0)
+	{
+		if ((*data)->nb_pipe > 0)
+			configure_io(index, fds, data);
+		close_all_pipes(fds, (*data)->nb_pipe);
+		if (type(expression[0], (*data)->env) == BUILTIN)
+		{
+			execute_bultin(tokenlist, data, expression);
+			exit(EXIT_SUCCESS);
+		}
+		else if (type(expression[0], (*data)->env) == COMMAND)
+		{
+			if (execve(path_cmd, expression, env_list_to_array((*data)->env)) == -1)
+				exit(1);
+		}
+		else
+		{
+			print_error(expression[0], NULL, "command not found");
+			exit(EXIT_FAILURE);
+		}
+	}
 }
 
 void	execute_line(t_token **tokenlist, t_data **data)
