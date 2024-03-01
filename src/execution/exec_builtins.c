@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:23:46 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/01 11:47:49 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/01 16:32:05 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,89 +49,44 @@ char	**tokens_to_array(t_token **token)
 	return (args);
 }
 
-static void del_token(t_token **tokenlist, t_token *token)
+static void	handle_cd_exit(t_token **tokenlist, t_data **data, char **expression)
 {
-	t_token	*tmp;
-	t_token	*prev;
-
-	tmp = *tokenlist;
-	if (tmp == token)
+	if (ft_strcmp(*expression, "cd") == 0)
 	{
-		*tokenlist = tmp->next;
-		free(tmp->element);
-		free(tmp);
-		return ;
-	}
-	while (tmp)
-	{
-		if (tmp == token)
+		if (*(expression + 1))
 		{
-			prev->next = tmp->next;
-			free(tmp->element);
-			free(tmp);
-			return ;
-		}
-		prev = tmp;
-		tmp = tmp->next;
-	}
-}
-
-static void	handle_cd_exit(t_token **tokenlist, char **args, t_data **data)
-{
-	if (ft_strcmp(*args, "cd") == 0)
-	{
-		if (*(args + 1))
-		{
-			if (*(args + 2))
+			if (*(expression + 2))
 			{
 				print_error("cd", NULL, "too many arguments");
 				return ;
 			}
-			cd(*(args + 1), data);
+			cd(*(expression + 1), data);
 		}
 		else
 			cd(NULL, data);
 	}
-	else if (ft_strcmp(*args, "exit") == 0)
+	else if (ft_strcmp(*expression, "exit") == 0)
 	{
-		if (*(args + 1))
-			exit_bash(*(args + 1), data, tokenlist);
+		if (*(expression + 1))
+			exit_bash(*(expression + 1), data, tokenlist);
 		else
 			exit_bash(NULL, data, tokenlist);
 	}
 }
 
 //Executes the builtin command in the token.
-void	execute_bultin(t_token **tokenlist, t_data **data, char *cmd)
+void	execute_bultin(t_token **tokenlist, t_data **data, char **expression)
 {
-	char	**args;
-	char	**tmp_tokens;
-	t_token	*tmp_token;
-	t_token	*token_to_be_exec;
-
-	tmp_tokens = tokens_to_array(tokenlist);
-	tmp_token = *tokenlist;
-	while (tmp_token)
-	{
-		if(ft_strcmp(tmp_token->element, cmd) == 0)
-			token_to_be_exec = tmp_token;
-		tmp_token = tmp_token->next;
-	}
-	args = cut_args_at_pipe(tmp_tokens, token_to_be_exec->element);
-	// for(int i = 0; args[i]; i++)
-	// 	printf("after cut_args_at_pipe args[%d] = %s\n", i, args[i]);
-	if (ft_strcmp(token_to_be_exec->element, "echo") == 0)
-		echo(args);
-	else if (ft_strcmp(token_to_be_exec->element, "env") == 0)
-		env(args, (*data)->env);
-	else if (ft_strcmp(token_to_be_exec->element, "export") == 0)
-		export(args, (*data)->env, (*data)->exp_list);
-	else if (ft_strcmp(token_to_be_exec->element, "pwd") == 0)
+	if (ft_strcmp(expression[0], "echo") == 0)
+		echo(expression);
+	else if (ft_strcmp(expression[0], "env") == 0)
+		env(expression, (*data)->env);
+	else if (ft_strcmp(expression[0], "export") == 0)
+		export(expression, (*data)->env, (*data)->exp_list);
+	else if (ft_strcmp(expression[0], "pwd") == 0)
 		pwd();
-	else if (ft_strcmp(token_to_be_exec->element, "unset") == 0)
-		unset(args, (*data)->env, (*data)->exp_list);
-	handle_cd_exit(tokenlist, args, data);
-	del_token(tokenlist, token_to_be_exec);
-	free_double_array(args);
-	free(tmp_tokens);
+	else if (ft_strcmp(expression[0], "unset") == 0)
+		unset(expression, (*data)->env, (*data)->exp_list);
+	handle_cd_exit(tokenlist, data, expression);
+	free_double_array(expression);
 }

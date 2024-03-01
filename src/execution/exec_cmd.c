@@ -6,46 +6,11 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 13:21:20 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/29 21:20:41 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/01 16:19:40 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static char	**cut_arrays_into_expression(char **array, int index)
-{
-	int		i;
-	int		pipecount;
-	char	**expression;
-
-	i = 0;
-	pipecount = 0;
-	while (*array && index > 0)
-	{
-		if (ft_strcmp(*array, "|") == 0)
-		{
-			if (pipecount == index - 1)
-			{
-				array++;
-				break ;
-			}
-			else
-				pipecount++;
-		}
-		array++;
-	}
-	while (array[i] && ft_strcmp(array[i], "|"))
-		i++;
-	expression = malloc(sizeof(char *) * (i + 1));
-	i = 0;
-	while (array[i] && ft_strcmp(array[i], "|"))
-	{
-		expression[i] = ft_strdup(array[i]);
-		i++;
-	}
-	expression[i] = 0;
-	return (expression);
-}
 
 static void	configure_io(int index, int **fds, t_data **data)
 {
@@ -60,9 +25,8 @@ static void	configure_io(int index, int **fds, t_data **data)
 	}
 }
 
-void	exec_cmd(t_data **data, int index, int **fds, char **args)
+void	exec_cmd(t_data **data, int index, int **fds, char **expression)
 {
-	char **expression;
 	char **bin_paths;
 	char *path_cmd;
 	pid_t pid;
@@ -71,10 +35,6 @@ void	exec_cmd(t_data **data, int index, int **fds, char **args)
 	bin_paths = find_bin_paths((*data)->env);
 	// for (int i = 0; args[i]; i++)
 	// 	printf("args[%d] = %s\n", i, args[i]);
-	if ((*data)->nb_pipe == 0)
-		expression = args;
-	else
-		expression = cut_arrays_into_expression(args, index);
 	// for (int i = 0; expression[i]; i++)
 	// 	printf("expression[%d] = %s\n", i, expression[i]);
 	path_cmd = get_path_cmd(bin_paths, expression[0]);

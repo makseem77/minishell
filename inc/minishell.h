@@ -109,7 +109,7 @@ int	compute_bytes_to_cmp(char *variableinlist,
 //	EXECUTION FOLDER
 //	EXEC_BUILTINS
 void					execute_bultin(t_token **tokenlist, t_data **data,
-							char *cmd);
+							char **expression);
 size_t					count_tokens(t_token **token);
 char					**tokens_to_array(t_token **token);
 // EXEC_CMD
@@ -119,7 +119,6 @@ void					exec_cmd(t_data **data, int index, int **fds,
 void					execute_line(t_token **tokenlist, t_data **data);
 //	EXEC_UTILS
 char					*get_path_cmd(char **paths, char *cmd);
-char					**cut_args_at_pipe(char **args, char *token_to_be_exec);
 // INIT PIPES
 int						**init_pipes(t_data **data);
 void					close_all_pipes(int **fds, int nb_pipe);

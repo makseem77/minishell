@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 11:32:51 by maxborde          #+#    #+#             */
-/*   Updated: 2024/02/24 10:34:59 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/01 16:29:01 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,21 +106,21 @@ static bool	arg_in_list(char *arg, t_env_list **lst, int offset)
 // This function will check if the variable is valid.
 // A variable is valid if it starts with a letter or an underscore,
 // and if it contains only letters, numbers and underscores.
-// static bool	is_valid_variable(char *variable)
-// {
-// 	int	i;
+static bool	is_valid_variable(char *variable)
+{
+	int	i;
 
-// 	i = 0;
-// 	if (!ft_isalpha(variable[0]) || variable[0] == '_')
-// 		return (false);
-// 	while (variable[i])
-// 	{
-// 		if (!ft_isalnum(variable[i]) && variable[i] != '_')
-// 			return (false);
-// 		i++;
-// 	}
-// 	return (true);
-// }
+	i = 0;
+	if (!ft_isalpha(variable[0]) || variable[0] == '_')
+		return (false);
+	while (variable[i])
+	{
+		if (!ft_isalnum(variable[i]) && variable[i] != '_')
+			return (false);
+		i++;
+	}
+	return (true);
+}
 
 // This function will go trough all of the args passed to unset
 // so they can be removed from the env list and the export list.
@@ -132,12 +132,12 @@ void	unset(char **args, t_env_list **env, t_env_list **exp_list)
 {
 	while (*args)
 	{
-		// if (!(is_valid_variable(*args)))
-		// {
-		// 	ft_putstr_fd("minishell: unset: `", 2);
-		// 	ft_putstr_fd(*args, 2);
-		// 	ft_putstr_fd("': not a valid identifier\n", 2);
-		// }
+		if (!(is_valid_variable(*args)))
+		{
+			ft_putstr_fd("minishell: unset: `", 2);
+			ft_putstr_fd(*args, 2);
+			ft_putstr_fd("': not a valid identifier\n", 2);
+		}
 		if (arg_in_list(*args, env, 0))
 			lst_del_one(env, *args, 0);
 		if (arg_in_list(*args, exp_list, ft_strlen("declare -x ")))

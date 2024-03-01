@@ -1,24 +1,58 @@
 #include "minishell.h"
 
+static char	**cut_arrays_into_expression(char **array, int index)
+{
+	int		i;
+	int		pipecount;
+	char	**expression;
+
+	i = 0;
+	pipecount = 0;
+	while (*array && index > 0)
+	{
+		if (ft_strcmp(*array, "|") == 0)
+		{
+			pipecount++;
+			if (pipecount == index)
+			{
+				array++;
+				break ;
+			}
+		}
+		array++;
+	}
+	while (array[i] && ft_strcmp(array[i], "|"))
+		i++;
+	expression = malloc(sizeof(char *) * (i + 1));
+	i = 0;
+	while (array[i] && ft_strcmp(array[i], "|"))
+	{
+		expression[i] = ft_strdup(array[i]);
+		i++;
+	}
+	expression[i] = 0;
+	return (expression);
+}
+
 void	exec(t_token **tokenlist, t_data **data, int index, int **fds, char **args)
 {
-	int index_cmd;
-	int nb_pipe;
+	char **expression;
 
-	index_cmd = 0;
-	nb_pipe = 0;
-	while(args[index_cmd] && nb_pipe != index)
-	{
-		if(ft_strcmp(args[index_cmd], "|") == 0)
-			nb_pipe++;
-		index_cmd++;
-	}
-	if (type(args[index_cmd], (*data)->env) == BUILTIN)	
-		execute_bultin(tokenlist, data, args[index_cmd]); 
- 	else if (type(args[index_cmd], (*data)->env) == COMMAND)
-		exec_cmd(data, index, fds, args);
+	
+	for(int i = 0; args[i]; i++)
+		printf("args[%d] = %s\n", i, args[i]);
+	if ((*data)->nb_pipe == 0)
+		expression = args;
 	else
-		print_error(args[index_cmd], NULL, "command not found");
+		expression = cut_arrays_into_expression(args, index);
+	printf("index = %d\n", index);
+	printf("expression[0] = %s\n", expression[0]);
+	if (type(expression[0], (*data)->env) == BUILTIN)	
+		execute_bultin(tokenlist, data, expression); 
+ 	else if (type(expression[0], (*data)->env) == COMMAND)
+		exec_cmd(data, index, fds, expression);
+	else
+		print_error(expression[0], NULL, "command not found");
 }
 
 void	execute_line(t_token **tokenlist, t_data **data)
@@ -28,8 +62,6 @@ void	execute_line(t_token **tokenlist, t_data **data)
 	char	**args;
 	
 	args = tokens_to_array(tokenlist);
-	for(int i = 0; args[i]; i++)
-		printf("args[%d] = %s\n", i, args[i]);
 	state = 1;
 	fds = init_pipes(data);
 	i = (*data)->nb_pipe;
