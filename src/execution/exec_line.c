@@ -2,12 +2,23 @@
 
 void	exec(t_token **tokenlist, t_data **data, int index, int **fds, char **args)
 {
-	if (type(args[0], (*data)->env) == BUILTIN)	
-		execute_bultin(tokenlist, data, args[0]); 
- 	else if (type(args[0], (*data)->env) == COMMAND)
+	int index_cmd;
+	int nb_pipe;
+
+	index_cmd = 0;
+	nb_pipe = 0;
+	while(args[index_cmd] && nb_pipe != index)
+	{
+		if(ft_strcmp(args[index_cmd], "|") == 0)
+			nb_pipe++;
+		index_cmd++;
+	}
+	if (type(args[index_cmd], (*data)->env) == BUILTIN)	
+		execute_bultin(tokenlist, data, args[index_cmd]); 
+ 	else if (type(args[index_cmd], (*data)->env) == COMMAND)
 		exec_cmd(data, index, fds, args);
 	else
-		print_error(args[0], NULL, "command not found");
+		print_error(args[index_cmd], NULL, "command not found");
 }
 
 void	execute_line(t_token **tokenlist, t_data **data)
