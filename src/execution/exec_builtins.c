@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:23:46 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/01 17:17:02 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/01 23:20:27 by maxborde         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,5 +88,4 @@ void	execute_bultin(t_token **tokenlist, t_data **data, char **expression)
 	else if (ft_strcmp(expression[0], "unset") == 0)
 		unset(expression, (*data)->env, (*data)->exp_list);
 	handle_cd_exit(tokenlist, data, expression);
-	free_double_array(expression);
 }

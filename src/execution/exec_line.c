@@ -54,7 +54,6 @@ void	exec(t_token **tokenlist, t_data **data, int index, int **fds, char **args)
 	pid_t pid;
 	char **expression;
 
-	bin_paths = find_bin_paths((*data)->env);
 	if ((*data)->nb_pipe == 0)
 	{
 		expression = args;
@@ -64,9 +63,10 @@ void	exec(t_token **tokenlist, t_data **data, int index, int **fds, char **args)
 			return ;
 		}
 	}
-	else
-		expression = cut_arrays_into_expression(args, index);
+	expression = cut_arrays_into_expression(args, index);
+	bin_paths = find_bin_paths((*data)->env);
 	path_cmd = get_path_cmd(bin_paths, expression[0]);
+	free_double_array(bin_paths);
 	pid = fork();
 	if (pid == 0)
 	{
@@ -76,6 +76,7 @@ void	exec(t_token **tokenlist, t_data **data, int index, int **fds, char **args)
 		if (type(expression[0], (*data)->env) == BUILTIN)
 		{
 			execute_bultin(tokenlist, data, expression);
+			free(path_cmd);
 			exit(EXIT_SUCCESS);
 		}
 		else if (type(expression[0], (*data)->env) == COMMAND)
@@ -86,9 +87,12 @@ void	exec(t_token **tokenlist, t_data **data, int index, int **fds, char **args)
 		else
 		{
 			print_error(expression[0], NULL, "command not found");
+			free(path_cmd);
 			exit(EXIT_FAILURE);
 		}
 	}
+	free(path_cmd);
+	free_double_array(expression);
 }
 
 void	execute_line(t_token **tokenlist, t_data **data)
@@ -108,6 +112,9 @@ void	execute_line(t_token **tokenlist, t_data **data)
 	}
 	close_all_pipes(fds, (*data)->nb_pipe);
 	while (wait(NULL) > 0);
+	free_double_array(args);
+	if ((*data)->nb_pipe)
+		free_fds_array(fds, (*data)->nb_pipe);
 	(*data)->nb_pipe = 0;
 	state = 0;
 }

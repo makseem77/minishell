@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 10:26:56 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/16 11:41:19 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/01 23:19:29 by maxborde         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,5 +64,6 @@ void	exit_bash(char *status, t_data **data, t_token **token)
 	if(token)
 		free_token_list(token);
 	free_data_struct(*data);
+	free(status);
 	exit(exit_status % 256);
 }

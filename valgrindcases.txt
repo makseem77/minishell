@@ -1,0 +1,32 @@
+classic command alone: no leaks
+
+echo alone with no args: no leaks
+echo alone with args: no leaks
+echo alone with args and flag: no leaks
+echo alone with no arg and flag: no leaks
+
+cd alone with args: no leaks
+cd alone with no args: no leaks
+cd ..: no leaks
+cd ~: no leaks
+
+export alone with no args: no leaks;
+export alone with args: no leaks;
+export alone with invalid arg: no leaks;
+
+unset alone with no args: no leaks;
+unset alone with args: no leaks;
+unset alone with invalid arg: no leaks;
+
+pwd alone with args: no leaks;
+pwd alone with no-args: no leaks;
+
+
+classic command piped into classic command: no leaks
+
+ls | cat -e | rev | sort | wc
+this caused some weird valgrind errors ?
+
+
+wgojgwe
+this causes a lot of valgrind errors and leak
