@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 16:05:17 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/01 22:39:55 by maxborde         ###   ########.fr       */
+/*   Updated: 2024/03/02 18:33:21 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,17 +41,4 @@ void	close_all_pipes(int **fds, int nb_pipe)
 		close(fds[i][1]);
 		i++;
 	}
-}
-
-void	free_fds_array(int **fds, int nb_pipe)
-{
-	int	i;
-
-	i = 0;
-	while (i < nb_pipe)
-	{
-		free(fds[i]);
-		i++;
-	}	
-	free(fds);
 }

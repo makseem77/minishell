@@ -1,15 +1,17 @@
 LEAKS / VALGRIND ERRORS: 
 valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --suppressions=ignore_readline.supp -s ./minishell
 
-gwejgjgw -> invalid commands leads to valgrind errors.
+gwejgjgw -> invalid commands leads to valgrind errors.  DONE
 
 builtins alone -> 2 leaks, from how we handle builtins alone.
 
 builtins in pipe -> lot of valgrind errors, still reachable for some reason.
 
-cat | ls => ^M
+./minishell in minishell => "double free or corruption (fasttop)"
 
 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+cat | ls => ^M
+
 cat | ls JUST DOES LS, SHOULD ALSO OPEN THE INTERACTION MODE FOR CAT
 => "interactive command" WITH AT LEAST ONE PIPE
 

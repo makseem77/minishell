@@ -112,9 +112,6 @@ void					execute_bultin(t_token **tokenlist, t_data **data,
 							char **expression);
 size_t					count_tokens(t_token **token);
 char					**tokens_to_array(t_token **token);
-// EXEC_CMD
-void					exec_cmd(t_data **data, int index, int **fds,
-							char **args);
 //	EXEC_LINE
 void					execute_line(t_token **tokenlist, t_data **data);
 //	EXEC_UTILS
@@ -122,7 +119,6 @@ char					*get_path_cmd(char **paths, char *cmd);
 // INIT PIPES
 int						**init_pipes(t_data **data);
 void					close_all_pipes(int **fds, int nb_pipe);
-void					free_fds_array(int **fds, int nb_pipe);
 //////////////////////////////////////////////////////////////////////////////////////
 
 //////////////////////////////////////////////////////////////////////////////////////
@@ -152,6 +148,7 @@ void	free_variable_lists(t_env_list **export_list,
 							t_env_list **env_list);
 void					free_data_struct(t_data *data);
 void					free_lst_content(t_env_list *lst, char *var_name);
+void					free_fds_array(int **fds, int nb_pipe);
 
 //	LOOP
 void					listening_loop(t_data **data);

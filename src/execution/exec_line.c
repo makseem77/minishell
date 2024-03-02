@@ -88,6 +88,11 @@ void	exec(t_token **tokenlist, t_data **data, int index, int **fds, char **args)
 		{
 			print_error(expression[0], NULL, "command not found");
 			free(path_cmd);
+			free_double_array(expression);
+			free_double_array(args);
+			free_fds_array(fds, (*data)->nb_pipe);
+			free_data_struct(*data);
+			free_token_list(tokenlist);
 			exit(EXIT_FAILURE);
 		}
 	}
@@ -113,8 +118,7 @@ void	execute_line(t_token **tokenlist, t_data **data)
 	close_all_pipes(fds, (*data)->nb_pipe);
 	while (wait(NULL) > 0);
 	free_double_array(args);
-	if ((*data)->nb_pipe)
-		free_fds_array(fds, (*data)->nb_pipe);
+	free_fds_array(fds, (*data)->nb_pipe);
 	(*data)->nb_pipe = 0;
 	state = 0;
 }

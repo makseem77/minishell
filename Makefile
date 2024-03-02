@@ -17,7 +17,7 @@ SRC_FILES = main parsing loop signals free \
 			builtins/export/ft_export builtins/export/export_utils \
 			tokenize/tokenize tokenize/handle_env_vars tokenize/tokenize_utils \
 			utils/lst_utils utils/print_utils utils/env_utils \
-			execution/exec_builtins execution/exec_cmd execution/exec_line execution/exec_utils execution/pipes \
+			execution/exec_builtins execution/exec_line execution/exec_utils execution/pipes \
 
 SRC = $(addprefix $(SRC_DIR)/, $(addsuffix .c, $(SRC_FILES)))
 OBJ = $(addprefix $(OBJ_DIR)/, $(addsuffix .o, $(SRC_FILES)))

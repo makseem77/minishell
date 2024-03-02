@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 22:17:47 by maxborde          #+#    #+#             */
-/*   Updated: 2024/02/22 16:07:19 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/02 18:33:29 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,4 +82,17 @@ void	free_lst_content(t_env_list *lst, char *var_name)
 	free(lst->variable);
 	free(lst);
 	free(var_name);
+}
+
+void	free_fds_array(int **fds, int nb_pipe)
+{
+	int	i;
+
+	i = 0;
+	while (i < nb_pipe)
+	{
+		free(fds[i]);
+		i++;
+	}	
+	free(fds);
 }

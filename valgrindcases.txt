@@ -28,5 +28,5 @@ ls | cat -e | rev | sort | wc
 this caused some weird valgrind errors ?
 
 
-wgojgwe
-this causes a lot of valgrind errors and leak
+invalid command alone: no leaks
+invalid command piped into classic command: no leaks
