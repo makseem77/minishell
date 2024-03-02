@@ -21,12 +21,29 @@ unset alone with invalid arg: no leaks;
 pwd alone with args: no leaks;
 pwd alone with no-args: no leaks;
 
+CTRL+C with nothing in the prompt: No leaks;
+CTRL+C with nothing in the prompt: No leaks;
+ENTER with something in the prompt: No leaks;
 
 classic command piped into classic command: no leaks
-
-ls | cat -e | rev | sort | wc
-this caused some weird valgrind errors ?
-
+classic command piped into builtin command: valgrind errors
+classic command piped into invalid command: valgrind errors
+2 those errors are because when we reach the time to execute ls, we try to write the output of the ls command to the write end of the pipe that is closed ?
 
 invalid command alone: no leaks
 invalid command piped into classic command: no leaks
+builtin command piped into classic command: no leaks
+
+| alone: no leaks
+valid command + |: no leaks
+invalid command + |: no leaks
+||: no leaks
+invalid command | invalid command: valgrind errors
+
+$VAR: one leak due to the replacing of the value in line
+
+ls | cat -e | rev | sort | wc
+this caused some weird valgrind errors ?
+i think the sort binary is leaking by itself
+so not on us
+

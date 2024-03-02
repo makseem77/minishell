@@ -67,19 +67,28 @@ void	exec(t_token **tokenlist, t_data **data, int index, int **fds, char **args)
 	bin_paths = find_bin_paths((*data)->env);
 	path_cmd = get_path_cmd(bin_paths, expression[0]);
 	free_double_array(bin_paths);
+	printf("REACHED FORK\n");
 	pid = fork();
 	if (pid == 0)
 	{
 		if ((*data)->nb_pipe > 0)
+		{
+			printf("REACHED IO\n");
 			configure_io(index, fds, data);
+		}
 		close_all_pipes(fds, (*data)->nb_pipe);
 		if (type(expression[0], (*data)->env) == BUILTIN)
 		{
 			execute_bultin(tokenlist, data, expression);
 			free(path_cmd);
+			free_double_array(expression);
+			free_double_array(args);
+			free_fds_array(fds, (*data)->nb_pipe);
+			free_data_struct(*data);
+			free_token_list(tokenlist);
 			exit(EXIT_SUCCESS);
 		}
-		else if (type(expression[0], (*data)->env) == COMMAND)
+		if (type(expression[0], (*data)->env) == COMMAND)
 		{
 			if (execve(path_cmd, expression, env_list_to_array((*data)->env)) == -1)
 				exit(1);

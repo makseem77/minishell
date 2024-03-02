@@ -11,6 +11,8 @@
 # include <stdlib.h>
 # include <strings.h>
 # include <sys/wait.h>
+# include <sys/stat.h>
+# include <sys/types.h>
 # include <unistd.h>
 
 extern bool				state;
