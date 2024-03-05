@@ -71,6 +71,8 @@ void	exec(t_token **tokenlist, t_data **data, int index, int **fds, char **args)
 	pid = fork();
 	if (pid == 0)
 	{
+		printf("command: %s\n", expression[0]);
+		printf("pid = %d\n", getpid());
 		if ((*data)->nb_pipe > 0)
 		{
 			printf("REACHED IO\n");
@@ -124,8 +126,8 @@ void	execute_line(t_token **tokenlist, t_data **data)
 		exec(tokenlist, data, i, fds, args);
 		i--;
 	}
-	close_all_pipes(fds, (*data)->nb_pipe);
 	while (wait(NULL) > 0);
+	close_all_pipes(fds, (*data)->nb_pipe);
 	free_double_array(args);
 	free_fds_array(fds, (*data)->nb_pipe);
 	(*data)->nb_pipe = 0;
