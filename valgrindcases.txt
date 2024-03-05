@@ -38,7 +38,9 @@ builtin command piped into classic command: no leaks
 valid command + |: no leaks
 invalid command + |: no leaks
 ||: no leaks
-invalid command | invalid command: valgrind errors
+invalid command | invalid command: no leaks
+
+unset PATH then ls will cause a segfault fixed
 
 $VAR: one leak due to the replacing of the value in line
 

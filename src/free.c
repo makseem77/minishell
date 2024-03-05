@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 22:17:47 by maxborde          #+#    #+#             */
-/*   Updated: 2024/03/02 18:33:29 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/05 13:42:37 by maxborde         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,12 +69,15 @@ void	free_double_array(char **darray)
 	int	i;
 
 	i = 0;
-	while (darray[i])
+	if (darray)
 	{
-		free(darray[i]);
-		i++;
+		while (darray[i])
+		{
+			free(darray[i]);
+			i++;
+		}
+		free(darray);
 	}
-	free(darray);
 }
 
 void	free_lst_content(t_env_list *lst, char *var_name)

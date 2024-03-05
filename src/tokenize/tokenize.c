@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 15:23:42 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/02 23:26:26 by maxborde         ###   ########.fr       */
+/*   Updated: 2024/03/04 23:11:18 by maxborde         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,16 +127,33 @@ static char	*add_token(char *line, t_token **tokenlist, t_env_list **env)
 t_token	**tokenize(char *line, t_env_list **env)
 {
 	t_token	**tokenlist;
+	char	*tmp;
+	int	env_var;
 
 	tokenlist = malloc(sizeof(t_token *));
 	*tokenlist = NULL;
+	tmp = NULL;
+	env_var = 0;
 	while (*line)
 	{
 		if ((*line < '\t' || *line > '\r') && *line != ' ')
+		{
+			printf("GODDID\n");
+			if (env_var)
+			{
+				free(tmp);
+				tmp = line;
+			}
+			if (*line == '$')
+				env_var = 1;
+			else
+				env_var = 0;
 			line = add_token(line, tokenlist, env);
+		}
 		else
 			line++;
 	}
+	free(tmp);	
 	clean_up_tokens(tokenlist);
 	return (tokenlist);
 }
