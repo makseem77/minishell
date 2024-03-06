@@ -2,12 +2,12 @@
 # define MINISHELL_H
 
 # include "../libft/inc/libft.h"
+# include <stdio.h>
 # include <errno.h>
 # include <fcntl.h>
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <signal.h>
-# include <stdio.h>
 # include <stdlib.h>
 # include <strings.h>
 # include <sys/wait.h>
