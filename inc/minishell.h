@@ -72,7 +72,8 @@ void					clean_up_tokens(t_token **tokenlist);
 
 //	HANDLE_ENV_VARS
 char					*replace_in_line(char *line, t_env_list **env);
-char	*get_var_value(char *var_name, t_env_list **env);
+void	convert_var_into_value(char *element_at_var, char *new_element, t_env_list **env, int *i, int *j);
+int	compute_new_element_len(char *element, t_env_list **env);
 //////////////////////////////////////////////////////////////////////////////////////
 
 //////////////////////////////////////////////////////////////////////////////////////

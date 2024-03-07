@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 15:23:42 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/07 03:05:17 by maxborde         ###   ########.fr       */
+/*   Updated: 2024/03/07 04:16:10 by maxborde         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,53 +83,9 @@ static int	is_or_has_a_variable(char *element)
 	return (0);
 }
 
-char	*extract_var_name_from_ele(char *var_in_element)
-{
-	char	*var_name;
-	int	var_len;
-
-	var_len = 1;
-	while (ft_isdigit(var_in_element[var_len]) || ft_isalpha(var_in_element[var_len]) 
-			|| var_in_element[var_len] == '_')
-		var_len++;
-	//printf("VAR_LEN = %d\n", var_len);
-	var_name = ft_strndup(var_in_element, var_len);
-	//printf("VAR_NAME = %s\n", var_name);
-	return (var_name);
-}
-
-int	compute_new_element_len(char *element, t_env_list **env)
-{
-	char	*var_name;
-	char	*var_value;
-	int	new_element_len;
-	int	i;
-
-	new_element_len = 0;
-	i = 0;
-	while (element[i])
-	{
-		if (element[i] == '$')		
-		{
-			var_name = extract_var_name_from_ele(&element[i]);
-			var_value = get_var_value(var_name, env) + ft_strlen(var_name);	
-			if (var_value - ft_strlen(var_name))
-				new_element_len += ft_strlen(var_value);
-			else
-				new_element_len++;
-		}
-		i++;
-	}
-	free(var_value - ft_strlen(var_name));
-	free(var_name);
-	return (new_element_len);
-}
-
-char	*convert_var_into_value(char *element, t_env_list **env)
+char	*convert_element(char *element, t_env_list **env)
 {
 	char	*new_element;
-	char	*var_name;
-	char	*var_value;
 	int	i;
 	int	j;
 
@@ -139,28 +95,14 @@ char	*convert_var_into_value(char *element, t_env_list **env)
 	while (element[i])
 	{
 		if (element[i] == '$')
-		{
-			var_name = extract_var_name_from_ele(&element[i]);
-			var_value = get_var_value(var_name, env) + ft_strlen(var_name);
-			if (var_value - ft_strlen(var_name))
-			{
-				ft_strlcpy(&new_element[j], var_value, ft_strlen(var_value) + 1);
-				j += ft_strlen(var_value);
-			}
-			else
-				new_element[j] = 0;
-			i += ft_strlen(var_name);
-		}
+			convert_var_into_value(&element[i], &new_element[j], env, &i, &j);
 		else
 			new_element[j++] = element[i++];
 	}
 	new_element[j] = 0;
-	free(var_value - ft_strlen(var_name));
-	free(var_name);
 	free(element);
 	return (new_element);
 }
-
 // Creates and adds a new token to the end of tokenlist.
 // Returns the pointer to line incremented by the len of the element 
 // to the end of the element.
@@ -176,7 +118,7 @@ static char	*add_token(char *line, t_token **tokenlist, t_env_list **env)
 	element = get_element(line);
 	elementlen = ft_strlen(element);
 	if (is_or_has_a_variable(element))
-		element = convert_var_into_value(element, env);
+		element = convert_element(element, env);
 	if (!(*tokenlist))
 	{
 		*tokenlist = create_new_token(element);
