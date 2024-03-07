@@ -21,7 +21,10 @@ typedef enum e_type
 {
 	COMMAND,
 	META_CHAR,
-	BUILTIN
+	BUILTIN,
+	REDIRECTION,
+	REDIRECTION_FILE,
+	HERE_DOC,
 }						t_type;
 
 typedef enum e_exportcases

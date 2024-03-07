@@ -11,7 +11,7 @@ LIBFT_DIR = libft
 SRC_DIR = src
 OBJ_DIR = obj
 
-SRC_FILES = main parsing loop signals free \
+SRC_FILES = main parsing loop signals free redirections\
 			builtins/ft_unset builtins/ft_pwd builtins/ft_cd \
 			builtins/ft_env builtins/ft_echo builtins/ft_exit \
 			builtins/export/ft_export builtins/export/export_utils \

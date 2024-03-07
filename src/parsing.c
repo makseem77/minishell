@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 15:23:35 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/24 20:21:43 by maxborde         ###   ########.fr       */
+/*   Updated: 2024/03/07 04:51:45 by maxborde         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,22 @@ int	set_token_types(t_token **tokenlist, t_env_list **env, int* nb_pipe)
 				2);
 			return (1);
 		}
+		else if (ft_strcmp(tmp->element, ">") == 0 || ft_strcmp(tmp->element,
+				">>") == 0 || ft_strcmp(tmp->element, "<") == 0)
+		{
+			tmp->ttype = REDIRECTION;
+			tmp = tmp->next;
+			if (tmp)
+				tmp->ttype= REDIRECTION_FILE;
+			else
+			{
+				ft_putstr_fd("Error message to define",
+					2);
+				return (1);
+			}
+		}
+		else if (ft_strcmp(tmp->element, "<<") == 0)
+			tmp->ttype = HERE_DOC;
 		else if (type(tmp->element, env) == BUILTIN)
 			tmp->ttype = BUILTIN;
 		else if (type(tmp->element, env) == META_CHAR)
