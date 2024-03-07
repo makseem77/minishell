@@ -107,17 +107,8 @@ void	exec(t_token **tokenlist, t_data **data, int index, int **fds, char **args)
 			exit(EXIT_FAILURE);
 		}
 	}
-	else
-	{
-		int	status;
-		pid_t	wpid;
-
-		wpid = waitpid(pid, &status, WNOHANG);
-		if (wpid > 0)
-			close_all_pipes(fds, (*data)->nb_pipe);
-		free(path_cmd);
-		free_double_array(expression);
-	}
+	free(path_cmd);
+	free_double_array(expression);
 }
 
 void	execute_line(t_token **tokenlist, t_data **data)
@@ -135,8 +126,15 @@ void	execute_line(t_token **tokenlist, t_data **data)
 		exec(tokenlist, data, i, fds, args);
 		i--;
 	}
-	close_all_pipes(fds, (*data)->nb_pipe);
+	i = (*data)->nb_pipe;
+	
+	while(i > 0)
+	{
+		close(fds[i - 1][1]);
+		i--;
+	}
 	while (wait(NULL) > 0);
+	close_all_pipes(fds, (*data)->nb_pipe);
 	free_double_array(args);
 	free_fds_array(fds, (*data)->nb_pipe);
 	(*data)->nb_pipe = 0;
