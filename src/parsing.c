@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 15:23:35 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/07 04:51:45 by maxborde         ###   ########.fr       */
+/*   Updated: 2024/03/07 18:01:39 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,53 +73,89 @@ int	type(char *element, t_env_list **env)
 			element) || !ft_strcmp("<<", element) || !ft_strcmp("&", element)
 		|| !ft_strcmp("|", element) || !ft_strcmp("&&", element)
 		|| !ft_strcmp("||", element) || !ft_strcmp(",", element)
-		|| !ft_strcmp("(", element) || ! ft_strcmp(")", element))
+		|| !ft_strcmp("(", element) || !ft_strcmp(")", element))
 		return (META_CHAR);
 	if (is_a_command(element, env))
 		return (COMMAND);
 	return (-1);
 }
 
-// Goes trough the token linked list
-// and gives a tokentype to every node of the list.
-int	set_token_types(t_token **tokenlist, t_env_list **env, int* nb_pipe)
+void	clean_up_redirection(t_token **tokenlist)
 {
 	t_token	*tmp;
+	t_token	*prev;
+	t_token *next;
 
+	tmp = *tokenlist;
+	prev = NULL;
+	while (tmp)
+	{
+		if (tmp->ttype == REDIRECTION || tmp->ttype == REDIRECTION_FILE
+			|| tmp->ttype == HERE_DOC)
+		{
+			if (prev)
+				prev->next = tmp->next;
+			else
+				*tokenlist = tmp->next;
+			next = tmp->next;
+			printf("element a suppr: %s\n", tmp->element);
+			free(tmp->element);
+			free(tmp);
+			if(prev)
+				tmp = prev->next;
+			else	
+				tmp = *tokenlist;
+		}
+		else
+		{
+			prev = tmp;
+			tmp = tmp->next;
+		}
+	}
+}
+
+// Goes trough the token linked list
+// and gives a tokentype to every node of the list.
+int	set_token_types(t_token **tokenlist, t_env_list **env, int *nb_pipe)
+{
+	t_token	*tmp;
+	t_token	*last_cmd;
+
+	last_cmd = NULL;
 	tmp = *tokenlist;
 	while (tmp)
 	{
-		if(ft_strcmp(tmp->element, "|") == 0)
+		if (ft_strcmp(tmp->element, "|") == 0)
 		{
 			if (!tmp->next)
 			{
 				ft_putstr_fd("minishell: pipe should be followed by a command\n",
-					2);
+								2);
 				return (1);
 			}
 			else
 				(*nb_pipe)++;
 		}
 		else if (ft_strcmp(tmp->element, ";") == 0 || ft_strcmp(tmp->element,
-				"\\") == 0)
-		{
-			ft_putstr_fd("minishell: special characters ';' or '\\' are not authorized\n",
-				2);
-			return (1);
-		}
+					"\\") == 0)
+			return (ft_putstr_fd("minishell: special characters ');' or '\\' are not authorized\n",
+									2),
+					1);
 		else if (ft_strcmp(tmp->element, ">") == 0 || ft_strcmp(tmp->element,
-				">>") == 0 || ft_strcmp(tmp->element, "<") == 0)
+					">>") == 0 || ft_strcmp(tmp->element, "<") == 0)
 		{
 			tmp->ttype = REDIRECTION;
 			tmp = tmp->next;
 			if (tmp)
-				tmp->ttype= REDIRECTION_FILE;
-			else
 			{
-				ft_putstr_fd("Error message to define",
-					2);
-				return (1);
+				tmp->ttype = REDIRECTION_FILE;
+				if(last_cmd)
+					last_cmd->fd_out = open(tmp->element, O_CREAT | O_RDWR, 0644);
 			}
+			else
+				return (ft_putstr_fd("Error message to define",
+										2),
+						1);
 		}
 		else if (ft_strcmp(tmp->element, "<<") == 0)
 			tmp->ttype = HERE_DOC;
@@ -128,8 +164,12 @@ int	set_token_types(t_token **tokenlist, t_env_list **env, int* nb_pipe)
 		else if (type(tmp->element, env) == META_CHAR)
 			tmp->ttype = META_CHAR;
 		else if (type(tmp->element, env) == COMMAND)
+		{
 			tmp->ttype = COMMAND;
+			last_cmd = tmp;
+		}
 		tmp = tmp->next;
 	}
+	clean_up_redirection(tokenlist);
 	return (0);
 }

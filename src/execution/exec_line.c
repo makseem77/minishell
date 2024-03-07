@@ -34,10 +34,26 @@ static char	**cut_arrays_into_expression(char **array, int index)
 	return (expression);
 }
 
-static void	configure_io(int index, int **fds, t_data **data)
+static void	configure_io(int index, int **fds, t_data **data, t_token **tokenlist)
 {
+	int fd_out;
+	t_token *tmp;
+
+	fd_out = -1;
+	tmp = *tokenlist;
+	while(tmp)
+	{
+		if(tmp->fd_out != -1)
+			fd_out = tmp->fd_out;
+		tmp = tmp->next;
+	}
 	if (index == 0)
-		dup2(fds[index][1], STDOUT_FILENO);
+	{
+		if (fd_out != -1)
+			dup2(fd_out, STDOUT_FILENO);
+		else
+			dup2(fds[index][1], STDOUT_FILENO);
+	}
 	else if (index == (*data)->nb_pipe)
 		dup2(fds[index - 1][0], STDIN_FILENO);
 	else
@@ -46,6 +62,7 @@ static void	configure_io(int index, int **fds, t_data **data)
 		dup2(fds[index][1], STDOUT_FILENO);
 	}
 }
+
 
 void	exec(t_token **tokenlist, t_data **data, int index, int **fds, char **args)
 {
@@ -67,17 +84,11 @@ void	exec(t_token **tokenlist, t_data **data, int index, int **fds, char **args)
 	bin_paths = find_bin_paths((*data)->env);
 	path_cmd = get_path_cmd(bin_paths, expression[0]);
 	free_double_array(bin_paths);
-	printf("REACHED FORK\n");
 	pid = fork();
 	if (pid == 0)
 	{
-		printf("command: %s\n", expression[0]);
-		printf("pid = %d\n", getpid());
 		if ((*data)->nb_pipe > 0)
-		{
-			printf("REACHED IO\n");
-			configure_io(index, fds, data);
-		}
+			configure_io(index, fds, data, tokenlist);
 		close_all_pipes(fds, (*data)->nb_pipe);
 		if (type(expression[0], (*data)->env) == BUILTIN)
 		{
