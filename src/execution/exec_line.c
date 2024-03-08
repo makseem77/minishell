@@ -41,8 +41,6 @@ int get_fd_out(t_token **tokenlist)
 	tmp = *tokenlist;
 	while(tmp)
 	{
-		printf("tmp->element = %s\n", tmp->element);
-		printf("tmp->fd_out = %d\n", tmp->fd_out);
 		if(tmp->fd_out != -1)
 			return tmp->fd_out;
 		tmp = tmp->next;
@@ -83,7 +81,6 @@ void	exec(t_token **tokenlist, t_data **data, int index, int **fds, char **args,
 		expression = args;
 		if(type(expression[0], (*data)->env) == BUILTIN)
 		{
-			printf("fd_out in exec = %d\n", fd_out);
 			if(fd_out != -1)
 			{
 				int temp_stdout = dup(STDOUT_FILENO);

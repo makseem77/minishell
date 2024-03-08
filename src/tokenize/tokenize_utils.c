@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 17:40:09 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/08 16:53:26 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/08 17:57:40 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,9 @@ size_t	compute_len(char *line)
 	len = 0;
 	flag_double_quotes = 0;
 	flag_single_quotes = 0;
-	if (*line == '|' || *line == '>')
+	if(ft_strncmp(line, ">>", 2) == 0)
+		return (2);
+	else if (*line == '|' || *line == '>')
 		return (1);
 	while (line[len])
 	{
