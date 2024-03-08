@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 15:23:42 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/07 17:46:01 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/08 16:51:39 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,9 +149,7 @@ t_token	**tokenize(char *line, t_env_list **env)
 	while (*line)
 	{
 		if ((*line < '\t' || *line > '\r') && *line != ' ')
-		{
 			line = add_token(line, tokenlist, env);
-		}
 		else
 			line++;
 	}
