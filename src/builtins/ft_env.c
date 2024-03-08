@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 20:24:16 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/14 15:31:14 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/08 14:58:08 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	env(char **args, t_env_list **env)
 	while (tmp)
 	{
 		ft_putstr_fd(tmp->variable, 1);
-		write(1, "\n", 1);
+		ft_putstr_fd("\n", 1);
 		tmp = tmp->next;
 	}
 }

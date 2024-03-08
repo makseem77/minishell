@@ -1,11 +1,8 @@
-LEAKS / VALGRIND ERRORS: 
-valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --suppressions=ignore_readline.supp -s ./minishell
-
-gwejgjgw -> invalid commands leads to valgrind errors.  DONE
-
-builtins alone -> 2 leaks, from how we handle builtins alone.
-
-builtins in pipe -> lot of valgrind errors, still reachable for some reason.
+bad parsing redirection
+Exemple : 
+minishell> ls>file1.txt
+value = ls>file1.txt
+type = -1
 
 ./minishell in minishell => "double free or corruption (fasttop)"
 

@@ -34,52 +34,71 @@ static char	**cut_arrays_into_expression(char **array, int index)
 	return (expression);
 }
 
-static void	configure_io(int index, int **fds, t_data **data, t_token **tokenlist)
+int get_fd_out(t_token **tokenlist)
 {
-	int fd_out;
 	t_token *tmp;
 
-	fd_out = -1;
 	tmp = *tokenlist;
 	while(tmp)
 	{
+		printf("tmp->element = %s\n", tmp->element);
+		printf("tmp->fd_out = %d\n", tmp->fd_out);
 		if(tmp->fd_out != -1)
-			fd_out = tmp->fd_out;
+			return tmp->fd_out;
 		tmp = tmp->next;
 	}
-	if (index == 0)
-	{
-		if (fd_out != -1)
-			dup2(fd_out, STDOUT_FILENO);
-		else
-			dup2(fds[index][1], STDOUT_FILENO);
-	}
-	else if (index == (*data)->nb_pipe)
-		dup2(fds[index - 1][0], STDIN_FILENO);
-	else
-	{
-		dup2(fds[index - 1][0], STDIN_FILENO);
-		dup2(fds[index][1], STDOUT_FILENO);
-	}
+	return -1;
 }
 
+void configure_io(int index, int **fds, int nb_pipe, int fd_out)
+{
+    if (index == 0 && nb_pipe > 0)
+        dup2(fds[0][1], STDOUT_FILENO);
+    else if (index > 0 && index < nb_pipe)
+	{
+        dup2(fds[index - 1][0], STDIN_FILENO);
+        dup2(fds[index][1], STDOUT_FILENO);
+    }
+    else if (index == nb_pipe && nb_pipe > 0)
+        dup2(fds[nb_pipe - 1][0], STDIN_FILENO);
+    
+    if (fd_out != -1 && (index == nb_pipe || nb_pipe == 0))
+        dup2(fd_out, STDOUT_FILENO);
+    
+    close_all_pipes(fds, nb_pipe);
+    if (fd_out != -1)
+		close(fd_out);
+    
+}
 
-void	exec(t_token **tokenlist, t_data **data, int index, int **fds, char **args)
+void	exec(t_token **tokenlist, t_data **data, int index, int **fds, char **args, int fd_out)
 {
 	char **bin_paths;
 	char *path_cmd;
 	pid_t pid;
 	char **expression;
-
+	
 	if ((*data)->nb_pipe == 0)
 	{
 		expression = args;
 		if(type(expression[0], (*data)->env) == BUILTIN)
 		{
-			execute_bultin(tokenlist, data, expression);
+			printf("fd_out in exec = %d\n", fd_out);
+			if(fd_out != -1)
+			{
+				int temp_stdout = dup(STDOUT_FILENO);
+				if (dup2(fd_out, STDOUT_FILENO) == -1)
+					perror("dup2");
+				close(fd_out);
+				execute_bultin(tokenlist, data, expression);
+				if (dup2(temp_stdout, STDOUT_FILENO) == -1)
+					perror("dup2");
+				close(temp_stdout);
+			}
 			return ;
 		}
 	}
+
 	expression = cut_arrays_into_expression(args, index);
 	bin_paths = find_bin_paths((*data)->env);
 	path_cmd = get_path_cmd(bin_paths, expression[0]);
@@ -87,9 +106,7 @@ void	exec(t_token **tokenlist, t_data **data, int index, int **fds, char **args)
 	pid = fork();
 	if (pid == 0)
 	{
-		if ((*data)->nb_pipe > 0)
-			configure_io(index, fds, data, tokenlist);
-		close_all_pipes(fds, (*data)->nb_pipe);
+		configure_io(index, fds, (*data)->nb_pipe, fd_out);
 		if (type(expression[0], (*data)->env) == BUILTIN)
 		{
 			execute_bultin(tokenlist, data, expression);
@@ -127,14 +144,16 @@ void	execute_line(t_token **tokenlist, t_data **data)
 	int	i;
 	int	**fds;
 	char	**args;
-	
+	int fd_out;
+
+	fd_out = get_fd_out(tokenlist);
 	args = tokens_to_array(tokenlist);
 	state = 1;
 	fds = init_pipes(data);
 	i = (*data)->nb_pipe;
 	while (i >= 0)
 	{
-		exec(tokenlist, data, i, fds, args);
+		exec(tokenlist, data, i, fds, args, fd_out);
 		i--;
 	}
 	i = (*data)->nb_pipe;
@@ -144,6 +163,7 @@ void	execute_line(t_token **tokenlist, t_data **data)
 		close(fds[i - 1][1]);
 		i--;
 	}
+	close(fd_out);
 	while (wait(NULL) > 0);
 	close_all_pipes(fds, (*data)->nb_pipe);
 	free_double_array(args);

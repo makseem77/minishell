@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 15:23:35 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/07 18:01:39 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/08 14:56:54 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,6 @@ void	clean_up_redirection(t_token **tokenlist)
 {
 	t_token	*tmp;
 	t_token	*prev;
-	t_token *next;
 
 	tmp = *tokenlist;
 	prev = NULL;
@@ -97,7 +96,6 @@ void	clean_up_redirection(t_token **tokenlist)
 				prev->next = tmp->next;
 			else
 				*tokenlist = tmp->next;
-			next = tmp->next;
 			printf("element a suppr: %s\n", tmp->element);
 			free(tmp->element);
 			free(tmp);
@@ -150,7 +148,7 @@ int	set_token_types(t_token **tokenlist, t_env_list **env, int *nb_pipe)
 			{
 				tmp->ttype = REDIRECTION_FILE;
 				if(last_cmd)
-					last_cmd->fd_out = open(tmp->element, O_CREAT | O_RDWR, 0644);
+					last_cmd->fd_out = open(tmp->element, O_CREAT | O_RDWR | O_TRUNC, 0644);
 			}
 			else
 				return (ft_putstr_fd("Error message to define",
@@ -160,7 +158,10 @@ int	set_token_types(t_token **tokenlist, t_env_list **env, int *nb_pipe)
 		else if (ft_strcmp(tmp->element, "<<") == 0)
 			tmp->ttype = HERE_DOC;
 		else if (type(tmp->element, env) == BUILTIN)
+		{
 			tmp->ttype = BUILTIN;
+			last_cmd = tmp;
+		}
 		else if (type(tmp->element, env) == META_CHAR)
 			tmp->ttype = META_CHAR;
 		else if (type(tmp->element, env) == COMMAND)

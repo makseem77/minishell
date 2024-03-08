@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 20:29:50 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/01 16:33:05 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/08 14:23:10 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,20 +43,17 @@ void	echo(char **args)
 	i = 0;
 	j = 1;
 	if (!*args)
-	{
-		write(1, "\n", 1);
-		return ;
-	}
+		return(ft_putstr_fd("\n", 1));
 	flag = check_valid_flag(args[j]);
 	while (check_valid_flag(args[j]) == true)
 		j++;
 	while (args[j])
 	{
 		if (i++ > 0)
-			write(1, " ", 1);
-		write(1, args[j], ft_strlen(args[j]));
+			ft_putstr_fd(" ", 1);
+		ft_putstr_fd(args[j], 1);
 		j++;
 	}
 	if (flag != 1)
-		write(1, "\n", 1);
+		ft_putstr_fd("\n", 1);
 }

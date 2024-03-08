@@ -1,43 +1,10 @@
 # include  "inc/minishell.h"
 
-void exec_exemple(char **argv)
+int main(int argc, char const *argv[])
 {
-    pid_t pid;
-
-    pid = fork();
-    if (pid == 0)
-    {
-        printf("I'm the little child\n");
-    }
-    else
-    {
-
-        execve("/bin/ls", argv, NULL);
-    }
-}
-
-void exmple_loop(char **argv)
-{
-    int i = 0;
-
-    while (i < 5)
-    {
-        exec_exemple(argv);
-        i++;
-    }
-}
-
-int main(int argc, char **argv)
-{
-    pid_t pid;
-
-    pid = fork();
-    if (pid == 0)
-    {
-        exmple_loop(argv);
-        execve("/bin/ls", argv, NULL);
-    }
-    while (wait(NULL) > 0);
-    printf("I WANT TO CONTINUE ONLY IF ALL THE CHILDREN ARE DEAD\n");
+    int fd = open("file1.txt", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+    dup2(fd, STDOUT_FILENO);
+    // printf("Hello, World!\n");
+    write(1, "Hello, World!\n", 14);
     return 0;
 }

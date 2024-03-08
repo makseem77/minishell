@@ -1,3 +1,5 @@
+valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --suppressions=ignore_readline.supp -s --trace-children=yes ./minishell
+
 classic command alone: no leaks
 
 echo alone with no args: no leaks
