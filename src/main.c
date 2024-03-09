@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 22:29:14 by maxborde          #+#    #+#             */
-/*   Updated: 2024/03/05 16:14:12 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/09 19:41:27 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	main(int argc, char **args, char **envp)
 	t_data	*data;
 
 	data = NULL;
-	printf("IN MAIN:\nPID = %ld\nPPID = %ld\n", (long)getpid(), (long)getppid());
+	// printf("IN MAIN:\nPID = %ld\nPPID = %ld\n", (long)getpid(), (long)getppid());
 	if (argc > 1 || ft_strcmp(args[0], "./minishell"))
 		return (ft_putstr_fd("Usage: ./minishell\n", 2), 0);
 	if (!set_data(&data, envp))

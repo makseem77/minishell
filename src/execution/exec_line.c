@@ -92,6 +92,8 @@ void	exec(t_token **tokenlist, t_data **data, int index, int **fds, char **args,
 					perror("dup2");
 				close(temp_stdout);
 			}
+            else
+                execute_bultin(tokenlist, data, expression);
 			return ;
 		}
 	}

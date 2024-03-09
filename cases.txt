@@ -1,10 +1,13 @@
-bad parsing redirection
-Exemple : 
-minishell> ls>file1.txt
-value = ls>file1.txt
-type = -1
+./minishell                                                               134 ↵ ──(Sat,Mar09)─┘
+minishell> /bin/ls
+double free or corruption (fasttop)
+[1]    36900 IOT instruction  ./minishell
 
 ./minishell in minishell => "double free or corruption (fasttop)"
+
+minishell> echo "This is a test
+Error: Unmatched quotes
+//WE DONT WANT TO LEAVE MINISHELL IN THIS CASE
 
 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 cat | ls => ^M
