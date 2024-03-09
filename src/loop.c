@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:43:34 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/09 19:41:24 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/09 23:06:20 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,11 @@ void	listening_loop(t_data **data)
 		if (!set_token_types(tokenlist, (*data)->env, &(*data)->nb_pipe))
 		{
 			//print tokenlist 
-			// for(t_token *tmp = *tokenlist; tmp; tmp = tmp->next)
-			// {
-			// 	printf("value = %s\n", tmp->element);
-			// 	printf("type = %d\n", tmp->ttype);
-			// }
+			for(t_token *tmp = *tokenlist; tmp; tmp = tmp->next)
+			{
+				printf("value = %s\n", tmp->element);
+				printf("type = %d\n", tmp->ttype);
+			}
 			if (*tokenlist)
 				execute_line(tokenlist, data);
 		}

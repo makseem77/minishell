@@ -9,7 +9,31 @@ minishell> echo "This is a test
 Error: Unmatched quotes
 //WE DONT WANT TO LEAVE MINISHELL IN THIS CASE
 
+Je ne sais pas si on doit gérer les redirextions des sorties standard et des erreurs standard avec 2>, 1>, >&2, >&1 => Pas géré pour le moment
+POUR INFOS : 
+> ou 1> redirige la sortie standard (stdout) vers un fichier, écrasant le fichier si celui-ci existe déjà.
+>> ou 1>> redirige et ajoute la sortie standard au fichier cible sans écraser le contenu existant.
+2> redirige la sortie d'erreur (stderr) vers un fichier, écrasant le fichier si celui-ci existe déjà.
+2>> ajoute la sortie d'erreur au fichier cible sans écraser le contenu existant.
+>&1 redirige la sortie d'erreur là où la sortie standard va actuellement.
+2>&1 est souvent utilisé avec > pour rediriger à la fois stdout et stderr vers le même fichier, par exemple command >file 2>&1.
+
+minishell> echo "Permission" > /root/test_permission.txt
+Permission
+//EXPECTED : 
+yacode@DESKTOP-SRM6L10:~/minishell$ echo "Permission" > /root/test_permission.txt
+bash: /root/test_permission.txt: Permission denied
+
+
+
+
 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+bad tokenizing redirection
+Exemple : 
+minishell> ls>file1.txt
+value = ls>file1.txt
+type = -1
+
 cat | ls => ^M
 
 cat | ls JUST DOES LS, SHOULD ALSO OPEN THE INTERACTION MODE FOR CAT
