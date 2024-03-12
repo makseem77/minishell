@@ -102,7 +102,6 @@ void	exec(t_token **tokenlist, t_data **data, int index, int **fds,
 			temp_stdin = -1;
 			if (fd_in != -1)
 			{
-                printf("fd_in: %d\n", fd_in);
 				temp_stdin = dup(STDIN_FILENO);
 				if (dup2(fd_in, STDIN_FILENO) == -1)
 					perror("dup2 - fd_in");
@@ -182,7 +181,6 @@ void	execute_line(t_token **tokenlist, t_data **data)
     fd_in = -1;
     fd_out = -1;
 	get_fd_in_and_out(tokenlist, &fd_in, &fd_out);
-    printf("fd_in: %d\n", fd_in);
 	args = tokens_to_array(tokenlist);
 	state = 1;
 	fds = init_pipes(data);

@@ -102,7 +102,7 @@ void					echo(char **args);
 //	ENV
 void					env(char **args, t_env_list **env);
 //	EXIT
-void					exit_bash(char *status, t_data **data, t_token **token);
+void	exit_bash(char *status, bool too_many_args, t_data **data, t_token **token);
 //	PWD
 void					pwd(void);
 char					*get_current_dir(void);
