@@ -43,7 +43,7 @@ int	get_output_fd(t_token **tokenlist, int index)
 	i = 0;
 	while (tmp)
 	{
-		if (tmp->ttype == COMMAND)
+		if (tmp->ttype == COMMAND || tmp->ttype == BUILTIN)
 		{
 			if (i == index)
 				return (tmp->fd_out);
@@ -64,7 +64,7 @@ int	get_input_fd(t_token **tokenlist, int index)
 	i = 0;
 	while (tmp)
 	{
-		if (tmp->ttype == COMMAND)
+		if (tmp->ttype == COMMAND || tmp->ttype == BUILTIN)
 		{
 			if (i == index)
 				return (tmp->fd_in);
@@ -83,9 +83,9 @@ void    configure_io(t_token **tokenlist, int index, int **fds, int nb_pipe)
 
 	fd_out = get_output_fd(tokenlist, index);
 	fd_in = get_input_fd(tokenlist, index);
-	printf("FDout = %d\n", fd_out);
-	printf("FDin = %d\n", fd_in);
-	printf("index = %d\n", index);
+	// printf("FDout = %d\n", fd_out);
+	// printf("FDin = %d\n", fd_in);
+	// printf("index = %d\n", index);
 	if (index == 0 && nb_pipe > 0)
 	{
 		dup2(fds[0][1], STDOUT_FILENO);
@@ -113,11 +113,10 @@ void    configure_io(t_token **tokenlist, int index, int **fds, int nb_pipe)
 	}	
 	else if (index == 0 && nb_pipe == 0)
 	{
-		printf("Hello\n");
 		dup2(fd_out, STDOUT_FILENO);
-		if (fd_in)
+		if (fd_in != STDIN_FILENO)
 			dup2(fd_in, STDIN_FILENO);
-		if (fd_out)
+		if (fd_out != STDOUT_FILENO)
 			dup2(fd_out, STDOUT_FILENO);
 	}
 	close_all_pipes(fds, nb_pipe);
@@ -126,11 +125,20 @@ void    configure_io(t_token **tokenlist, int index, int **fds, int nb_pipe)
 bool	check_and_exec_single_builtin(t_token **tokenlist, t_data **data, char **args)
 {
 	char	**expression;
+	int saved_stdout;
+	int saved_stdin;
 
 	expression = args;
-	if (type(expression[0], (*data)->env) == BUILTIN)
+	if (type(expression[0], (*data)->env) == BUILTIN && (*data)->nb_pipe == 0)
 	{
+		saved_stdout = dup(STDOUT_FILENO);
+		saved_stdin = dup(STDIN_FILENO);
+		configure_io(tokenlist, 0, NULL, 0);
 		execute_bultin(tokenlist, data, expression);
+		dup2(saved_stdout, STDOUT_FILENO);
+		dup2(saved_stdin, STDIN_FILENO);
+		close(saved_stdout);
+		close(saved_stdin);
 		return true;
 	}
 	else

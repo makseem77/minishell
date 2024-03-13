@@ -1,0 +1,14 @@
+total 136
+-rw-r--r-- 1 yacode yacode     0 Mar 13 10:37 1.txt
+-rw-r--r-- 1 yacode yacode     0 Mar 13 10:37 2.txt
+-rw-r--r-- 1 yacode yacode     6 Mar 13 10:14 3.txt
+-rw-r--r-- 1 yacode yacode     0 Mar 13 10:37 4.txt
+-rw-r--r-- 1 yacode yacode  1551 Mar  7 09:20 Makefile
+-rw-r--r-- 1 yacode yacode   278 Feb 23 09:37 ignore_readline.supp
+drwxr-xr-x 2 yacode yacode  4096 Mar 13 10:12 inc
+drwxr-xr-x 5 yacode yacode  4096 Mar 13 10:12 libft
+-rwxr-xr-x 1 yacode yacode 88288 Mar 13 10:36 minishell
+drwxr-xr-x 6 yacode yacode  4096 Mar 13 10:29 obj
+drwxr-xr-x 6 yacode yacode  4096 Mar 13 10:12 src
+-rwxr-xr-x 1 yacode yacode 16096 Mar  9 23:03 test
+-rw-r--r-- 1 yacode yacode   224 Mar  9 23:02 test.c

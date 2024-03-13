@@ -1,4 +1,1 @@
-DMC EMIT          YTT DIP    
-hsz 00:00:00    1/stp 5884781
-llehsinim 00:00:00    1/stp 9169781
-sp 00:00:00    1/stp 2469781
+/home/yacode/minishell
