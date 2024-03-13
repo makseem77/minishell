@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 15:23:35 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/13 11:04:49 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/13 11:45:29 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,7 +152,11 @@ int	set_token_types(t_token **tokenlist, t_env_list **env, int *nb_pipe)
 				else if(last_cmd && ft_strcmp(symbol, ">") == 0)
 					last_cmd->fd_out = open(tmp->element, O_CREAT | O_RDWR | O_TRUNC, 0644);
 				else if(last_cmd && ft_strcmp(symbol, "<") == 0)
-					last_cmd->fd_in = open(tmp->element, O_CREAT | O_RDWR, 0644);
+				{
+					last_cmd->fd_in = open(tmp->element, O_RDWR, 0644);
+					if (last_cmd->fd_in == -1)
+						return(print_error(tmp->element, NULL, strerror(errno)), 1);
+				}
 			}
 			else
 				return (ft_putstr_fd("Error message to define",
