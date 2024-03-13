@@ -1,0 +1,12 @@
+1.txt
+2.txt
+3.txt
+ignore_readline.supp
+inc
+libft
+Makefile
+minishell
+obj
+src
+test
+test.c

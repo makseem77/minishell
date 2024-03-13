@@ -47,6 +47,7 @@ typedef struct s_data
 {
 	char				*old_pwd;
 	char				*home_dir;
+	char				**bin_paths;
 	struct s_env_list	**env;
 	struct s_env_list	**exp_list;
 	int					nb_pipe;
