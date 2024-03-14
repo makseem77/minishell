@@ -187,7 +187,7 @@ int	set_token_types(t_token **tokenlist, t_env_list **env, int *nb_pipe, bool *h
 						if (last_cmd->fd_in == -1)
 							return(print_error(tmp->element, NULL, strerror(errno)), 1);
 					}
-					else if(symbol_token->next->next && (symbol_token->next->next->ttype == COMMAND || symbol_token->next->next->ttype == BUILTIN))
+					else if(symbol_token->next->next && (type(symbol_token->next->next->element, env) == COMMAND || type(symbol_token->next->next->element, env) == BUILTIN))
 						symbol_token->next->next->fd_in = open(tmp->element, O_RDWR, 0644);
 				}
 			}
