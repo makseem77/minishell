@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 15:23:35 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/13 11:45:29 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/14 13:57:41 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,28 +138,32 @@ int	set_token_types(t_token **tokenlist, t_env_list **env, int *nb_pipe)
 			return (ft_putstr_fd("minishell: special characters ');' or '\\' are not authorized\n",
 									2),
 					1);
-		else if (ft_strcmp(tmp->element, "<<") == 0)
-		{
-			last_cmd->fd_in = open("tmp", O_CREAT | O_RDWR | O_TRUNC, 0644);
-			tmp->ttype = HERE_DOC;
-			tmp = tmp->next;
-			tmp->ttype = DELIMITER;
-			write_to_heredoc(last_cmd->fd_in, tmp->element);
-		}
 		else if (ft_strcmp(tmp->element, ">") == 0 || ft_strcmp(tmp->element,
-					">>") == 0 || ft_strcmp(tmp->element, "<") == 0)
+					">>") == 0 || ft_strcmp(tmp->element, "<") == 0 || ft_strcmp(tmp->element, "<<") == 0)
 		{
 			tmp->ttype = REDIRECTION;
-			char *symbol = tmp->element;
+			t_token *symbol_token = tmp;
 			tmp = tmp->next;
 			if (tmp)
 			{
 				tmp->ttype = REDIRECTION_FILE;
-				if(ft_strcmp(symbol, ">>") == 0)
+				if(ft_strcmp(symbol_token->element, ">>") == 0)
 					last_cmd->fd_out = open(tmp->element, O_CREAT | O_RDWR | O_APPEND, 0644);
-				else if(last_cmd && ft_strcmp(symbol, ">") == 0)
+				else if(last_cmd && ft_strcmp(symbol_token->element, ">") == 0)
 					last_cmd->fd_out = open(tmp->element, O_CREAT | O_RDWR | O_TRUNC, 0644);
-				else if(last_cmd && ft_strcmp(symbol, "<") == 0)
+				else if (ft_strcmp(symbol_token->element, "<<") == 0)
+				{
+					if(last_cmd)
+					{
+						last_cmd->fd_in = open("tmp", O_CREAT | O_RDWR | O_TRUNC, 0644);
+						write_to_heredoc(last_cmd->fd_in, tmp->element);
+					}
+					else
+						write_to_heredoc(open("tmp", O_CREAT | O_RDWR | O_TRUNC, 0644), tmp->element);
+					symbol_token->ttype = HERE_DOC;
+					tmp->ttype = DELIMITER;
+				}
+				else if(last_cmd && ft_strcmp(symbol_token->element, "<") == 0)
 				{
 					last_cmd->fd_in = open(tmp->element, O_RDWR, 0644);
 					if (last_cmd->fd_in == -1)
@@ -167,9 +171,7 @@ int	set_token_types(t_token **tokenlist, t_env_list **env, int *nb_pipe)
 				}
 			}
 			else
-				return (ft_putstr_fd("Error message to define",
-										2),
-						1);
+				return(ft_putstr_fd("minishell: syntax error near unexpected token `newline'\n", 2), 1);
 		}
 		else if (type(tmp->element, env) == BUILTIN)
 		{
