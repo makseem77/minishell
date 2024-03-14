@@ -41,10 +41,13 @@ void	listening_loop(t_data **data)
 		if (tokenlist)
 			free_token_list(tokenlist);
 		tokenlist = tokenize(line, (*data)->env);
-		if (!set_token_types(tokenlist, (*data)->env, &(*data)->nb_pipe, &(*data)->here_doc))
+		if (tokenlist)
 		{
-			if (*tokenlist)
-				execute_line(tokenlist, data);
+			if (!set_token_types(tokenlist, (*data)->env, &(*data)->nb_pipe, &(*data)->here_doc))
+			{
+				if (*tokenlist)
+					execute_line(tokenlist, data);
+			}
 		}
 		free(line);
 	}

@@ -74,9 +74,9 @@ t_token					**tokenize(char *line, t_env_list **env);
 
 //	TOKENIZE UTILS
 size_t					compute_len(char *element);
-size_t					count_del_quotes(char *element);
+int					count_del_quotes(char *element);
 char					*clean_up_quotes(char *element);
-void					clean_up_tokens(t_token **tokenlist);
+int					clean_up_tokens(t_token **tokenlist);
 
 //	HANDLE_ENV_VARS
 char					*replace_in_line(char *line, t_env_list **env);

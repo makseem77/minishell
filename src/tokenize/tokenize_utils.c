@@ -46,7 +46,7 @@ size_t	compute_len(char *line)
 
 // Returns the number of quotes we need to delete on the element.
 // We don't count the squotes or dquotes that are inside quotes.
-size_t	count_del_quotes(char *element)
+int	count_del_quotes(char *element)
 {
 	size_t	single_quote;
 	size_t	double_quote;
@@ -64,7 +64,7 @@ size_t	count_del_quotes(char *element)
 	if (single_quote % 2 != 0 || double_quote % 2 != 0)
 	{
 		ft_putstr_fd("Error: Unmatched quotes\n", 2);
-		exit(EXIT_FAILURE);
+		return (-1);
 	}
 	return (single_quote + double_quote);
 }
@@ -101,17 +101,22 @@ static void	new_element_clean_up(char *element, char *new_element)
 char	*clean_up_quotes(char *element)
 {
 	char	*new_element;
+	int	quotes_to_del;
 
-	new_element = malloc(ft_strlen(element) - count_del_quotes(element) + 1);
-	if (!new_element)
+	quotes_to_del = count_del_quotes(element);
+	if (quotes_to_del == -1)
+	{
+		free(element);
 		return (NULL);
+	}
+	new_element = malloc(ft_strlen(element) - (quotes_to_del) + 1);
 	new_element_clean_up(element, new_element);
 	free(element);
 	return (new_element);
 }
 
 // Goes trough all the tokens and cleans up the element in every one of them.
-void	clean_up_tokens(t_token **tokenlist)
+int	clean_up_tokens(t_token **tokenlist)
 {
 	t_token	*tmp;
 
@@ -120,7 +125,8 @@ void	clean_up_tokens(t_token **tokenlist)
 	{
 		tmp->element = clean_up_quotes(tmp->element);
 		if (tmp->element == NULL)
-			return ;
+			return (-1);
 		tmp = tmp->next;
 	}
+	return (1);
 }

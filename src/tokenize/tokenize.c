@@ -154,6 +154,11 @@ t_token	**tokenize(char *line, t_env_list **env)
 		else
 			line++;
 	}
-	clean_up_tokens(tokenlist);
-	return (tokenlist);
+	if (clean_up_tokens(tokenlist) == -1)
+	{
+		free_token_list(tokenlist);
+		return (NULL);
+	}
+	else
+		return (tokenlist);
 }
