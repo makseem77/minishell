@@ -191,8 +191,8 @@ void	exec(t_token **tokenlist, t_data **data, int index, int **fds,
 			exit(EXIT_FAILURE);
 		}
 	}
-	free(path_cmd);
 	free_double_array(expression);
+	free(path_cmd);
 }
 
 void	execute_line(t_token **tokenlist, t_data **data)

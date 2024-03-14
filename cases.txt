@@ -1,9 +1,4 @@
-./minishell                                                               134 ↵ ──(Sat,Mar09)─┘
-minishell> /bin/ls
-double free or corruption (fasttop)
-[1]    36900 IOT instruction  ./minishell
 
-./minishell in minishell => "double free or corruption (fasttop)"
 
 minishell> echo "This is a test
 Error: Unmatched quotes
@@ -37,6 +32,14 @@ puis cd ou pwd par exemple
 echo bonjour >hey >>hey2 >>hey3
 
 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+./minishell                                                               134 ↵ ──(Sat,Mar09)─┘
+minishell> /bin/ls
+double free or corruption (fasttop)
+[1]    36900 IOT instruction  ./minishell
+
+./minishell in minishell => "double free or corruption (fasttop)"
+
 bad tokenizing redirection
 Exemple : 
 minishell> ls>file1.txt

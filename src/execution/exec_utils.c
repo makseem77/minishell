@@ -20,7 +20,7 @@ char	*get_path_cmd(char **paths, char *cmd)
 	if (cmd[0] == '.' || cmd[0] == '/')
 	{
 		if (access(cmd, F_OK | X_OK) == 0)
-			return (cmd);
+			return (ft_strdup(cmd));
 		return (NULL);
 	}
 	if (!paths)
