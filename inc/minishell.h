@@ -25,6 +25,7 @@ typedef enum e_type
 	REDIRECTION,
 	REDIRECTION_FILE,
 	HERE_DOC,
+	DELIMITER,
 }						t_type;
 
 typedef enum e_exportcases
@@ -167,6 +168,9 @@ void					listening_loop(t_data **data);
 int						set_token_types(t_token **tokenlist, t_env_list **env,
 							int *nb_pipe);
 int						type(char *element, t_env_list **env);
+
+//	REDIRECTIONS
+void	write_to_heredoc(int fd, char *limiter);
 
 //	SIGNALS
 void					handle_signals(void);

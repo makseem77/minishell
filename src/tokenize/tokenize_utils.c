@@ -26,6 +26,8 @@ size_t	compute_len(char *line)
 	flag_single_quotes = 0;
 	if(ft_strncmp(line, ">>", 2) == 0)
 		return (2);
+	if(ft_strncmp(line, "<<", 2) == 0)
+		return (2);
 	else if (*line == '|' || *line == '>' || *line == '<')
 		return (1);
 	while (line[len])

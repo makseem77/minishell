@@ -43,12 +43,6 @@ void	listening_loop(t_data **data)
 		tokenlist = tokenize(line, (*data)->env);
 		if (!set_token_types(tokenlist, (*data)->env, &(*data)->nb_pipe))
 		{
-			//print tokenlist 
-			// for(t_token *tmp = *tokenlist; tmp; tmp = tmp->next)
-			// {
-			// 	printf("value = %s\n", tmp->element);
-			// 	printf("type = %d\n", tmp->ttype);
-			// }
 			if (*tokenlist)
 				execute_line(tokenlist, data);
 		}

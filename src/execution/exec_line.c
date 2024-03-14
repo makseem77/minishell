@@ -83,9 +83,9 @@ void    configure_io(t_token **tokenlist, int index, int **fds, int nb_pipe)
 
 	fd_out = get_output_fd(tokenlist, index);
 	fd_in = get_input_fd(tokenlist, index);
-	// printf("FDout = %d\n", fd_out);
-	// printf("FDin = %d\n", fd_in);
-	// printf("index = %d\n", index);
+	/*printf("FDout = %d\n", fd_out);
+	printf("FDin = %d\n", fd_in);
+	printf("index = %d\n", index);*/
 	if (index == 0 && nb_pipe > 0)
 	{
 		dup2(fds[0][1], STDOUT_FILENO);

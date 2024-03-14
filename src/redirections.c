@@ -10,8 +10,28 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-//Go trough the tokenlist
-//For >> and > operator, we check if it exists already, if not we create it, if yes we open it in append mode for >> and we remove its content for >
-//For << and < still need to test some stuff
-//We remove all the tokens that have the REDIRECTION AND REDIRECTION FILE TYPE and we keep the fd of the last file we passed on, this will be the one we write on.
-//We store the fd somewhere (we could store in on the command token ?) so that in the execution, if we have a fd on the command we know we have to output to this one.
+#include "minishell.h"
+
+void	write_to_heredoc(int fd, char *limiter)
+{
+	char	*line;
+
+	while (true)
+	{
+		line = readline("> ");
+		if (!line)
+			exit(1);
+		if (ft_strcmp(line, limiter) == 0)
+		{
+			free(line);
+			break ;
+		}
+		else
+		{
+			ft_putendl_fd(line, fd);
+			free(line);
+		}
+	}
+	close(fd);
+	open("tmp", O_RDWR, 0644);
+}

@@ -90,7 +90,7 @@ void	clean_up_redirection(t_token **tokenlist)
 	while (tmp)
 	{
 		if (tmp->ttype == REDIRECTION || tmp->ttype == REDIRECTION_FILE
-			|| tmp->ttype == HERE_DOC)
+			|| tmp->ttype == HERE_DOC || tmp->ttype == DELIMITER)
 		{
 			if (prev)
 				prev->next = tmp->next;
@@ -138,6 +138,14 @@ int	set_token_types(t_token **tokenlist, t_env_list **env, int *nb_pipe)
 			return (ft_putstr_fd("minishell: special characters ');' or '\\' are not authorized\n",
 									2),
 					1);
+		else if (ft_strcmp(tmp->element, "<<") == 0)
+		{
+			last_cmd->fd_in = open("tmp", O_CREAT | O_RDWR | O_TRUNC, 0644);
+			tmp->ttype = HERE_DOC;
+			tmp = tmp->next;
+			tmp->ttype = DELIMITER;
+			write_to_heredoc(last_cmd->fd_in, tmp->element);
+		}
 		else if (ft_strcmp(tmp->element, ">") == 0 || ft_strcmp(tmp->element,
 					">>") == 0 || ft_strcmp(tmp->element, "<") == 0)
 		{
@@ -147,7 +155,7 @@ int	set_token_types(t_token **tokenlist, t_env_list **env, int *nb_pipe)
 			if (tmp)
 			{
 				tmp->ttype = REDIRECTION_FILE;
-				if(last_cmd && ft_strcmp(symbol, ">>") == 0)
+				if(ft_strcmp(symbol, ">>") == 0)
 					last_cmd->fd_out = open(tmp->element, O_CREAT | O_RDWR | O_APPEND, 0644);
 				else if(last_cmd && ft_strcmp(symbol, ">") == 0)
 					last_cmd->fd_out = open(tmp->element, O_CREAT | O_RDWR | O_TRUNC, 0644);
@@ -163,8 +171,6 @@ int	set_token_types(t_token **tokenlist, t_env_list **env, int *nb_pipe)
 										2),
 						1);
 		}
-		else if (ft_strcmp(tmp->element, "<<") == 0)
-			tmp->ttype = HERE_DOC;
 		else if (type(tmp->element, env) == BUILTIN)
 		{
 			tmp->ttype = BUILTIN;
