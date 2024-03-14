@@ -13,6 +13,16 @@
 #include "minishell.h"
 
 // Prints the error message.
+void	print_not_found(char *command, char *arg)
+{
+	if (command[0] == '/')
+		print_error(command, arg, "No such file or directory");
+	else
+		print_error(command, arg, "command not found");
+}
+
+
+// Prints the error message.
 void	print_error(char *command, char *arg, char *error_message)
 {
 	ft_putstr_fd("minishell: ", 2);

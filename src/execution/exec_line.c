@@ -186,7 +186,7 @@ void	exec(t_token **tokenlist, t_data **data, int index, int **fds,
 		}
 		else
 		{
-			print_error(expression[0], NULL, "command not found");
+			print_not_found(expression[0], NULL);
 			free_after_execution(tokenlist, data, fds, args, expression, path_cmd);
 			exit(EXIT_FAILURE);
 		}

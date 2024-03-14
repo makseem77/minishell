@@ -147,6 +147,7 @@ t_env_list				*lst_new(char *variable);
 t_env_list				*lst_last(t_env_list *lst);
 int						lst_size(t_env_list **lst);
 //	PRINT UTILS
+void					print_not_found(char *command, char *arg);
 void					print_error(char *command, char *arg,
 							char *error_message);
 void					print_export(t_env_list **export_variables);
