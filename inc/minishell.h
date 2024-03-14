@@ -2,17 +2,17 @@
 # define MINISHELL_H
 
 # include "../libft/inc/libft.h"
-# include <stdio.h>
 # include <errno.h>
 # include <fcntl.h>
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <signal.h>
+# include <stdio.h>
 # include <stdlib.h>
 # include <strings.h>
-# include <sys/wait.h>
 # include <sys/stat.h>
 # include <sys/types.h>
+# include <sys/wait.h>
 # include <unistd.h>
 
 extern bool				state;
@@ -40,8 +40,8 @@ typedef struct s_token
 	char				*element;
 	int					ttype;
 	struct s_token		*next;
-	int 				fd_out;
-	int 				fd_in;
+	int					fd_out;
+	int					fd_in;
 }						t_token;
 
 typedef struct s_data
@@ -52,6 +52,7 @@ typedef struct s_data
 	struct s_env_list	**env;
 	struct s_env_list	**exp_list;
 	int					nb_pipe;
+	bool				here_doc;
 }						t_data;
 
 typedef struct s_env_list
@@ -79,8 +80,11 @@ void					clean_up_tokens(t_token **tokenlist);
 
 //	HANDLE_ENV_VARS
 char					*replace_in_line(char *line, t_env_list **env);
-void	convert_var_into_value(char *element_at_var, char *new_element, t_env_list **env, int *i, int *j);
-int	compute_new_element_len(char *element, t_env_list **env);
+void					convert_var_into_value(char *element_at_var,
+							char *new_element, t_env_list **env, int *i,
+							int *j);
+int						compute_new_element_len(char *element,
+							t_env_list **env);
 //////////////////////////////////////////////////////////////////////////////////////
 
 //////////////////////////////////////////////////////////////////////////////////////
@@ -104,7 +108,8 @@ void					echo(char **args);
 //	ENV
 void					env(char **args, t_env_list **env);
 //	EXIT
-void	exit_bash(char *status, bool too_many_args, t_data **data, t_token **token);
+void					exit_bash(char *status, bool too_many_args,
+							t_data **data, t_token **token);
 //	PWD
 void					pwd(void);
 char					*get_current_dir(void);
@@ -112,7 +117,7 @@ char					*get_current_dir(void);
 char					*extract_var_name(char *arg);
 void					unset(char **args, t_env_list **env,
 							t_env_list **exp_list);
-int	compute_bytes_to_cmp(char *variableinlist,
+int						compute_bytes_to_cmp(char *variableinlist,
 							char *variablename);
 //////////////////////////////////////////////////////////////////////////////////////
 
@@ -155,7 +160,7 @@ char					**env_list_to_array(t_env_list **env);
 //	FREE
 void					free_token_list(t_token **t_token);
 void					free_double_array(char **darray);
-void	free_variable_lists(t_env_list **export_list,
+void					free_variable_lists(t_env_list **export_list,
 							t_env_list **env_list);
 void					free_data_struct(t_data *data);
 void					free_lst_content(t_env_list *lst, char *var_name);
@@ -166,11 +171,11 @@ void					listening_loop(t_data **data);
 
 //	PARSING
 int						set_token_types(t_token **tokenlist, t_env_list **env,
-							int *nb_pipe);
+							int *nb_pipe, bool *heredoc);
 int						type(char *element, t_env_list **env);
 
 //	REDIRECTIONS
-void	write_to_heredoc(int fd, char *limiter);
+void					write_to_heredoc(int fd, char *limiter);
 
 //	SIGNALS
 void					handle_signals(void);

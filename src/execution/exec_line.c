@@ -221,6 +221,8 @@ void	execute_line(t_token **tokenlist, t_data **data)
 	close_all_pipes(fds, (*data)->nb_pipe);
 	free_double_array(args);
 	free_fds_array(fds, (*data)->nb_pipe);
+	if((*data)->here_doc)
+		unlink("tmp");
 	(*data)->nb_pipe = 0;
 	state = 0;
 }

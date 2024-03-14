@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 15:23:35 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/14 13:57:41 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/14 16:52:10 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ void	clean_up_redirection(t_token **tokenlist)
 
 // Goes trough the token linked list
 // and gives a tokentype to every node of the list.
-int	set_token_types(t_token **tokenlist, t_env_list **env, int *nb_pipe)
+int	set_token_types(t_token **tokenlist, t_env_list **env, int *nb_pipe, bool *heredoc)
 {
 	t_token	*tmp;
 	t_token	*last_cmd;
@@ -148,26 +148,47 @@ int	set_token_types(t_token **tokenlist, t_env_list **env, int *nb_pipe)
 			{
 				tmp->ttype = REDIRECTION_FILE;
 				if(ft_strcmp(symbol_token->element, ">>") == 0)
-					last_cmd->fd_out = open(tmp->element, O_CREAT | O_RDWR | O_APPEND, 0644);
-				else if(last_cmd && ft_strcmp(symbol_token->element, ">") == 0)
-					last_cmd->fd_out = open(tmp->element, O_CREAT | O_RDWR | O_TRUNC, 0644);
+				{
+					if(last_cmd)
+						last_cmd->fd_out = open(tmp->element, O_CREAT | O_RDWR | O_APPEND, 0644);
+					else if(symbol_token->next->next && (type(symbol_token->next->next->element, env) == COMMAND || type(symbol_token->next->next->element, env) == BUILTIN))
+						symbol_token->next->next->fd_out = open(tmp->element, O_CREAT | O_RDWR | O_APPEND, 0644);
+				}
+				else if(ft_strcmp(symbol_token->element, ">") == 0)
+				{
+					if(last_cmd)
+						last_cmd->fd_out = open(tmp->element, O_CREAT | O_RDWR | O_TRUNC, 0644);
+					else if(symbol_token->next->next && (type(symbol_token->next->next->element, env) == COMMAND || type(symbol_token->next->next->element, env) == BUILTIN))
+						symbol_token->next->next->fd_out = open(tmp->element, O_CREAT | O_RDWR | O_TRUNC, 0644);
+				}
 				else if (ft_strcmp(symbol_token->element, "<<") == 0)
 				{
+					*heredoc = true;
 					if(last_cmd)
 					{
 						last_cmd->fd_in = open("tmp", O_CREAT | O_RDWR | O_TRUNC, 0644);
 						write_to_heredoc(last_cmd->fd_in, tmp->element);
+					}
+					else if(symbol_token->next->next && (type(symbol_token->next->next->element, env) == COMMAND || type(symbol_token->next->next->element, env) == BUILTIN))
+					{
+						symbol_token->next->next->fd_in = open("tmp", O_CREAT | O_RDWR | O_TRUNC, 0644);
+						write_to_heredoc(symbol_token->next->next->fd_in, tmp->element);
 					}
 					else
 						write_to_heredoc(open("tmp", O_CREAT | O_RDWR | O_TRUNC, 0644), tmp->element);
 					symbol_token->ttype = HERE_DOC;
 					tmp->ttype = DELIMITER;
 				}
-				else if(last_cmd && ft_strcmp(symbol_token->element, "<") == 0)
+				else if(ft_strcmp(symbol_token->element, "<") == 0)
 				{
-					last_cmd->fd_in = open(tmp->element, O_RDWR, 0644);
-					if (last_cmd->fd_in == -1)
-						return(print_error(tmp->element, NULL, strerror(errno)), 1);
+					if(last_cmd)
+					{
+						last_cmd->fd_in = open(tmp->element, O_RDWR, 0644);
+						if (last_cmd->fd_in == -1)
+							return(print_error(tmp->element, NULL, strerror(errno)), 1);
+					}
+					else if(symbol_token->next->next && (symbol_token->next->next->ttype == COMMAND || symbol_token->next->next->ttype == BUILTIN))
+						symbol_token->next->next->fd_in = open(tmp->element, O_RDWR, 0644);
 				}
 			}
 			else
