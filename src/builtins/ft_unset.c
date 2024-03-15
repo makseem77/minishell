@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 11:32:51 by maxborde          #+#    #+#             */
-/*   Updated: 2024/03/01 16:29:01 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/15 18:05:38 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,9 +134,8 @@ void	unset(char **args, t_env_list **env, t_env_list **exp_list)
 	{
 		if (!(is_valid_variable(*args)))
 		{
-			ft_putstr_fd("minishell: unset: `", 2);
-			ft_putstr_fd(*args, 2);
-			ft_putstr_fd("': not a valid identifier\n", 2);
+			g_status = 1;
+			print_error("unset", *args, "not a valid identifier");
 		}
 		if (arg_in_list(*args, env, 0))
 			lst_del_one(env, *args, 0);
@@ -144,4 +143,5 @@ void	unset(char **args, t_env_list **env, t_env_list **exp_list)
 			lst_del_one(exp_list, *args, ft_strlen("declare -x "));
 		args++;
 	}
+	g_status = 0;
 }

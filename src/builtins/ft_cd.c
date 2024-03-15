@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 13:03:07 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/24 20:01:58 by maxborde         ###   ########.fr       */
+/*   Updated: 2024/03/15 18:06:29 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ void	cd(char *absolute_path, t_data **data)
 	{
 		ft_putstr_fd(strerror(errno), 2);
 		ft_putstr_fd("\n", 2);
+		g_status = 1;
 		return ;
 	}
 	absolute_path = update_absolute_path(absolute_path, (*data)->old_pwd, data);
@@ -61,6 +62,7 @@ void	cd(char *absolute_path, t_data **data)
 	if (chdir(absolute_path) != 0)
 	{
 		print_error("cd", absolute_path, strerror(errno));
+		g_status = 1;
 		return ;
 	}
 	else
@@ -69,4 +71,5 @@ void	cd(char *absolute_path, t_data **data)
 		free((*data)->old_pwd);
 		(*data)->old_pwd = ft_strdup(old_pwd);
 	}
+	g_status = 0;
 }

@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 18:43:05 by maxborde          #+#    #+#             */
-/*   Updated: 2024/03/15 10:49:54 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/15 18:17:11 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,12 +110,12 @@ void	convert_var_into_value(char *element_at_var, char *new_element, t_env_list 
 	free(var_name);
 }
 
-void convert_exit_status_into_value(char *new_element, int *i, int *j, int exit_status)
+void convert_exit_status_into_value(char *new_element, int *i, int *j)
 {
 	int		exit_status_len;
 	char 	*exit_status_str;
 
-	exit_status_str = ft_itoa(exit_status);
+	exit_status_str = ft_itoa(g_status);
 	exit_status_len = ft_strlen(exit_status_str);
 	ft_strlcpy(new_element, exit_status_str, exit_status_len + 1);
 	*i += 2;

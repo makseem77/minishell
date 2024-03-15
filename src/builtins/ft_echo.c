@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 20:29:50 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/08 14:23:10 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/15 18:03:51 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,4 +56,5 @@ void	echo(char **args)
 	}
 	if (flag != 1)
 		ft_putstr_fd("\n", 1);
+	g_status = 0;
 }

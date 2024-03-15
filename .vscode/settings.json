@@ -16,6 +16,7 @@
         "wait.h": "c",
         "stdlib.h": "c",
         "tmp": "cpp",
-        "readline.h": "c"
+        "readline.h": "c",
+        "unistd.h": "c"
     }
 }

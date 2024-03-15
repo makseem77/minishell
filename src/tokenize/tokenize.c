@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 15:23:42 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/15 10:49:42 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/15 17:59:29 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ static int	is_or_has_a_variable(char *element)
 	return (0);
 }
 
-char	*convert_element(char *element, t_env_list **env, int exit_status)
+char	*convert_element(char *element, t_env_list **env)
 {
 	char	*new_element;
 	int	i;
@@ -99,7 +99,7 @@ char	*convert_element(char *element, t_env_list **env, int exit_status)
 	while (element[i])
 	{
 		if(ft_strncmp(&element[i], "$?", 2) == 0)
-			convert_exit_status_into_value(&new_element[j], &i, &j, exit_status);
+			convert_exit_status_into_value(&new_element[j], &i, &j);
 		else if (element[i] == '$' && (isalpha(element[i + 1]) || isdigit(element[i + 1])
 				|| element[i + 1] == '_'))
 			convert_var_into_value(&element[i], &new_element[j], env, &i, &j);
@@ -116,7 +116,7 @@ char	*convert_element(char *element, t_env_list **env, int exit_status)
 // If the element is a var ($VAR) it will replace the variable by its value.
 // If the element has a variable in it,
 // we replace it by it's value so we can tokenize it.
-static char	*add_token(char *line, t_token **tokenlist, t_env_list **env, int exit_status)
+static char	*add_token(char *line, t_token **tokenlist, t_env_list **env)
 {
 	t_token	*tmp;
 	char	*element;
@@ -125,7 +125,7 @@ static char	*add_token(char *line, t_token **tokenlist, t_env_list **env, int ex
 	element = get_element(line);
 	elementlen = ft_strlen(element);
 	if (is_or_has_a_variable(element))
-		element = convert_element(element, env, exit_status);
+		element = convert_element(element, env);
 	if (!(*tokenlist))
 	{
 		*tokenlist = create_new_token(element);
@@ -146,7 +146,7 @@ static char	*add_token(char *line, t_token **tokenlist, t_env_list **env, int ex
 // and adds a token every time it encounters an element of a bash expression.
 // The add token while increment the line pointer to the end of the element
 // so you can then continue trough the rest of the line.
-t_token	**tokenize(char *line, t_env_list **env, int exit_status)
+t_token	**tokenize(char *line, t_env_list **env)
 {
 	t_token	**tokenlist;
 
@@ -155,7 +155,7 @@ t_token	**tokenize(char *line, t_env_list **env, int exit_status)
 	while (*line)
 	{
 		if ((*line < '\t' || *line > '\r') && *line != ' ')
-			line = add_token(line, tokenlist, env, exit_status);
+			line = add_token(line, tokenlist, env);
 		else
 			line++;
 	}

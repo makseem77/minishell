@@ -180,14 +180,15 @@ void	exec(t_token **tokenlist, t_data **data, int index, int **fds,
 		}
 		if (type(expression[0], (*data)->env) == COMMAND)
 		{
-			if (execve(path_cmd, expression, env_list_to_array((*data)->env)) ==
-					-1)
-				exit(1);
+			execve(path_cmd, expression, env_list_to_array((*data)->env));
+			g_status = 1;
+			exit(1);
 		}
 		else
 		{
 			print_not_found(expression[0], NULL);
 			free_after_execution(tokenlist, data, fds, args, expression, path_cmd);
+			g_status = 127;
 			exit(127);
 		}
 	}
@@ -214,7 +215,7 @@ int		status_child(int status)
 	return (exit_status);
 }
 
-void	execute_line(t_token **tokenlist, t_data **data, int *exit_status)
+void	execute_line(t_token **tokenlist, t_data **data)
 {
 	int i; 
 	int **fds; 
@@ -239,7 +240,7 @@ void	execute_line(t_token **tokenlist, t_data **data, int *exit_status)
 	while (wait(&status) > 0)
 		;
 	if(!(type(args[0], (*data)->env) == BUILTIN && (*data)->nb_pipe == 0))
-		*exit_status = status_child(status);
+		g_status = status_child(status);
 	close_all_pipes(fds, (*data)->nb_pipe);
 	free_double_array(args);
 	free_fds_array(fds, (*data)->nb_pipe);

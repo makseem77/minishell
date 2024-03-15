@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:23:46 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/15 15:12:25 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/15 17:38:55 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ void	execute_bultin(t_token **tokenlist, t_data **data, char **expression, char 
 	if (ft_strcmp(expression[0], "echo") == 0)
 		echo(expression);
 	else if (ft_strcmp(expression[0], "env") == 0)
-		env(expression, (*data)->env, &(*data)->exit_status);
+		env(expression, (*data)->env);
 	else if (ft_strcmp(expression[0], "export") == 0)
 		export(expression, (*data)->env, (*data)->exp_list);
 	else if (ft_strcmp(expression[0], "pwd") == 0)
