@@ -53,6 +53,7 @@ typedef struct s_data
 	struct s_env_list	**exp_list;
 	int					nb_pipe;
 	bool				here_doc;
+	int					exit_status;
 }						t_data;
 
 typedef struct s_env_list
@@ -70,7 +71,7 @@ typedef struct s_env_list
 //////////////////////////////////////////////////////////////////////////////////////
 //	TOKENIZE FOLDER
 //	TOKENIZE
-t_token					**tokenize(char *line, t_env_list **env);
+t_token	**tokenize(char *line, t_env_list **env, int exit_status);
 
 //	TOKENIZE UTILS
 size_t					compute_len(char *element);
@@ -79,10 +80,10 @@ char					*clean_up_quotes(char *element);
 int					clean_up_tokens(t_token **tokenlist);
 
 //	HANDLE_ENV_VARS
-char					*replace_in_line(char *line, t_env_list **env);
 void					convert_var_into_value(char *element_at_var,
 							char *new_element, t_env_list **env, int *i,
 							int *j);
+void convert_exit_status_into_value(char *new_element, int *i, int *j, int exit_status);
 int						compute_new_element_len(char *element,
 							t_env_list **env);
 //////////////////////////////////////////////////////////////////////////////////////
@@ -129,7 +130,7 @@ void					execute_bultin(t_token **tokenlist, t_data **data,
 size_t					count_tokens(t_token **token);
 char					**tokens_to_array(t_token **token);
 //	EXEC_LINE
-void					execute_line(t_token **tokenlist, t_data **data);
+void	execute_line(t_token **tokenlist, t_data **data, int *exit_status);
 //	EXEC_UTILS
 char					*get_path_cmd(char **paths, char *cmd);
 // INIT PIPES

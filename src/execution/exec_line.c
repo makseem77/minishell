@@ -83,9 +83,9 @@ void    configure_io(t_token **tokenlist, int index, int **fds, int nb_pipe)
 
 	fd_out = get_output_fd(tokenlist, index);
 	fd_in = get_input_fd(tokenlist, index);
-	printf("FDout = %d\n", fd_out);
-	printf("FDin = %d\n", fd_in);
-	printf("index = %d\n", index);
+	// printf("FDout = %d\n", fd_out);
+	// printf("FDin = %d\n", fd_in);
+	// printf("index = %d\n", index);
 	if (index == 0 && nb_pipe > 0)
 	{
 		dup2(fds[0][1], STDOUT_FILENO);
@@ -188,19 +188,39 @@ void	exec(t_token **tokenlist, t_data **data, int index, int **fds,
 		{
 			print_not_found(expression[0], NULL);
 			free_after_execution(tokenlist, data, fds, args, expression, path_cmd);
-			exit(EXIT_FAILURE);
+			exit(127);
 		}
 	}
 	free_double_array(expression);
 	free(path_cmd);
 }
 
-void	execute_line(t_token **tokenlist, t_data **data)
+int		status_child(int status)
+{
+	int exit_status;
+
+	if (WIFEXITED(status))
+		exit_status = WEXITSTATUS(status);
+	if (WIFSIGNALED(status))
+	{
+		exit_status = WTERMSIG(status);
+		if (exit_status != 131)
+			exit_status += 128;
+	}
+	if (WIFSTOPPED(status))
+		exit_status = WSTOPSIG(status);
+	if (WIFCONTINUED(status))
+		exit_status = 0;
+	return (exit_status);
+}
+
+void	execute_line(t_token **tokenlist, t_data **data, int *exit_status)
 {
 	int i; 
 	int **fds; 
-	char **args; 
-	
+	char **args;
+	int status;
+
 	args = tokens_to_array(tokenlist);
 	state = 1;
 	fds = init_pipes(data);
@@ -216,8 +236,9 @@ void	execute_line(t_token **tokenlist, t_data **data)
 		close(fds[i - 1][1]);
 		i--;
 	}
-	while (wait(NULL) > 0)
+	while (wait(&status) > 0)
 		;
+	*exit_status = status_child(status);
 	close_all_pipes(fds, (*data)->nb_pipe);
 	free_double_array(args);
 	free_fds_array(fds, (*data)->nb_pipe);
