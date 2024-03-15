@@ -83,9 +83,9 @@ void    configure_io(t_token **tokenlist, int index, int **fds, int nb_pipe)
 
 	fd_out = get_output_fd(tokenlist, index);
 	fd_in = get_input_fd(tokenlist, index);
-	printf("FDout = %d\n", fd_out);
-	printf("FDin = %d\n", fd_in);
-	printf("index = %d\n", index);
+	// printf("FDout = %d\n", fd_out);
+	// printf("FDin = %d\n", fd_in);
+	// printf("index = %d\n", index);
 	if (index == 0 && nb_pipe > 0)
 	{
 		dup2(fds[0][1], STDOUT_FILENO);
@@ -238,7 +238,8 @@ void	execute_line(t_token **tokenlist, t_data **data, int *exit_status)
 	}
 	while (wait(&status) > 0)
 		;
-	*exit_status = status_child(status);
+	if(!(type(args[0], (*data)->env) == BUILTIN && (*data)->nb_pipe == 0))
+		*exit_status = status_child(status);
 	close_all_pipes(fds, (*data)->nb_pipe);
 	free_double_array(args);
 	free_fds_array(fds, (*data)->nb_pipe);
