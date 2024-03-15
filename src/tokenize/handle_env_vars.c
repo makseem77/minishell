@@ -74,6 +74,7 @@ static int	compute_value_len(char *element_at_var, t_env_list **env, int *i)
 int	compute_new_element_len(char *element, t_env_list **env)
 {
 	int	new_element_len;
+	char	*tmp;
 	int	i;
 
 	new_element_len = 0;
@@ -82,7 +83,9 @@ int	compute_new_element_len(char *element, t_env_list **env)
 	{
 		if(ft_strncmp(&element[i], "$?", 2) == 0)
 		{
-			new_element_len += ft_strlen(ft_itoa(g_status));
+			tmp = ft_itoa(g_status);
+			new_element_len += ft_strlen(tmp);
+			free(tmp);
 			i += 2;
 		}
 		else if (element[i] == '$')
@@ -125,4 +128,5 @@ void convert_exit_status_into_value(char *new_element, int *i, int *j)
 	ft_strlcpy(new_element, exit_status_str, exit_status_len + 1);
 	*i += 2;
 	*j += exit_status_len;
+	free(exit_status_str);
 }

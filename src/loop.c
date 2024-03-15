@@ -34,8 +34,6 @@ void	listening_loop(t_data **data)
 			exit_bash(EXIT_SUCCESS, false, data, NULL, NULL);
 		if (*line)
 			add_history(line);
-		if (tokenlist)
-			free_token_list(tokenlist);
 		tokenlist = tokenize(line, (*data)->env);
 		if (tokenlist)
 		{
@@ -45,6 +43,7 @@ void	listening_loop(t_data **data)
 				if (*tokenlist)
 					execute_line(tokenlist, data);
 			}
+			free_token_list(tokenlist);
 		}
 		free(line);
 	}
