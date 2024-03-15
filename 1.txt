@@ -1,0 +1,13 @@
+1.txt
+cases.txt
+hello.txt
+ignore_readline.supp
+inc
+libft
+Makefile
+minishell
+obj
+src
+test
+test_permission.txt
+tmp

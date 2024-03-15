@@ -150,16 +150,44 @@ int	set_token_types(t_token **tokenlist, t_env_list **env, int *nb_pipe, bool *h
 				if(ft_strcmp(symbol_token->element, ">>") == 0)
 				{
 					if(last_cmd)
-						last_cmd->fd_out = open(tmp->element, O_CREAT | O_RDWR | O_APPEND, 0644);
+					{
+						last_cmd->fd_out = open(tmp->element, O_CREAT | O_RDWR | O_TRUNC, 0644);
+						if (last_cmd->fd_out == -1)
+						{
+							print_error(NULL, tmp->element, strerror(errno));
+							return (1);
+						}
+					}
 					else if(symbol_token->next->next && (type(symbol_token->next->next->element, env) == COMMAND || type(symbol_token->next->next->element, env) == BUILTIN))
-						symbol_token->next->next->fd_out = open(tmp->element, O_CREAT | O_RDWR | O_APPEND, 0644);
+					{
+						symbol_token->next->next->fd_out = open(tmp->element, O_CREAT | O_RDWR | O_TRUNC, 0644);
+						if (symbol_token->next->next->fd_out == -1)
+						{
+							print_error(NULL, tmp->element, strerror(errno));
+							return (1);
+						}
+					}
 				}
 				else if(ft_strcmp(symbol_token->element, ">") == 0)
 				{
 					if(last_cmd)
+					{
 						last_cmd->fd_out = open(tmp->element, O_CREAT | O_RDWR | O_TRUNC, 0644);
+						if (last_cmd->fd_out == -1)
+						{
+							print_error(NULL, tmp->element, strerror(errno));
+							return (1);
+						}
+					}
 					else if(symbol_token->next->next && (type(symbol_token->next->next->element, env) == COMMAND || type(symbol_token->next->next->element, env) == BUILTIN))
+					{
 						symbol_token->next->next->fd_out = open(tmp->element, O_CREAT | O_RDWR | O_TRUNC, 0644);
+						if (symbol_token->next->next->fd_out == -1)
+						{
+							print_error(NULL, tmp->element, strerror(errno));
+							return (1);
+						}
+					}
 				}
 				else if (ft_strcmp(symbol_token->element, "<<") == 0)
 				{
@@ -183,12 +211,22 @@ int	set_token_types(t_token **tokenlist, t_env_list **env, int *nb_pipe, bool *h
 				{
 					if(last_cmd)
 					{
-						last_cmd->fd_in = open(tmp->element, O_RDWR, 0644);
-						if (last_cmd->fd_in == -1)
-							return(print_error(tmp->element, NULL, strerror(errno)), 1);
+						last_cmd->fd_out = open(tmp->element, O_CREAT | O_RDWR | O_TRUNC, 0644);
+						if (last_cmd->fd_out == -1)
+						{
+							print_error(NULL, tmp->element, strerror(errno));
+							return (1);
+						}
 					}
 					else if(symbol_token->next->next && (type(symbol_token->next->next->element, env) == COMMAND || type(symbol_token->next->next->element, env) == BUILTIN))
-						symbol_token->next->next->fd_in = open(tmp->element, O_RDWR, 0644);
+					{
+						symbol_token->next->next->fd_out = open(tmp->element, O_CREAT | O_RDWR | O_TRUNC, 0644);
+						if (symbol_token->next->next->fd_out == -1)
+						{
+							print_error(NULL, tmp->element, strerror(errno));
+							return (1);
+						}
+					}
 				}
 			}
 			else

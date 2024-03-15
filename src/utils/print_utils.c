@@ -26,8 +26,11 @@ void	print_not_found(char *command, char *arg)
 void	print_error(char *command, char *arg, char *error_message)
 {
 	ft_putstr_fd("minishell: ", 2);
-	ft_putstr_fd(command, 2);
-	ft_putstr_fd(": ", 2);
+	if (command)
+	{
+		ft_putstr_fd(command, 2);
+		ft_putstr_fd(": ", 2);
+	}
 	if (arg)
 	{
 		ft_putstr_fd(arg, 2);
