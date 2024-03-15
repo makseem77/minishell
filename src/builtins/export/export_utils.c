@@ -30,7 +30,7 @@ int	check_var(char *arg, t_env_list **export_variables, int offset)
 
 	var_name = extract_var_name(arg + offset);
 	tmp = *export_variables;
-	if (!var_name)
+	if (!var_name || var_name[0] == '\0')
 		return (0);
 	while (tmp)
 	{

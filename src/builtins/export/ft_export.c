@@ -125,7 +125,12 @@ static void	add_variables_to_env(t_env_list **env, char *arg)
 				lst_add_back(env, lst_new(ft_strdup(arg)));
 		}
 		else if (cases == VAR_INVALID)
-			print_error("export", arg, "not a valid identifier");
+		{
+			if (arg[0] == '\0')
+				print_error("export", "`'", "not a valid identifier");
+			else
+				print_error("export", arg, "not a valid identifier");
+		}
 	}
 }
 

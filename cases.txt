@@ -3,6 +3,10 @@ minishell> cd a
 minishell> rm -rf ../a
 puis cd ou pwd par exemple
 
+echo bonjour |;ls -> segfault
+
+export "" -> should output not a valid identifier, same for unset ""
+
 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 minishell> echo "Permission" > /root/test_permission.txt
 Permission

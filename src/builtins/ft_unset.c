@@ -111,6 +111,9 @@ static bool	is_valid_variable(char *variable)
 	int	i;
 
 	i = 0;
+	printf("%s\n", variable);
+	if (!variable)
+		return (false);
 	if (!ft_isalpha(variable[0]) || variable[0] == '_')
 		return (false);
 	while (variable[i])
@@ -122,7 +125,7 @@ static bool	is_valid_variable(char *variable)
 	return (true);
 }
 
-// This function will go trough all of the args passed to unset
+// This function will go through all of the args passed to unset
 // so they can be removed from the env list and the export list.
 // We first check if the variable is a valid one, and if it's not,
 // we print an error.
@@ -135,7 +138,10 @@ void	unset(char **args, t_env_list **env, t_env_list **exp_list)
 		if (!(is_valid_variable(*args)))
 		{
 			g_status = 1;
-			print_error("unset", *args, "not a valid identifier");
+			if (*args[0] == '\0')
+				print_error("unset", "`'", "not a valid identifier");
+			else
+				print_error("unset", *args, "not a valid identifier");
 		}
 		if (arg_in_list(*args, env, 0))
 			lst_del_one(env, *args, 0);
