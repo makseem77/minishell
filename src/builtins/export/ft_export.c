@@ -26,9 +26,12 @@ t_env_list	**get_export_variables(t_env_list **env)
 	tmp = *env;
 	while (tmp)
 	{
-		newvariable = append_declare_prefix_and_quotes(tmp->variable);
-		lst_add_back(export_variables, lst_new(ft_strdup(newvariable)));
-		free(newvariable);
+		if (ft_strncmp(tmp->variable, "_", 1) != 0)
+		{
+			newvariable = append_declare_prefix_and_quotes(tmp->variable);
+			lst_add_back(export_variables, lst_new(ft_strdup(newvariable)));
+			free(newvariable);
+		}
 		tmp = tmp->next;
 	}
 	return (export_variables);
@@ -141,10 +144,13 @@ void	export(char **args, t_env_list **env, t_env_list **exp_list)
 	}
 	while (*args)
 	{
-		newvariable = append_declare_prefix_and_quotes(*args);
-		add_variables_to_export(exp_list, newvariable);
-		free(newvariable);
-		add_variables_to_env(env, *args);
+		if (ft_strncmp(*args, "_", 1) != 0)
+		{
+			newvariable = append_declare_prefix_and_quotes(*args);
+			add_variables_to_export(exp_list, newvariable);
+			free(newvariable);
+			add_variables_to_env(env, *args);
+		}
 		args++;
 	}
 	sort_alphabetically(exp_list, lst_size(exp_list));
