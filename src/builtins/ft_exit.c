@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 10:26:56 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/12 21:54:33 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/15 11:29:10 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,6 @@ int	is_valid_status(char *status, int *exit_status)
 // If the status is not a valid number, it will print the error message.
 void	exit_bash(char *status, bool too_many_args, t_data **data, t_token **token)
 {
-	int	exit_status;
 	int	is_valid;
 
 
@@ -73,7 +72,8 @@ void	exit_bash(char *status, bool too_many_args, t_data **data, t_token **token)
 		if(token)
 			free_token_list(token);
 		free_data_struct(*data);
-		exit(0);
+		(*data)->exit_status = 0;
+		exit(EXIT_SUCCESS);
 	}
 	if(too_many_args)
 	{
@@ -81,20 +81,22 @@ void	exit_bash(char *status, bool too_many_args, t_data **data, t_token **token)
 		if(token)
 			free_token_list(token);
 		free_data_struct(*data);
+		(*data)->exit_status = 1;
 		exit(EXIT_FAILURE);
 	}
-	is_valid = is_valid_status(status, &exit_status);
+	is_valid = is_valid_status(status, &(*data)->exit_status);
 	if (!is_valid || !status[0])
 	{
 		print_error("exit", status, "numeric argument required");
 		if(token)
 			free_token_list(token);
 		free_data_struct(*data);
+		(*data)->exit_status = 1;
 		exit(EXIT_FAILURE);
 	}
 	if(token)
 		free_token_list(token);
 	free_data_struct(*data);
 	free(status);
-	exit(exit_status % 256);
+	exit((*data)->exit_status % 256);
 }
