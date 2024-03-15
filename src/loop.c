@@ -30,10 +30,7 @@ void	listening_loop(t_data **data)
 		state = 0;
 		line = readline("minishell> ");
 		if (!line)
-		{
-			free(line);
-			exit_bash(EXIT_SUCCESS, false, data, NULL);
-		}
+			exit_bash(EXIT_SUCCESS, false, data, NULL, NULL);
 		if (*line)
 			add_history(line);
 		if (tokenlist)

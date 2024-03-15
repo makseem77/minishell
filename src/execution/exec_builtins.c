@@ -49,7 +49,7 @@ char	**tokens_to_array(t_token **token)
 	return (args);
 }
 
-static void	handle_cd_exit(t_token **tokenlist, t_data **data, char **expression)
+static void	handle_cd_exit(t_token **tokenlist, t_data **data, char **expression, char **args)
 {
 	if (ft_strcmp(*expression, "cd") == 0)
 	{
@@ -68,16 +68,16 @@ static void	handle_cd_exit(t_token **tokenlist, t_data **data, char **expression
 	else if (ft_strcmp(*expression, "exit") == 0)
 	{
 		if (*(expression + 1) && *(expression + 2))
-			exit_bash(*(expression + 1), true, data, tokenlist);
+			exit_bash(*(expression + 1), true, data, tokenlist, args);
 		else if(*(expression + 1))
-			exit_bash(*(expression + 1), false, data, tokenlist);
+			exit_bash(*(expression + 1), false, data, tokenlist, args);
 		else
-			exit_bash(NULL, false, data, tokenlist);
+			exit_bash(NULL, false, data, tokenlist, args);
 	}
 }
 
 //Executes the builtin command in the token.
-void	execute_bultin(t_token **tokenlist, t_data **data, char **expression)
+void	execute_bultin(t_token **tokenlist, t_data **data, char **expression, char **args)
 {
 	if (ft_strcmp(expression[0], "echo") == 0)
 		echo(expression);
@@ -89,5 +89,5 @@ void	execute_bultin(t_token **tokenlist, t_data **data, char **expression)
 		pwd();
 	else if (ft_strcmp(expression[0], "unset") == 0)
 		unset(expression, (*data)->env, (*data)->exp_list);
-	handle_cd_exit(tokenlist, data, expression);
+	handle_cd_exit(tokenlist, data, expression, args);
 }

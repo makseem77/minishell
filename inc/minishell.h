@@ -112,7 +112,7 @@ void					echo(char **args);
 void					env(char **args, t_env_list **env, int *exit_status);
 //	EXIT
 void					exit_bash(char *status, bool too_many_args,
-							t_data **data, t_token **token);
+							t_data **data, t_token **token, char **args);
 //	PWD
 void					pwd(void);
 char					*get_current_dir(void);
@@ -128,7 +128,7 @@ int						compute_bytes_to_cmp(char *variableinlist,
 //	EXECUTION FOLDER
 //	EXEC_BUILTINS
 void					execute_bultin(t_token **tokenlist, t_data **data,
-							char **expression);
+							char **expression, char **args);
 size_t					count_tokens(t_token **token);
 char					**tokens_to_array(t_token **token);
 //	EXEC_LINE

@@ -1,3 +1,9 @@
+minishell> mkdir a
+minishell> cd a
+minishell> rm -rf ../a
+puis cd ou pwd par exemple
+
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 minishell> echo "Permission" > /root/test_permission.txt
 Permission
 //EXPECTED : 
@@ -7,14 +13,6 @@ bash: /root/test_permission.txt: Permission denied
 $PATH
 /randomstuff outputs no such file or directory
 
-pouet+=a ballek
-
-minishell> mkdir a
-minishell> cd a
-minishell> rm -rf ../a
-puis cd ou pwd par exemple
-
-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 echo bonjour >hey >>hey2 >>hey3
 
 minishell> echo "This is a test

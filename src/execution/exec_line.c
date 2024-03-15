@@ -134,7 +134,7 @@ bool	check_and_exec_single_builtin(t_token **tokenlist, t_data **data, char **ar
 		saved_stdout = dup(STDOUT_FILENO);
 		saved_stdin = dup(STDIN_FILENO);
 		configure_io(tokenlist, 0, NULL, 0);
-		execute_bultin(tokenlist, data, expression);
+		execute_bultin(tokenlist, data, expression, args);
 		dup2(saved_stdout, STDOUT_FILENO);
 		dup2(saved_stdin, STDIN_FILENO);
 		close(saved_stdout);
@@ -174,7 +174,7 @@ void	exec(t_token **tokenlist, t_data **data, int index, int **fds,
 		configure_io(tokenlist, index, fds, (*data)->nb_pipe);
 		if (type(expression[0], (*data)->env) == BUILTIN)
 		{
-			execute_bultin(tokenlist, data, expression);
+			execute_bultin(tokenlist, data, expression, args);
 			free_after_execution(tokenlist, data, fds, args, expression, path_cmd);
 			exit(EXIT_SUCCESS);
 		}
