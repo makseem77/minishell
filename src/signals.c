@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 15:47:33 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/15 17:54:48 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/15 18:55:50 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void	sigint_handler(int sig)
 {
 	(void)sig;
+	g_status = 130;
 	if(state == 0)
 	{
 		ft_putstr_fd("\n", 1);

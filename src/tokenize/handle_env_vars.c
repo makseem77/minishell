@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 18:43:05 by maxborde          #+#    #+#             */
-/*   Updated: 2024/03/15 18:17:11 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/15 18:43:10 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,12 @@ int	compute_new_element_len(char *element, t_env_list **env)
 	i = 0;
 	while (element[i])
 	{
-		if (element[i] == '$')		
+		if(ft_strncmp(&element[i], "$?", 2) == 0)
+		{
+			new_element_len += ft_strlen(ft_itoa(g_status));
+			i += 2;
+		}
+		else if (element[i] == '$')
 			new_element_len += compute_value_len(&element[i], env, &i);
 		else
 		{
@@ -120,5 +125,4 @@ void convert_exit_status_into_value(char *new_element, int *i, int *j)
 	ft_strlcpy(new_element, exit_status_str, exit_status_len + 1);
 	*i += 2;
 	*j += exit_status_len;
-	// free(exit_status);
 }

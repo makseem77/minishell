@@ -239,7 +239,7 @@ void	execute_line(t_token **tokenlist, t_data **data)
 	}
 	while (wait(&status) > 0)
 		;
-	if(!(type(args[0], (*data)->env) == BUILTIN && (*data)->nb_pipe == 0))
+	if(!(type(args[0], (*data)->env) == BUILTIN && (*data)->nb_pipe == 0) && g_status != 130)
 		g_status = status_child(status);
 	close_all_pipes(fds, (*data)->nb_pipe);
 	free_double_array(args);
