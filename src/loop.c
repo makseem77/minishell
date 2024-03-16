@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:43:34 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/15 17:55:08 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/16 19:08:41 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	listening_loop(t_data **data)
 		state = 0;
 		line = readline("minishell> ");
 		if (!line)
-			exit_bash(EXIT_SUCCESS, false, data, NULL, NULL);
+			exit_bash(EXIT_SUCCESS, data, NULL, NULL);
 		if (*line)
 			add_history(line);
 		tokenlist = tokenize(line, (*data)->env);

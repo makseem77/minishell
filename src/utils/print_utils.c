@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils_print.c                                      :+:      :+:    :+:   */
+/*   print_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 17:56:02 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/14 16:59:03 by maxborde         ###   ########.fr       */
+/*   Updated: 2024/03/16 16:19:41 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,22 @@
 void	print_not_found(char *command, char *arg)
 {
 	if (command[0] == '/')
+	{
 		print_error(command, arg, "No such file or directory");
+		g_status = 1;
+	}
 	else
+	{
 		print_error(command, arg, "command not found");
+		g_status = 127;		
+	}
 }
 
 
 // Prints the error message.
 void	print_error(char *command, char *arg, char *error_message)
 {
+	g_status = 1;
 	ft_putstr_fd("minishell: ", 2);
 	if (command)
 	{

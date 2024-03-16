@@ -110,8 +110,8 @@ void					echo(char **args);
 //	ENV
 void					env(char **args, t_env_list **env);
 //	EXIT
-void					exit_bash(char *status, bool too_many_args,
-							t_data **data, t_token **token, char **args);
+void					exit_bash(char *status, t_data **data, t_token **token,
+							char **args);
 //	PWD
 void					pwd(void);
 char					*get_current_dir(void);
@@ -134,9 +134,16 @@ char					**tokens_to_array(t_token **token);
 void					execute_line(t_token **tokenlist, t_data **data);
 //	EXEC_UTILS
 char					*get_path_cmd(char **paths, char *cmd);
+char					**cut_arrays_into_expression(char **array, int index);
 // INIT PIPES
 int						**init_pipes(t_data **data);
 void					close_all_pipes(int **fds, int nb_pipe);
+//	REDIRECTIONS
+int						get_output_fd(t_token **tokenlist, int index);
+int						get_input_fd(t_token **tokenlist, int index);
+void					configure_io(t_token **tokenlist, int index, int **fds,
+							int nb_pipe);
+void					write_to_heredoc(int fd, char *limiter);
 //////////////////////////////////////////////////////////////////////////////////////
 
 //////////////////////////////////////////////////////////////////////////////////////
@@ -177,10 +184,8 @@ int						set_token_types(t_token **tokenlist, t_env_list **env,
 							int *nb_pipe, bool *heredoc);
 int						type(char *element, t_env_list **env);
 
-//	REDIRECTIONS
-void					write_to_heredoc(int fd, char *limiter);
-
 //	SIGNALS
 void					handle_signals(void);
+int						exited_status(int status);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 13:03:07 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/15 18:06:29 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/16 16:58:24 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static char	*update_absolute_path(char *absolute_path, char *old_pwd,
 	{
 		absolute_path = get_env("HOME", (*data)->env);
 		if (!absolute_path)
-			return (ft_putstr_fd("cd: HOME not set\n", 2), NULL);
+			return (print_error("cd", NULL, "HOME not set"), NULL);
 	}
 	if (ft_strcmp(absolute_path, "-") == 0)
 	{
@@ -46,13 +46,12 @@ static char	*update_absolute_path(char *absolute_path, char *old_pwd,
 // If the path is valid, it will change the current directory.
 void	cd(char *absolute_path, t_data **data)
 {
-	char		old_pwd[PATH_MAX];
-	char		current_dir[PATH_MAX];
+	char	old_pwd[PATH_MAX];
+	char	current_dir[PATH_MAX];
 
 	if (!getcwd(current_dir, sizeof(current_dir)))
 	{
-		ft_putstr_fd(strerror(errno), 2);
-		ft_putstr_fd("\n", 2);
+		print_error("cd", NULL, strerror(errno));
 		g_status = 1;
 		return ;
 	}

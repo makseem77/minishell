@@ -6,11 +6,45 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 10:59:37 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/01 16:32:33 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/16 16:24:04 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+char	**cut_arrays_into_expression(char **array, int index)
+{
+	int		i;
+	int		pipecount;
+	char	**expression;
+
+	i = 0;
+	pipecount = 0;
+	while (*array && index > 0)
+	{
+		if (ft_strcmp(*array, "|") == 0)
+		{
+			pipecount++;
+			if (pipecount == index)
+			{
+				array++;
+				break ;
+			}
+		}
+		array++;
+	}
+	while (array[i] && ft_strcmp(array[i], "|"))
+		i++;
+	expression = malloc(sizeof(char *) * (i + 1));
+	i = 0;
+	while (array[i] && ft_strcmp(array[i], "|"))
+	{
+		expression[i] = ft_strdup(array[i]);
+		i++;
+	}
+	expression[i] = 0;
+	return (expression);
+}
 
 char	*get_path_cmd(char **paths, char *cmd)
 {

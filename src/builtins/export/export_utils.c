@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 10:18:04 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/02/23 10:19:59 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/16 16:57:03 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,6 @@ static char	*insert_quotes(char *variable)
 	newvariable[++i] = 0;
 	return (newvariable);
 }
-
 
 // Appends the declare
 //-x prefix to every variables and inserts the quotes around the value
