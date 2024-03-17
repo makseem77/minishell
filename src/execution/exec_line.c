@@ -1,10 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exec_line.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/03/17 12:24:09 by ymeziane          #+#    #+#             */
+/*   Updated: 2024/03/17 12:24:19 by ymeziane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-bool	check_and_exec_single_builtin(t_token **tokenlist, t_data **data, char **args)
+bool	check_and_exec_single_builtin(t_token **tokenlist, t_data **data,
+		char **args)
 {
 	char	**expression;
-	int saved_stdout;
-	int saved_stdin;
+	int		saved_stdout;
+	int		saved_stdin;
 
 	expression = args;
 	if (type(expression[0], (*data)->env) == BUILTIN && (*data)->nb_pipe == 0)
@@ -17,14 +30,14 @@ bool	check_and_exec_single_builtin(t_token **tokenlist, t_data **data, char **ar
 		dup2(saved_stdin, STDIN_FILENO);
 		close(saved_stdout);
 		close(saved_stdin);
-		return true;
+		return (true);
 	}
 	else
-		return false;
-
+		return (false);
 }
 
-void	free_after_execution(t_token **tokenlist, t_data **data, int **fds, char **args, char **expression, char *path_cmd)
+void	free_after_execution(t_token **tokenlist, t_data **data, int **fds,
+		char **args, char **expression, char *path_cmd)
 {
 	free(path_cmd);
 	free_double_array(expression);
@@ -32,8 +45,7 @@ void	free_after_execution(t_token **tokenlist, t_data **data, int **fds, char **
 	free_fds_array(fds, (*data)->nb_pipe);
 	free_data_struct(*data);
 	free_token_list(tokenlist);
-}	
-
+}
 
 void	exec(t_token **tokenlist, t_data **data, int index, int **fds,
 		char **args)
@@ -43,7 +55,7 @@ void	exec(t_token **tokenlist, t_data **data, int index, int **fds,
 	char	**expression;
 
 	if (check_and_exec_single_builtin(tokenlist, data, args))
-		return;
+		return ;
 	expression = cut_arrays_into_expression(args, index);
 	path_cmd = get_path_cmd((*data)->bin_paths, expression[0]);
 	pid = fork();
@@ -53,7 +65,8 @@ void	exec(t_token **tokenlist, t_data **data, int index, int **fds,
 		if (type(expression[0], (*data)->env) == BUILTIN)
 		{
 			execute_bultin(tokenlist, data, expression, args);
-			free_after_execution(tokenlist, data, fds, args, expression, path_cmd);
+			free_after_execution(tokenlist, data, fds, args, expression,
+				path_cmd);
 			exit(g_status);
 		}
 		if (type(expression[0], (*data)->env) == COMMAND)
@@ -65,7 +78,8 @@ void	exec(t_token **tokenlist, t_data **data, int index, int **fds,
 		else
 		{
 			print_not_found(expression[0], NULL);
-			free_after_execution(tokenlist, data, fds, args, expression, path_cmd);
+			free_after_execution(tokenlist, data, fds, args, expression,
+				path_cmd);
 			g_status = 127;
 			exit(g_status);
 		}
@@ -76,10 +90,10 @@ void	exec(t_token **tokenlist, t_data **data, int index, int **fds,
 
 void	execute_line(t_token **tokenlist, t_data **data)
 {
-	int i; 
-	int **fds; 
-	char **args;
-	int status;
+	int		i;
+	int		**fds;
+	char	**args;
+	int		status;
 
 	args = tokens_to_array(tokenlist);
 	state = 1;
@@ -98,12 +112,13 @@ void	execute_line(t_token **tokenlist, t_data **data)
 	}
 	while (wait(&status) > 0)
 		;
-	if(!(type(args[0], (*data)->env) == BUILTIN && (*data)->nb_pipe == 0) && g_status != 130)
+	if (!(type(args[0], (*data)->env) == BUILTIN && (*data)->nb_pipe == 0)
+		&& g_status != 130)
 		g_status = exited_status(status);
 	close_all_pipes(fds, (*data)->nb_pipe);
 	free_double_array(args);
 	free_fds_array(fds, (*data)->nb_pipe);
-	if((*data)->here_doc)
+	if ((*data)->here_doc)
 		unlink("tmp");
 	(*data)->nb_pipe = 0;
 	state = 0;

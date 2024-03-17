@@ -17,6 +17,7 @@
         "stdlib.h": "c",
         "tmp": "cpp",
         "readline.h": "c",
-        "unistd.h": "c"
+        "unistd.h": "c",
+        "stdio.h": "c"
     }
 }

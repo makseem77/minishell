@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:23:46 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/16 19:04:47 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/17 12:23:28 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 size_t	count_tokens(t_token **token)
 {
-	int	i;
+	int		i;
 	t_token	*tmp;
 
 	i = 0;
@@ -27,7 +27,7 @@ size_t	count_tokens(t_token **token)
 	return (i);
 }
 
-//Returns the tokens in the tokenlist as an array of strings.
+// Returns the tokens in the tokenlist as an array of strings.
 char	**tokens_to_array(t_token **token)
 {
 	size_t	nb_tokens;
@@ -49,7 +49,8 @@ char	**tokens_to_array(t_token **token)
 	return (args);
 }
 
-static void	handle_cd_exit(t_token **tokenlist, t_data **data, char **expression, char **args)
+static void	handle_cd_exit(t_token **tokenlist, t_data **data,
+		char **expression, char **args)
 {
 	if (ft_strcmp(*expression, "cd") == 0)
 	{
@@ -67,15 +68,16 @@ static void	handle_cd_exit(t_token **tokenlist, t_data **data, char **expression
 	}
 	else if (ft_strcmp(*expression, "exit") == 0)
 	{
-		if(*(expression + 1))
+		if (*(expression + 1))
 			exit_bash(*(expression + 1), data, tokenlist, args);
 		else
 			exit_bash(NULL, data, tokenlist, args);
 	}
 }
 
-//Executes the builtin command in the token.
-void	execute_bultin(t_token **tokenlist, t_data **data, char **expression, char **args)
+// Executes the builtin command in the token.
+void	execute_bultin(t_token **tokenlist, t_data **data, char **expression,
+		char **args)
 {
 	if (ft_strcmp(expression[0], "echo") == 0)
 		echo(expression);
