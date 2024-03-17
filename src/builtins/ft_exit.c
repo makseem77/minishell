@@ -79,7 +79,7 @@ void	free_and_exit(t_data **data, t_token **token, char **args, int status)
 void	exit_bash(char *status, t_data **data, t_token **token, char **args)
 {
 	int		is_valid;
-	bool	too_many_args;
+	bool	too_many_args = false;
 
 	if (status)
 		too_many_args = args[1] != NULL;
