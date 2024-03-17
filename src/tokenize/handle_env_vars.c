@@ -83,7 +83,7 @@ int	compute_new_element_len(char *element, t_env_list **env)
 	{
 		if(ft_strncmp(&element[i], "$?", 2) == 0)
 		{
-			tmp = ft_itoa(g_status);
+			tmp = ft_itoa(state);
 			new_element_len += ft_strlen(tmp);
 			free(tmp);
 			i += 2;
@@ -123,7 +123,7 @@ void convert_exit_status_into_value(char *new_element, int *i, int *j)
 	int		exit_status_len;
 	char 	*exit_status_str;
 
-	exit_status_str = ft_itoa(g_status);
+	exit_status_str = ft_itoa(state);
 	exit_status_len = ft_strlen(exit_status_str);
 	ft_strlcpy(new_element, exit_status_str, exit_status_len + 1);
 	*i += 2;

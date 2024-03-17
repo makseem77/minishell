@@ -137,7 +137,7 @@ void	unset(char **args, t_env_list **env, t_env_list **exp_list)
 	{
 		if (!(is_valid_variable(*args)))
 		{
-			g_status = 1;
+			state = 1;
 			if (*args[0] == '\0')
 				print_error("unset", "`'", "not a valid identifier");
 			else
@@ -149,5 +149,5 @@ void	unset(char **args, t_env_list **env, t_env_list **exp_list)
 			lst_del_one(exp_list, *args, ft_strlen("declare -x "));
 		args++;
 	}
-	g_status = 0;
+	state = 0;
 }

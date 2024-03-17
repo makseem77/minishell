@@ -15,8 +15,7 @@
 # include <sys/wait.h>
 # include <unistd.h>
 
-extern bool				state;
-extern int				g_status;
+extern int				state;
 
 typedef enum e_type
 {

@@ -30,8 +30,7 @@ int		exited_status(int status)
 void	sigint_handler(int sig)
 {
 	(void)sig;
-	g_status = 130;
-	if(state == 0)
+	if(state != -1)
 	{
 		ft_putstr_fd("\n", 1);
 		rl_on_new_line();
@@ -40,6 +39,7 @@ void	sigint_handler(int sig)
 	}
 	else
 		ft_putstr_fd("\n", 1);
+	state = 130;
 }
 
 void	handle_signals()

@@ -37,6 +37,6 @@ void	pwd(void)
 	ft_putstr_fd(current_dir, 1);
 	ft_putstr_fd("\n", 1);
 	free(current_dir);
-	g_status = 0;
+	state = 0;
 	return ;
 }

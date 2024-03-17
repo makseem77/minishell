@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-bool	state;
+int	state;
 int		g_status;
 
 void	print_token_list(t_token **tokenlist)
@@ -37,11 +37,10 @@ void	listening_loop(t_data **data)
 	t_token	**tokenlist;
 
 	tokenlist = NULL;
-	state = 0;
 	handle_signals();
+	state = 1;
 	while (true)
 	{
-		state = 0;
 		line = readline("minishell> ");
 		if (!line)
 			exit_bash(EXIT_SUCCESS, data, NULL, NULL);

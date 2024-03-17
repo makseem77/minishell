@@ -58,20 +58,20 @@ int	is_valid_status(char *status)
 	if ((single_quote && status[i - 1] != '\'') || (double_quote && status[i
 				- 1] != '\"'))
 		return (0);
-	g_status = ft_atoll(status, &overflow);
+	state = ft_atoll(status, &overflow);
 	return (!overflow);
 }
 
 void	free_and_exit(t_data **data, t_token **token, char **args, int status)
 {
-	g_status = status;
+	state = status;
 	if (token)
 		free_token_list(token);
 	if (args)
 		free_double_array(args);
 	free_data_struct(*data);
-	g_status = g_status % 256;
-	exit(g_status);
+	state = state % 256;
+	exit(state);
 }
 
 // Exits the program with the given status.
@@ -102,5 +102,5 @@ void	exit_bash(char *status, t_data **data, t_token **token, char **args)
 		print_error("exit", status, "numeric argument required");
 		free_and_exit(data, token, args, 2);
 	}
-	free_and_exit(data, token, args, g_status);
+	free_and_exit(data, token, args, state);
 }

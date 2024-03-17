@@ -52,7 +52,7 @@ void	cd(char *absolute_path, t_data **data)
 	if (!getcwd(current_dir, sizeof(current_dir)))
 	{
 		print_error("cd", NULL, strerror(errno));
-		g_status = 1;
+		state = 1;
 		return ;
 	}
 	absolute_path = update_absolute_path(absolute_path, (*data)->old_pwd, data);
@@ -61,7 +61,7 @@ void	cd(char *absolute_path, t_data **data)
 	if (chdir(absolute_path) != 0)
 	{
 		print_error("cd", absolute_path, strerror(errno));
-		g_status = 1;
+		state = 1;
 		return ;
 	}
 	else
@@ -70,5 +70,5 @@ void	cd(char *absolute_path, t_data **data)
 		free((*data)->old_pwd);
 		(*data)->old_pwd = ft_strdup(old_pwd);
 	}
-	g_status = 0;
+	state = 0;
 }

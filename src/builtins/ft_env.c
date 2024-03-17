@@ -21,7 +21,7 @@ void	env(char **args, t_env_list **env)
 	if (*(args + 1) != NULL)
 	{
 		print_error("env", *(args + 1), "Too many arguments");
-		g_status = 1;
+		state = 1;
 		return ;
 	}
 	while (tmp)
@@ -30,5 +30,5 @@ void	env(char **args, t_env_list **env)
 		ft_putstr_fd("\n", 1);
 		tmp = tmp->next;
 	}
-	g_status = 0;
+	state = 0;
 }

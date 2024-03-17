@@ -18,12 +18,12 @@ void	print_not_found(char *command, char *arg)
 	if (command[0] == '/')
 	{
 		print_error(command, arg, "No such file or directory");
-		g_status = 1;
+		state = 1;
 	}
 	else
 	{
 		print_error(command, arg, "command not found");
-		g_status = 127;		
+		state = 127;		
 	}
 }
 
@@ -31,7 +31,7 @@ void	print_not_found(char *command, char *arg)
 // Prints the error message.
 void	print_error(char *command, char *arg, char *error_message)
 {
-	g_status = 1;
+	state = 1;
 	ft_putstr_fd("minishell: ", 2);
 	if (command)
 	{
