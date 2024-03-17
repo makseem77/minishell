@@ -186,6 +186,8 @@ t_token	*get_cmd_token(t_token **tokenlist, int expr_index)
 
 int	create_and_set_fd(t_token *tmp, t_token *command_token)
 {
+	if (!command_token)
+		return (-1);
 	if(ft_strncmp(tmp->element, ">>", 2) == 0 || ft_strcmp(tmp->element, ">") == 0)
 	{
 		if(ft_strncmp(tmp->element, ">>", 2) == 0)
