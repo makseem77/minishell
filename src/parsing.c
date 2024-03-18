@@ -64,6 +64,8 @@ static int	is_a_command(char *element, t_env_list **env)
 
 int	type(char *element, t_env_list **env)
 {
+	if (!element)
+		return (-1);
 	if (!ft_strcmp("echo", element) || !ft_strcmp("cd", element)
 		|| !ft_strcmp("pwd", element) || !ft_strcmp("export", element)
 		|| !ft_strcmp("unset", element) || !ft_strcmp("env", element)
@@ -185,33 +187,56 @@ t_token	*get_cmd_token(t_token **tokenlist, int expr_index)
 
 int	create_and_set_fd(t_token *tmp, t_token *command_token)
 {
-	if (!command_token && tmp->ttype != HERE_DOC)
-		return (-1);
+	int	fd;
+	fd = 0;
+
 	if(ft_strncmp(tmp->element, ">>", 2) == 0 || ft_strcmp(tmp->element, ">") == 0)
 	{
 		if(ft_strncmp(tmp->element, ">>", 2) == 0)
+		{
+			if (command_token)	
 				command_token->fd_out = open(tmp->next->element, O_CREAT | O_RDWR | O_APPEND, 0644);
+			else
+				open(tmp->next->element, O_CREAT | O_RDWR | O_APPEND, 0644);
+		}
 		else
-			command_token->fd_out = open(tmp->next->element, O_CREAT | O_RDWR | O_TRUNC, 0644);
-		if (command_token->fd_out == -1)
-			return(print_error(NULL, tmp->next->element, strerror(errno)), 1);
+		{
+			if (command_token)
+				command_token->fd_out = open(tmp->next->element, O_CREAT | O_RDWR | O_TRUNC, 0644);
+			else
+				open(tmp->next->element, O_CREAT | O_RDWR | O_APPEND, 0644);
+		}
+		if (command_token)
+		{
+			if (command_token->fd_out == -1)
+				return(print_error(NULL, tmp->next->element, strerror(errno)), 1);
+		}
 	}
 	else if(ft_strncmp(tmp->element, "<<", 2) == 0 || ft_strcmp(tmp->element, "<") == 0)
 	{
 		if(ft_strncmp(tmp->element, "<<", 2) == 0)
 		{
 			if(!command_token)
-				write_to_heredoc(open("tmp", O_CREAT | O_RDWR | O_TRUNC, 0644), tmp->next->element);
+				fd = write_to_heredoc(open(".tmp", O_CREAT | O_RDWR | O_TRUNC, 0644), tmp->next->element);
 			else
 			{
-				command_token->fd_in = open("tmp", O_CREAT | O_RDWR | O_TRUNC, 0644);
-				write_to_heredoc(command_token->fd_in, tmp->next->element);
+				command_token->fd_in = open(".tmp", O_CREAT | O_RDWR | O_TRUNC, 0644);
+				fd = write_to_heredoc(command_token->fd_in, tmp->next->element);
 			}
 		}
 		else
-			command_token->fd_in = open(tmp->next->element,  O_RDWR, 0644);
-		if(command_token && command_token->fd_in == -1)
+		{
+			if (command_token)
+				command_token->fd_in = open(tmp->next->element,  O_RDWR, 0644);
+			else
+				fd = open(tmp->next->element, O_RDWR, 0644);
+		}
+		if((command_token && command_token->fd_in == -1) || fd == -1)
+		{
+			if (command_token && command_token->fd_in == -1)
+				command_token->fd_out = open("/dev/null", O_WRONLY);
 			return(print_error(NULL, tmp->next->element, strerror(errno)), 1);
+		}
 	}
 	return (-1);
 }
@@ -231,12 +256,27 @@ int handle_redirections(t_token **tokenlist, int *nb_pipe)
 		command_token = get_cmd_token(tokenlist, expr_index);
 		if (ft_strcmp(tmp->element, "|") == 0)
 			expr_index++;
-		if(create_and_set_fd(tmp, command_token) == 1)
-			return (1);	
+		create_and_set_fd(tmp, command_token);
+		/*if(create_and_set_fd(tmp, command_token) == 1)
+			return (1);*/	
 		tmp = tmp->next;
 	}
 	return (0);
 }
+
+void	print_token_list(t_token **tokenlist)
+{
+	t_token	*tmp;
+	tmp = *tokenlist;
+
+	while (tmp)
+	{
+		printf("Element = %s\n", tmp->element);
+		printf("Type = %d\n", tmp->ttype);
+		tmp = tmp->next;
+	}
+}
+
 // Goes trough the token linked list
 // and gives a tokentype to every node of the list.
 int	set_token_types(t_token **tokenlist, t_env_list **env, int *nb_pipe, bool *heredoc)
@@ -246,5 +286,6 @@ int	set_token_types(t_token **tokenlist, t_env_list **env, int *nb_pipe, bool *h
 	if(handle_redirections(tokenlist, nb_pipe) == 1)
 		return (1);
 	clean_up_redirection(tokenlist);
+	print_token_list(tokenlist);
 	return (0);
 }

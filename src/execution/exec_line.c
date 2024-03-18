@@ -69,10 +69,15 @@ void	exec(t_token **tokenlist, t_data **data, int index, int **fds,
 				path_cmd);
 			exit(state);
 		}
-		if (type(expression[0], (*data)->env) == COMMAND)
+		else if (type(expression[0], (*data)->env) == COMMAND)
 		{
 			execve(path_cmd, expression, env_list_to_array((*data)->env));
 			state = 1;
+			exit(state);
+		}
+		else if (!path_cmd)
+		{
+			state = 0;
 			exit(state);
 		}
 		else

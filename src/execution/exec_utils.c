@@ -51,6 +51,8 @@ char	*get_path_cmd(char **paths, char *cmd)
 	char	*tmp;
 	char	*command;
 
+	if (!cmd)
+		return (NULL);
 	if (cmd[0] == '.' || cmd[0] == '/')
 	{
 		if (access(cmd, F_OK | X_OK) == 0)

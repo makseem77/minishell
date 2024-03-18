@@ -15,19 +15,6 @@
 int	state;
 int		g_status;
 
-void	print_token_list(t_token **tokenlist)
-{
-	t_token	*tmp;
-	tmp = *tokenlist;
-
-	while (tmp)
-	{
-		printf("Element = %s\n", tmp->element);
-		printf("Type = %d\n", tmp->ttype);
-		tmp = tmp->next;
-	}
-}
-
 // The main loop of the program
 // It reads the input from the user and processes it
 // It will keep reading the input until the user exits the program

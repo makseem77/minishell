@@ -24,6 +24,7 @@ typedef enum e_type
 	BUILTIN,
 	REDIRECTION,
 	REDIRECTION_FILE,
+	REDIR_EXEC,
 	HERE_DOC,
 	DELIMITER,
 }						t_type;
@@ -142,7 +143,7 @@ int						get_output_fd(t_token **tokenlist, int index);
 int						get_input_fd(t_token **tokenlist, int index);
 void					configure_io(t_token **tokenlist, int index, int **fds,
 							int nb_pipe);
-void					write_to_heredoc(int fd, char *limiter);
+int					write_to_heredoc(int fd, char *limiter);
 //////////////////////////////////////////////////////////////////////////////////////
 
 //////////////////////////////////////////////////////////////////////////////////////
