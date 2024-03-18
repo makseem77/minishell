@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 15:23:35 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/18 11:44:01 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/18 16:23:55 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -264,18 +264,18 @@ int handle_redirections(t_token **tokenlist, int *nb_pipe)
 	return (0);
 }
 
-void	print_token_list(t_token **tokenlist)
-{
-	t_token	*tmp;
-	tmp = *tokenlist;
+// void	print_token_list(t_token **tokenlist)
+// {
+// 	t_token	*tmp;
+// 	tmp = *tokenlist;
 
-	while (tmp)
-	{
-		printf("Element = %s\n", tmp->element);
-		printf("Type = %d\n", tmp->ttype);
-		tmp = tmp->next;
-	}
-}
+// 	while (tmp)
+// 	{
+// 		printf("Element = %s\n", tmp->element);
+// 		printf("Type = %d\n", tmp->ttype);
+// 		tmp = tmp->next;
+// 	}
+// }
 
 // Goes trough the token linked list
 // and gives a tokentype to every node of the list.
@@ -286,6 +286,6 @@ int	set_token_types(t_token **tokenlist, t_env_list **env, int *nb_pipe, bool *h
 	if(handle_redirections(tokenlist, nb_pipe) == 1)
 		return (1);
 	clean_up_redirection(tokenlist);
-	print_token_list(tokenlist);
+	// print_token_list(tokenlist);
 	return (0);
 }

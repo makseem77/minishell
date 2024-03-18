@@ -15,7 +15,7 @@
 # include <sys/wait.h>
 # include <unistd.h>
 
-extern int				state;
+extern int				g_status;
 
 typedef enum e_type
 {
@@ -167,14 +167,15 @@ char					*get_env(char *variable, t_env_list **env);
 char					**env_list_to_array(t_env_list **env);
 //////////////////////////////////////////////////////////////////////////////////////
 
-//	FREE
-void					free_token_list(t_token **t_token);
+//	FREE FOLDER
+//	FREE ARRAY
 void					free_double_array(char **darray);
-void					free_variable_lists(t_env_list **export_list,
-							t_env_list **env_list);
-void					free_data_struct(t_data *data);
-void					free_lst_content(t_env_list *lst, char *var_name);
 void					free_fds_array(int **fds, int nb_pipe);
+//	FREE STRUCT
+void					free_lst_content(t_env_list *lst, char *var_name);
+void					free_data_struct(t_data *data);
+void					free_token_list(t_token **t_token);
+//////////////////////////////////////////////////////////////////////////////////////
 
 //	LOOP
 void					listening_loop(t_data **data);

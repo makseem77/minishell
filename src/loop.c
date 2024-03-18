@@ -6,13 +6,12 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:43:34 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/18 12:06:32 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/18 15:50:07 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	state;
 int		g_status;
 
 // The main loop of the program
@@ -25,7 +24,7 @@ void	listening_loop(t_data **data)
 
 	tokenlist = NULL;
 	handle_signals();
-	state = 1;
+	g_status = 1;
 	while (true)
 	{
 		line = readline("minishell> ");
@@ -38,13 +37,8 @@ void	listening_loop(t_data **data)
 		{
 			if (!set_token_types(tokenlist, (*data)->env, &(*data)->nb_pipe,
 					&(*data)->here_doc))
-			{
 				if (*tokenlist)
-				{
-					// print_token_list(tokenlist);
 					execute_line(tokenlist, data);
-				}
-			}
 			free_token_list(tokenlist);
 		}
 		free(line);

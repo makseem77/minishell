@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 04:28:22 by maxborde          #+#    #+#             */
-/*   Updated: 2024/03/16 16:23:13 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/18 16:23:46 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void    configure_io(t_token **tokenlist, int index, int **fds, int nb_pipe)
 	fd_out = get_output_fd(tokenlist, index);
 	fd_in = get_input_fd(tokenlist, index);
 
-	printf("fd_out = %d\n", fd_out);
+	// printf("fd_out = %d\n", fd_out);
 	if (index == 0 && nb_pipe > 0)
 	{
 		dup2(fds[0][1], STDOUT_FILENO);
@@ -105,7 +105,7 @@ int	write_to_heredoc(int fd, char *limiter)
 {
 	char	*line;
 
-	state = -1;
+	g_status = -1;
 	while (true)
 	{
 		line = readline("> ");

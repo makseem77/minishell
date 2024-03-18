@@ -6,15 +6,15 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 15:47:33 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/16 16:55:23 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/18 15:50:35 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int		exited_status(int status)
+int	exited_status(int status)
 {
-	int exit_status;
+	int	exit_status;
 
 	if (WIFEXITED(status))
 		exit_status = WEXITSTATUS(status);
@@ -30,7 +30,7 @@ int		exited_status(int status)
 void	sigint_handler(int sig)
 {
 	(void)sig;
-	if(state != -1)
+	if (g_status != -1)
 	{
 		ft_putstr_fd("\n", 1);
 		rl_on_new_line();
@@ -39,10 +39,10 @@ void	sigint_handler(int sig)
 	}
 	else
 		ft_putstr_fd("\n", 1);
-	state = 130;
+	g_status = 130;
 }
 
-void	handle_signals()
+void	handle_signals(void)
 {
 	struct sigaction	sa_sigint;
 	struct sigaction	sa_sigquit;

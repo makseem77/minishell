@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 11:29:19 by maxborde          #+#    #+#             */
-/*   Updated: 2024/03/15 18:04:14 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/18 15:17:09 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,6 @@ void	pwd(void)
 	ft_putstr_fd(current_dir, 1);
 	ft_putstr_fd("\n", 1);
 	free(current_dir);
-	state = 0;
+	g_status = 0;
 	return ;
 }

@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 10:26:56 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/16 19:06:48 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/18 15:34:25 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,20 +58,20 @@ int	is_valid_status(char *status)
 	if ((single_quote && status[i - 1] != '\'') || (double_quote && status[i
 				- 1] != '\"'))
 		return (0);
-	state = ft_atoll(status, &overflow);
+	g_status = ft_atoll(status, &overflow);
 	return (!overflow);
 }
 
 void	free_and_exit(t_data **data, t_token **token, char **args, int status)
 {
-	state = status;
+	g_status = status;
 	if (token)
 		free_token_list(token);
 	if (args)
 		free_double_array(args);
 	free_data_struct(*data);
-	state = state % 256;
-	exit(state);
+	g_status = g_status % 256;
+	exit(g_status);
 }
 
 // Exits the program with the given status.
@@ -79,10 +79,9 @@ void	free_and_exit(t_data **data, t_token **token, char **args, int status)
 void	exit_bash(char *status, t_data **data, t_token **token, char **args)
 {
 	int		is_valid;
-	bool	too_many_args = false;
+	bool	too_many_args;
 
-	if (status)
-		too_many_args = args[1] != NULL;
+	too_many_args = (args && args[2]);
 	if (!status || (*data)->nb_pipe > 0)
 	{
 		if (!status && (*data)->nb_pipe == 0)
@@ -102,5 +101,6 @@ void	exit_bash(char *status, t_data **data, t_token **token, char **args)
 		print_error("exit", status, "numeric argument required");
 		free_and_exit(data, token, args, 2);
 	}
-	free_and_exit(data, token, args, state);
+	ft_putstr_fd("exit\n", 1);
+	free_and_exit(data, token, args, g_status);
 }

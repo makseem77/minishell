@@ -1,34 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_env.c                                           :+:      :+:    :+:   */
+/*   free_array.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/08 20:24:16 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/18 15:17:09 by ymeziane         ###   ########.fr       */
+/*   Created: 2024/03/18 15:54:37 by ymeziane          #+#    #+#             */
+/*   Updated: 2024/03/18 16:01:11 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-//Prints the env list.
-void	env(char **args, t_env_list **env)
+void	free_double_array(char **darray)
 {
-	t_env_list	*tmp;
+	int	i;
 
-	tmp = *env;
-	if (*(args + 1) != NULL)
+	i = 0;
+	if (darray)
 	{
-		print_error("env", *(args + 1), "Too many arguments");
-		g_status = 1;
-		return ;
+		while (darray[i])
+		{
+			free(darray[i]);
+			i++;
+		}
+		free(darray);
 	}
-	while (tmp)
+}
+
+void	free_fds_array(int **fds, int nb_pipe)
+{
+	int	i;
+
+	i = 0;
+	while (i < nb_pipe)
 	{
-		ft_putstr_fd(tmp->variable, 1);
-		ft_putstr_fd("\n", 1);
-		tmp = tmp->next;
+		free(fds[i]);
+		i++;
 	}
-	g_status = 0;
+	free(fds);
 }

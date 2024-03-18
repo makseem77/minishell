@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 13:53:56 by maxborde          #+#    #+#             */
-/*   Updated: 2024/02/23 10:33:32 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/18 16:04:30 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,6 @@ t_env_list	*lst_new(char *variable)
 	new->next = NULL;
 	return (new);
 }
-
 
 // Returns the last element of the list
 t_env_list	*lst_last(t_env_list *lst)

@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 11:32:51 by maxborde          #+#    #+#             */
-/*   Updated: 2024/03/15 18:05:38 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/18 16:23:40 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,6 @@ static bool	is_valid_variable(char *variable)
 	int	i;
 
 	i = 0;
-	printf("%s\n", variable);
 	if (!variable)
 		return (false);
 	if (!ft_isalpha(variable[0]) || variable[0] == '_')
@@ -137,7 +136,7 @@ void	unset(char **args, t_env_list **env, t_env_list **exp_list)
 	{
 		if (!(is_valid_variable(*args)))
 		{
-			state = 1;
+			g_status = 1;
 			if (*args[0] == '\0')
 				print_error("unset", "`'", "not a valid identifier");
 			else
@@ -149,5 +148,5 @@ void	unset(char **args, t_env_list **env, t_env_list **exp_list)
 			lst_del_one(exp_list, *args, ft_strlen("declare -x "));
 		args++;
 	}
-	state = 0;
+	g_status = 0;
 }

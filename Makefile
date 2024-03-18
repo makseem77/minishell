@@ -11,13 +11,14 @@ LIBFT_DIR = libft
 SRC_DIR = src
 OBJ_DIR = obj
 
-SRC_FILES = main parsing loop signals free \
+SRC_FILES = main parsing loop signals\
 			builtins/ft_unset builtins/ft_pwd builtins/ft_cd \
 			builtins/ft_env builtins/ft_echo builtins/ft_exit \
 			builtins/export/ft_export builtins/export/export_utils \
 			tokenize/tokenize tokenize/handle_env_vars tokenize/tokenize_utils \
 			utils/lst_utils utils/print_utils utils/env_utils \
 			execution/exec_builtins execution/exec_line execution/exec_utils execution/pipes execution/redirections \
+			free/free_array free/free_struct \
 
 SRC = $(addprefix $(SRC_DIR)/, $(addsuffix .c, $(SRC_FILES)))
 OBJ = $(addprefix $(OBJ_DIR)/, $(addsuffix .o, $(SRC_FILES)))
