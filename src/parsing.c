@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 15:23:35 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/17 18:59:54 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/18 11:44:01 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,7 +154,6 @@ void types_assignement(t_token **tokenlist, t_env_list **env, bool *heredoc)
 				tmp = tmp->next;
 				tmp->ttype = REDIRECTION_FILE;
 			}
-				
 		}
 		else if (type(tmp->element, env) == BUILTIN)
 			tmp->ttype = BUILTIN;
@@ -186,7 +185,7 @@ t_token	*get_cmd_token(t_token **tokenlist, int expr_index)
 
 int	create_and_set_fd(t_token *tmp, t_token *command_token)
 {
-	if (!command_token)
+	if (!command_token && tmp->ttype != HERE_DOC)
 		return (-1);
 	if(ft_strncmp(tmp->element, ">>", 2) == 0 || ft_strcmp(tmp->element, ">") == 0)
 	{
@@ -201,13 +200,17 @@ int	create_and_set_fd(t_token *tmp, t_token *command_token)
 	{
 		if(ft_strncmp(tmp->element, "<<", 2) == 0)
 		{
-			if(command_token)
+			if(!command_token)
+				write_to_heredoc(open("tmp", O_CREAT | O_RDWR | O_TRUNC, 0644), tmp->next->element);
+			else
+			{
 				command_token->fd_in = open("tmp", O_CREAT | O_RDWR | O_TRUNC, 0644);
-			write_to_heredoc(command_token->fd_in, tmp->next->element);
+				write_to_heredoc(command_token->fd_in, tmp->next->element);
+			}
 		}
 		else
 			command_token->fd_in = open(tmp->next->element,  O_RDWR, 0644);
-		if(command_token->fd_in == -1)
+		if(command_token && command_token->fd_in == -1)
 			return(print_error(NULL, tmp->next->element, strerror(errno)), 1);
 	}
 	return (-1);
@@ -228,12 +231,13 @@ int handle_redirections(t_token **tokenlist, int *nb_pipe)
 		command_token = get_cmd_token(tokenlist, expr_index);
 		if (ft_strcmp(tmp->element, "|") == 0)
 			expr_index++;
-		create_and_set_fd(tmp, command_token);	
+		if(create_and_set_fd(tmp, command_token) == 1)
+			return (1);	
 		tmp = tmp->next;
 	}
 	return (0);
 }
-// Goes trough the token linked list  
+// Goes trough the token linked list
 // and gives a tokentype to every node of the list.
 int	set_token_types(t_token **tokenlist, t_env_list **env, int *nb_pipe, bool *heredoc)
 {
