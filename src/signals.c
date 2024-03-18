@@ -30,8 +30,10 @@ int	exited_status(int status)
 void	sigint_handler(int sig)
 {
 	(void)sig;
+	printf("g_status = %d\n", g_status);
 	if (g_status != -1)
 	{
+		printf("hello\n");
 		ft_putstr_fd("\n", 1);
 		rl_on_new_line();
 		rl_replace_line("", 0);

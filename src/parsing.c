@@ -287,5 +287,6 @@ int	set_token_types(t_token **tokenlist, t_env_list **env, int *nb_pipe, bool *h
 		return (1);
 	clean_up_redirection(tokenlist);
 	// print_token_list(tokenlist);
+	printf("g_status = %d\n", g_status);
 	return (0);
 }

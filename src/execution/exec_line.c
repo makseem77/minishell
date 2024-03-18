@@ -75,17 +75,17 @@ void	exec(t_token **tokenlist, t_data **data, int index, int **fds,
 			g_status = 1;
 			exit(g_status);
 		}
-		else if (!path_cmd)
-		{
-			g_status = 0;
-			exit(g_status);
-		}
-		else
+		else if (type(expression[0], (*data)->env) == -1) 
 		{
 			print_not_found(expression[0], NULL);
 			free_after_execution(tokenlist, data, fds, args, expression,
 				path_cmd);
 			g_status = 127;
+			exit(g_status);
+		}
+		else if (!path_cmd)
+		{
+			g_status = 0;
 			exit(g_status);
 		}
 	}

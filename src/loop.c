@@ -23,8 +23,8 @@ void	listening_loop(t_data **data)
 	t_token	**tokenlist;
 
 	tokenlist = NULL;
+	g_status = -1;
 	handle_signals();
-	g_status = 1;
 	while (true)
 	{
 		line = readline("minishell> ");

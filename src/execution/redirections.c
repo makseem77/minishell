@@ -105,10 +105,10 @@ int	write_to_heredoc(int fd, char *limiter)
 {
 	char	*line;
 
-	g_status = -1;
 	while (true)
 	{
 		line = readline("> ");
+		g_status = -1;
 		if (!line)
 			exit(1);
 		if (ft_strcmp(line, limiter) == 0)
