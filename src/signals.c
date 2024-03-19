@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 15:47:33 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/18 15:50:35 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/19 12:59:52 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,17 +30,18 @@ int	exited_status(int status)
 void	sigint_handler(int sig)
 {
 	(void)sig;
-	printf("g_status = %d\n", g_status);
-	if (g_status != -1)
+	
+	if(g_status == -2)
+		ft_putstr_fd("\n", 1);
+	else if(g_status == -3)
+		exit(0);
+	else
 	{
-		printf("hello\n");
 		ft_putstr_fd("\n", 1);
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
 	}
-	else
-		ft_putstr_fd("\n", 1);
 	g_status = 130;
 }
 

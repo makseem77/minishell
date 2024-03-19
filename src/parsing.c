@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 15:23:35 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/18 16:23:55 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/19 11:44:29 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -287,6 +287,5 @@ int	set_token_types(t_token **tokenlist, t_env_list **env, int *nb_pipe, bool *h
 		return (1);
 	clean_up_redirection(tokenlist);
 	// print_token_list(tokenlist);
-	printf("g_status = %d\n", g_status);
 	return (0);
 }

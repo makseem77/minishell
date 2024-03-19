@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 12:24:09 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/18 16:37:09 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/19 13:11:17 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ void	execute_line(t_token **tokenlist, t_data **data)
 	int		status;
 
 	args = tokens_to_array(tokenlist);
-	g_status = -1;
+	g_status = -2;
 	fds = init_pipes(data);
 	i = (*data)->nb_pipe;
 	while (i >= 0)
@@ -123,10 +123,5 @@ void	execute_line(t_token **tokenlist, t_data **data)
 	close_all_pipes(fds, (*data)->nb_pipe);
 	free_double_array(args);
 	free_fds_array(fds, (*data)->nb_pipe);
-	if ((*data)->here_doc)
-	{
-		unlink("tmp");
-		(*data)->here_doc = false;
-	}
 	(*data)->nb_pipe = 0;
 }
