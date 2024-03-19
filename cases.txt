@@ -1,3 +1,12 @@
+export -a is valid 
+
+minishell> export 5465 | ls
+1.txt  3.txt  Makefile  cases.txt  ignore_readline.supp  inc  libft  minishell  minishell_tester  obj  src  test  test.c
+minishell: export: 5465: not a valid identifier
+minishell> echo $?
+1
+EXPECTED = 0
+
 cat -e | ls
 
 <<<

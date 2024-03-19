@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:43:34 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/19 14:09:11 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/19 15:46:41 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	listening_loop(t_data **data)
 	t_token	**tokenlist;
 
 	tokenlist = NULL;
-	g_status = -1;
+	g_status = 0;
 	handle_signals();
 	while (true)
 	{

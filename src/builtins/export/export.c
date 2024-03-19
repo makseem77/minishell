@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_export.c                                        :+:      :+:    :+:   */
+/*   export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 22:28:00 by maxborde          #+#    #+#             */
-/*   Updated: 2024/02/14 11:18:21 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/19 15:51:53 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,7 @@ static void	add_variables_to_env(t_env_list **env, char *arg)
 		}
 		else if (cases == VAR_INVALID)
 		{
+			g_status = 1;
 			if (arg[0] == '\0')
 				print_error("export", "`'", "not a valid identifier");
 			else
@@ -142,6 +143,7 @@ void	export(char **args, t_env_list **env, t_env_list **exp_list)
 {
 	char	*newvariable;
 
+	g_status = 0;
 	if (*(++args) == NULL)
 	{
 		sort_alphabetically(exp_list, lst_size(exp_list));

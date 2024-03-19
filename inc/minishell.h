@@ -93,15 +93,15 @@ int						compute_new_element_len(char *element,
 //	BUILTINS FOLDER
 
 //	EXPORT FOLDER
-//	EXPORT
-t_env_list				**get_export_variables(t_env_list **env);
-void					export(char **args, t_env_list **env,
-							t_env_list **exp_list);
 //	EXPORT UTILS
 int						check_var(char *arg, t_env_list **export_variables,
 							int offset);
 char					*append_declare_prefix_and_quotes(char *variable);
 void					sort_alphabetically(t_env_list **expvars, int size);
+//	EXPORT
+t_env_list				**get_export_variables(t_env_list **env);
+void					export(char **args, t_env_list **env,
+							t_env_list **exp_list);
 
 //	CD
 void					cd(char *absolute_path, t_data **data);
