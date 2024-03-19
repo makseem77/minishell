@@ -29,16 +29,20 @@ int	exited_status(int status)
 
 void	sigint_handler(int sig)
 {
-	(void)sig;
+	int	wait;
 	
-	if(g_status == -3)
+	(void)sig;
+	wait = 0;
+	if(g_status == -2)
 		exit(0);
 	else
 	{
+		while (++wait < 100000)
+			;
 		ft_putstr_fd("\n", 1);
 		rl_on_new_line();
 		rl_replace_line("", 0);
-		if(g_status != -2)
+		if (g_status != -3)
 			rl_redisplay();
 	}
 	g_status = 130;

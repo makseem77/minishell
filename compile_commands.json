@@ -1,0 +1,1220 @@
+[
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-I",
+            "inc",
+            "-o",
+            "obj/ft_put/ft_putendl_fd.o",
+            "src/ft_put/ft_putendl_fd.c"
+        ],
+        "directory": "/home/maxborde/Documents/code42/Projets/minishell/libft",
+        "file": "src/ft_put/ft_putendl_fd.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-g",
+            "-O0",
+            "-I./inc",
+            "-I./libft/inc",
+            "-o",
+            "obj/builtins/export/export_utils.o",
+            "src/builtins/export/export_utils.c"
+        ],
+        "directory": "/home/maxborde/Documents/code42/Projets/minishell",
+        "file": "src/builtins/export/export_utils.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-I",
+            "inc",
+            "-o",
+            "obj/ft_mem/ft_memset.o",
+            "src/ft_mem/ft_memset.c"
+        ],
+        "directory": "/home/maxborde/Documents/code42/Projets/minishell/libft",
+        "file": "src/ft_mem/ft_memset.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-g",
+            "-O0",
+            "-I./inc",
+            "-I./libft/inc",
+            "-o",
+            "obj/utils/env_utils.o",
+            "src/utils/env_utils.c"
+        ],
+        "directory": "/home/maxborde/Documents/code42/Projets/minishell",
+        "file": "src/utils/env_utils.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-g",
+            "-O0",
+            "-I./inc",
+            "-I./libft/inc",
+            "-o",
+            "obj/free/free_array.o",
+            "src/free/free_array.c"
+        ],
+        "directory": "/home/maxborde/Documents/code42/Projets/minishell",
+        "file": "src/free/free_array.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-I",
+            "inc",
+            "-o",
+            "obj/ft_str/ft_strncmp.o",
+            "src/ft_str/ft_strncmp.c"
+        ],
+        "directory": "/home/maxborde/Documents/code42/Projets/minishell/libft",
+        "file": "src/ft_str/ft_strncmp.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-I",
+            "inc",
+            "-o",
+            "obj/ft_lst/ft_lstlast.o",
+            "src/ft_lst/ft_lstlast.c"
+        ],
+        "directory": "/home/maxborde/Documents/code42/Projets/minishell/libft",
+        "file": "src/ft_lst/ft_lstlast.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-g",
+            "-O0",
+            "-I./inc",
+            "-I./libft/inc",
+            "-o",
+            "obj/builtins/ft_cd.o",
+            "src/builtins/ft_cd.c"
+        ],
+        "directory": "/home/maxborde/Documents/code42/Projets/minishell",
+        "file": "src/builtins/ft_cd.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-I",
+            "inc",
+            "-o",
+            "obj/ft_to/ft_tolower.o",
+            "src/ft_to/ft_tolower.c"
+        ],
+        "directory": "/home/maxborde/Documents/code42/Projets/minishell/libft",
+        "file": "src/ft_to/ft_tolower.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-I",
+            "inc",
+            "-o",
+            "obj/ft_is/ft_isdigit.o",
+            "src/ft_is/ft_isdigit.c"
+        ],
+        "directory": "/home/maxborde/Documents/code42/Projets/minishell/libft",
+        "file": "src/ft_is/ft_isdigit.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-g",
+            "-O0",
+            "-I./inc",
+            "-I./libft/inc",
+            "-o",
+            "obj/utils/print_utils.o",
+            "src/utils/print_utils.c"
+        ],
+        "directory": "/home/maxborde/Documents/code42/Projets/minishell",
+        "file": "src/utils/print_utils.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-I",
+            "inc",
+            "-o",
+            "obj/ft_is/ft_isalnum.o",
+            "src/ft_is/ft_isalnum.c"
+        ],
+        "directory": "/home/maxborde/Documents/code42/Projets/minishell/libft",
+        "file": "src/ft_is/ft_isalnum.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-g",
+            "-O0",
+            "-I./inc",
+            "-I./libft/inc",
+            "-o",
+            "obj/signals.o",
+            "src/signals.c"
+        ],
+        "directory": "/home/maxborde/Documents/code42/Projets/minishell",
+        "file": "src/signals.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-g",
+            "-O0",
+            "-I./inc",
+            "-I./libft/inc",
+            "-o",
+            "obj/builtins/export/export.o",
+            "src/builtins/export/export.c"
+        ],
+        "directory": "/home/maxborde/Documents/code42/Projets/minishell",
+        "file": "src/builtins/export/export.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-g",
+            "-O0",
+            "-I./inc",
+            "-I./libft/inc",
+            "-o",
+            "obj/loop.o",
+            "src/loop.c"
+        ],
+        "directory": "/home/maxborde/Documents/code42/Projets/minishell",
+        "file": "src/loop.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-g",
+            "-O0",
+            "-I./inc",
+            "-I./libft/inc",
+            "-o",
+            "obj/execution/exec_utils.o",
+            "src/execution/exec_utils.c"
+        ],
+        "directory": "/home/maxborde/Documents/code42/Projets/minishell",
+        "file": "src/execution/exec_utils.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-I",
+            "inc",
+            "-o",
+            "obj/ft_str/ft_strtrim.o",
+            "src/ft_str/ft_strtrim.c"
+        ],
+        "directory": "/home/maxborde/Documents/code42/Projets/minishell/libft",
+        "file": "src/ft_str/ft_strtrim.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-I",
+            "inc",
+            "-o",
+            "obj/ft_str/ft_strjoin.o",
+            "src/ft_str/ft_strjoin.c"
+        ],
+        "directory": "/home/maxborde/Documents/code42/Projets/minishell/libft",
+        "file": "src/ft_str/ft_strjoin.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-I",
+            "inc",
+            "-o",
+            "obj/ft_mem/ft_calloc.o",
+            "src/ft_mem/ft_calloc.c"
+        ],
+        "directory": "/home/maxborde/Documents/code42/Projets/minishell/libft",
+        "file": "src/ft_mem/ft_calloc.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-I",
+            "inc",
+            "-o",
+            "obj/ft_put/ft_putstr_fd.o",
+            "src/ft_put/ft_putstr_fd.c"
+        ],
+        "directory": "/home/maxborde/Documents/code42/Projets/minishell/libft",
+        "file": "src/ft_put/ft_putstr_fd.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-g",
+            "-O0",
+            "-I./inc",
+            "-I./libft/inc",
+            "-o",
+            "obj/builtins/ft_echo.o",
+            "src/builtins/ft_echo.c"
+        ],
+        "directory": "/home/maxborde/Documents/code42/Projets/minishell",
+        "file": "src/builtins/ft_echo.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-I",
+            "inc",
+            "-o",
+            "obj/ft_str/ft_strlcpy.o",
+            "src/ft_str/ft_strlcpy.c"
+        ],
+        "directory": "/home/maxborde/Documents/code42/Projets/minishell/libft",
+        "file": "src/ft_str/ft_strlcpy.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-g",
+            "-O0",
+            "-I./inc",
+            "-I./libft/inc",
+            "-o",
+            "obj/execution/exec_builtins.o",
+            "src/execution/exec_builtins.c"
+        ],
+        "directory": "/home/maxborde/Documents/code42/Projets/minishell",
+        "file": "src/execution/exec_builtins.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-I",
+            "inc",
+            "-o",
+            "obj/ft_mem/ft_memmove.o",
+            "src/ft_mem/ft_memmove.c"
+        ],
+        "directory": "/home/maxborde/Documents/code42/Projets/minishell/libft",
+        "file": "src/ft_mem/ft_memmove.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-g",
+            "-O0",
+            "-I./inc",
+            "-I./libft/inc",
+            "-o",
+            "obj/builtins/ft_pwd.o",
+            "src/builtins/ft_pwd.c"
+        ],
+        "directory": "/home/maxborde/Documents/code42/Projets/minishell",
+        "file": "src/builtins/ft_pwd.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-g",
+            "-O0",
+            "-I./inc",
+            "-I./libft/inc",
+            "-o",
+            "obj/builtins/ft_env.o",
+            "src/builtins/ft_env.c"
+        ],
+        "directory": "/home/maxborde/Documents/code42/Projets/minishell",
+        "file": "src/builtins/ft_env.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-I",
+            "inc",
+            "-o",
+            "obj/ft_lst/ft_lstsize.o",
+            "src/ft_lst/ft_lstsize.c"
+        ],
+        "directory": "/home/maxborde/Documents/code42/Projets/minishell/libft",
+        "file": "src/ft_lst/ft_lstsize.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-I",
+            "inc",
+            "-o",
+            "obj/ft_lst/ft_lstadd_front.o",
+            "src/ft_lst/ft_lstadd_front.c"
+        ],
+        "directory": "/home/maxborde/Documents/code42/Projets/minishell/libft",
+        "file": "src/ft_lst/ft_lstadd_front.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-I",
+            "inc",
+            "-o",
+            "obj/ft_str/ft_striteri.o",
+            "src/ft_str/ft_striteri.c"
+        ],
+        "directory": "/home/maxborde/Documents/code42/Projets/minishell/libft",
+        "file": "src/ft_str/ft_striteri.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-I",
+            "inc",
+            "-o",
+            "obj/ft_is/ft_isprint.o",
+            "src/ft_is/ft_isprint.c"
+        ],
+        "directory": "/home/maxborde/Documents/code42/Projets/minishell/libft",
+        "file": "src/ft_is/ft_isprint.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-I",
+            "inc",
+            "-o",
+            "obj/ft_str/ft_strchr.o",
+            "src/ft_str/ft_strchr.c"
+        ],
+        "directory": "/home/maxborde/Documents/code42/Projets/minishell/libft",
+        "file": "src/ft_str/ft_strchr.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-I",
+            "inc",
+            "-o",
+            "obj/ft_mem/ft_memcmp.o",
+            "src/ft_mem/ft_memcmp.c"
+        ],
+        "directory": "/home/maxborde/Documents/code42/Projets/minishell/libft",
+        "file": "src/ft_mem/ft_memcmp.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-g",
+            "-O0",
+            "-I./inc",
+            "-I./libft/inc",
+            "-o",
+            "obj/builtins/ft_unset.o",
+            "src/builtins/ft_unset.c"
+        ],
+        "directory": "/home/maxborde/Documents/code42/Projets/minishell",
+        "file": "src/builtins/ft_unset.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-I",
+            "inc",
+            "-o",
+            "obj/ft_to/ft_toupper.o",
+            "src/ft_to/ft_toupper.c"
+        ],
+        "directory": "/home/maxborde/Documents/code42/Projets/minishell/libft",
+        "file": "src/ft_to/ft_toupper.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-I",
+            "inc",
+            "-o",
+            "obj/ft_is/ft_isascii.o",
+            "src/ft_is/ft_isascii.c"
+        ],
+        "directory": "/home/maxborde/Documents/code42/Projets/minishell/libft",
+        "file": "src/ft_is/ft_isascii.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-g",
+            "-O0",
+            "-I./inc",
+            "-I./libft/inc",
+            "-o",
+            "obj/execution/exec_line.o",
+            "src/execution/exec_line.c"
+        ],
+        "directory": "/home/maxborde/Documents/code42/Projets/minishell",
+        "file": "src/execution/exec_line.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-I",
+            "inc",
+            "-o",
+            "obj/ft_lst/ft_lstmap.o",
+            "src/ft_lst/ft_lstmap.c"
+        ],
+        "directory": "/home/maxborde/Documents/code42/Projets/minishell/libft",
+        "file": "src/ft_lst/ft_lstmap.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-I",
+            "inc",
+            "-o",
+            "obj/ft_to/ft_atoi.o",
+            "src/ft_to/ft_atoi.c"
+        ],
+        "directory": "/home/maxborde/Documents/code42/Projets/minishell/libft",
+        "file": "src/ft_to/ft_atoi.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-I",
+            "inc",
+            "-o",
+            "obj/ft_str/ft_strnstr.o",
+            "src/ft_str/ft_strnstr.c"
+        ],
+        "directory": "/home/maxborde/Documents/code42/Projets/minishell/libft",
+        "file": "src/ft_str/ft_strnstr.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-g",
+            "-O0",
+            "-I./inc",
+            "-I./libft/inc",
+            "-o",
+            "obj/free/free_struct.o",
+            "src/free/free_struct.c"
+        ],
+        "directory": "/home/maxborde/Documents/code42/Projets/minishell",
+        "file": "src/free/free_struct.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-I",
+            "inc",
+            "-o",
+            "obj/ft_lst/ft_lstnew.o",
+            "src/ft_lst/ft_lstnew.c"
+        ],
+        "directory": "/home/maxborde/Documents/code42/Projets/minishell/libft",
+        "file": "src/ft_lst/ft_lstnew.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-I",
+            "inc",
+            "-o",
+            "obj/ft_str/ft_strcmp.o",
+            "src/ft_str/ft_strcmp.c"
+        ],
+        "directory": "/home/maxborde/Documents/code42/Projets/minishell/libft",
+        "file": "src/ft_str/ft_strcmp.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-g",
+            "-O0",
+            "-I./inc",
+            "-I./libft/inc",
+            "-o",
+            "obj/tokenize/tokenize.o",
+            "src/tokenize/tokenize.c"
+        ],
+        "directory": "/home/maxborde/Documents/code42/Projets/minishell",
+        "file": "src/tokenize/tokenize.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-g",
+            "-O0",
+            "-I./inc",
+            "-I./libft/inc",
+            "-o",
+            "obj/execution/pipes.o",
+            "src/execution/pipes.c"
+        ],
+        "directory": "/home/maxborde/Documents/code42/Projets/minishell",
+        "file": "src/execution/pipes.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-I",
+            "inc",
+            "-o",
+            "obj/ft_is/ft_isalpha.o",
+            "src/ft_is/ft_isalpha.c"
+        ],
+        "directory": "/home/maxborde/Documents/code42/Projets/minishell/libft",
+        "file": "src/ft_is/ft_isalpha.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-I",
+            "inc",
+            "-o",
+            "obj/ft_mem/ft_bzero.o",
+            "src/ft_mem/ft_bzero.c"
+        ],
+        "directory": "/home/maxborde/Documents/code42/Projets/minishell/libft",
+        "file": "src/ft_mem/ft_bzero.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-g",
+            "-O0",
+            "-I./inc",
+            "-I./libft/inc",
+            "-o",
+            "obj/execution/redirections.o",
+            "src/execution/redirections.c"
+        ],
+        "directory": "/home/maxborde/Documents/code42/Projets/minishell",
+        "file": "src/execution/redirections.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-I",
+            "inc",
+            "-o",
+            "obj/ft_utils/ft_count_digit.o",
+            "src/ft_utils/ft_count_digit.c"
+        ],
+        "directory": "/home/maxborde/Documents/code42/Projets/minishell/libft",
+        "file": "src/ft_utils/ft_count_digit.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-I",
+            "inc",
+            "-o",
+            "obj/ft_to/ft_itoa.o",
+            "src/ft_to/ft_itoa.c"
+        ],
+        "directory": "/home/maxborde/Documents/code42/Projets/minishell/libft",
+        "file": "src/ft_to/ft_itoa.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-I",
+            "inc",
+            "-o",
+            "obj/ft_utils/ft_hex_len.o",
+            "src/ft_utils/ft_hex_len.c"
+        ],
+        "directory": "/home/maxborde/Documents/code42/Projets/minishell/libft",
+        "file": "src/ft_utils/ft_hex_len.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-g",
+            "-O0",
+            "-I./inc",
+            "-I./libft/inc",
+            "-o",
+            "obj/tokenize/handle_env_vars.o",
+            "src/tokenize/handle_env_vars.c"
+        ],
+        "directory": "/home/maxborde/Documents/code42/Projets/minishell",
+        "file": "src/tokenize/handle_env_vars.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-I",
+            "inc",
+            "-o",
+            "obj/ft_mem/ft_memchr.o",
+            "src/ft_mem/ft_memchr.c"
+        ],
+        "directory": "/home/maxborde/Documents/code42/Projets/minishell/libft",
+        "file": "src/ft_mem/ft_memchr.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-I",
+            "inc",
+            "-o",
+            "obj/ft_put/ft_putchar_fd.o",
+            "src/ft_put/ft_putchar_fd.c"
+        ],
+        "directory": "/home/maxborde/Documents/code42/Projets/minishell/libft",
+        "file": "src/ft_put/ft_putchar_fd.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-I",
+            "inc",
+            "-o",
+            "obj/ft_str/ft_substr.o",
+            "src/ft_str/ft_substr.c"
+        ],
+        "directory": "/home/maxborde/Documents/code42/Projets/minishell/libft",
+        "file": "src/ft_str/ft_substr.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-I",
+            "inc",
+            "-o",
+            "obj/ft_lst/ft_lstclear.o",
+            "src/ft_lst/ft_lstclear.c"
+        ],
+        "directory": "/home/maxborde/Documents/code42/Projets/minishell/libft",
+        "file": "src/ft_lst/ft_lstclear.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-I",
+            "inc",
+            "-o",
+            "obj/ft_lst/ft_lstdelone.o",
+            "src/ft_lst/ft_lstdelone.c"
+        ],
+        "directory": "/home/maxborde/Documents/code42/Projets/minishell/libft",
+        "file": "src/ft_lst/ft_lstdelone.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-g",
+            "-O0",
+            "-I./inc",
+            "-I./libft/inc",
+            "-o",
+            "obj/utils/lst_utils.o",
+            "src/utils/lst_utils.c"
+        ],
+        "directory": "/home/maxborde/Documents/code42/Projets/minishell",
+        "file": "src/utils/lst_utils.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-I",
+            "inc",
+            "-o",
+            "obj/ft_str/ft_strlcat.o",
+            "src/ft_str/ft_strlcat.c"
+        ],
+        "directory": "/home/maxborde/Documents/code42/Projets/minishell/libft",
+        "file": "src/ft_str/ft_strlcat.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-g",
+            "-O0",
+            "-I./inc",
+            "-I./libft/inc",
+            "-o",
+            "obj/main.o",
+            "src/main.c"
+        ],
+        "directory": "/home/maxborde/Documents/code42/Projets/minishell",
+        "file": "src/main.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-I",
+            "inc",
+            "-o",
+            "obj/ft_str/ft_strmapi.o",
+            "src/ft_str/ft_strmapi.c"
+        ],
+        "directory": "/home/maxborde/Documents/code42/Projets/minishell/libft",
+        "file": "src/ft_str/ft_strmapi.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-I",
+            "inc",
+            "-o",
+            "obj/ft_str/ft_strndup.o",
+            "src/ft_str/ft_strndup.c"
+        ],
+        "directory": "/home/maxborde/Documents/code42/Projets/minishell/libft",
+        "file": "src/ft_str/ft_strndup.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-I",
+            "inc",
+            "-o",
+            "obj/ft_lst/ft_lstadd_back.o",
+            "src/ft_lst/ft_lstadd_back.c"
+        ],
+        "directory": "/home/maxborde/Documents/code42/Projets/minishell/libft",
+        "file": "src/ft_lst/ft_lstadd_back.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-g",
+            "-O0",
+            "-I./inc",
+            "-I./libft/inc",
+            "-o",
+            "obj/tokenize/tokenize_utils.o",
+            "src/tokenize/tokenize_utils.c"
+        ],
+        "directory": "/home/maxborde/Documents/code42/Projets/minishell",
+        "file": "src/tokenize/tokenize_utils.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-I",
+            "inc",
+            "-o",
+            "obj/ft_str/ft_strdup.o",
+            "src/ft_str/ft_strdup.c"
+        ],
+        "directory": "/home/maxborde/Documents/code42/Projets/minishell/libft",
+        "file": "src/ft_str/ft_strdup.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-I",
+            "inc",
+            "-o",
+            "obj/ft_mem/ft_memcpy.o",
+            "src/ft_mem/ft_memcpy.c"
+        ],
+        "directory": "/home/maxborde/Documents/code42/Projets/minishell/libft",
+        "file": "src/ft_mem/ft_memcpy.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-I",
+            "inc",
+            "-o",
+            "obj/ft_str/ft_strrchr.o",
+            "src/ft_str/ft_strrchr.c"
+        ],
+        "directory": "/home/maxborde/Documents/code42/Projets/minishell/libft",
+        "file": "src/ft_str/ft_strrchr.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-I",
+            "inc",
+            "-o",
+            "obj/ft_to/ft_atoll.o",
+            "src/ft_to/ft_atoll.c"
+        ],
+        "directory": "/home/maxborde/Documents/code42/Projets/minishell/libft",
+        "file": "src/ft_to/ft_atoll.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-g",
+            "-O0",
+            "-I./inc",
+            "-I./libft/inc",
+            "-o",
+            "obj/builtins/ft_exit.o",
+            "src/builtins/ft_exit.c"
+        ],
+        "directory": "/home/maxborde/Documents/code42/Projets/minishell",
+        "file": "src/builtins/ft_exit.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-I",
+            "inc",
+            "-o",
+            "obj/ft_lst/ft_lstiter.o",
+            "src/ft_lst/ft_lstiter.c"
+        ],
+        "directory": "/home/maxborde/Documents/code42/Projets/minishell/libft",
+        "file": "src/ft_lst/ft_lstiter.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-I",
+            "inc",
+            "-o",
+            "obj/ft_str/ft_split.o",
+            "src/ft_str/ft_split.c"
+        ],
+        "directory": "/home/maxborde/Documents/code42/Projets/minishell/libft",
+        "file": "src/ft_str/ft_split.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-I",
+            "inc",
+            "-o",
+            "obj/ft_put/ft_putnbr_fd.o",
+            "src/ft_put/ft_putnbr_fd.c"
+        ],
+        "directory": "/home/maxborde/Documents/code42/Projets/minishell/libft",
+        "file": "src/ft_put/ft_putnbr_fd.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-g",
+            "-O0",
+            "-I./inc",
+            "-I./libft/inc",
+            "-o",
+            "obj/parsing.o",
+            "src/parsing.c"
+        ],
+        "directory": "/home/maxborde/Documents/code42/Projets/minishell",
+        "file": "src/parsing.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-I",
+            "inc",
+            "-o",
+            "obj/ft_str/ft_strlen.o",
+            "src/ft_str/ft_strlen.c"
+        ],
+        "directory": "/home/maxborde/Documents/code42/Projets/minishell/libft",
+        "file": "src/ft_str/ft_strlen.c"
+    }
+]

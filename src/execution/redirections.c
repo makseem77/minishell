@@ -107,10 +107,10 @@ int	write_to_heredoc(int fd, char *limiter)
 	pid_t	pid;
 
 	pid = fork();
-	g_status = -2;
+	g_status = -3;
 	if (pid == 0)
 	{
-		g_status = -3;
+		g_status = -2;
 		while (true)
 		{
 			line = readline("> ");
