@@ -1,4 +1,4 @@
 .ccls-cache/
 .vs-code/
 test.c
-minishell_tester/
+minishell_tester/.cache
