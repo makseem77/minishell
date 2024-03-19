@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 12:24:09 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/19 13:11:17 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/19 14:37:50 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void	exec(t_token **tokenlist, t_data **data, int index, int **fds,
 			g_status = 1;
 			exit(g_status);
 		}
-		else if (type(expression[0], (*data)->env) == -1) 
+		else if (type(expression[0], (*data)->env) == -1)
 		{
 			print_not_found(expression[0], NULL);
 			free_after_execution(tokenlist, data, fds, args, expression,
@@ -100,28 +100,31 @@ void	execute_line(t_token **tokenlist, t_data **data)
 	char	**args;
 	int		status;
 
-	args = tokens_to_array(tokenlist);
-	g_status = -2;
-	fds = init_pipes(data);
-	i = (*data)->nb_pipe;
-	while (i >= 0)
+	if (!(g_status == 130 && (*data)->here_doc == true))
 	{
-		exec(tokenlist, data, i, fds, args);
-		i--;
+		args = tokens_to_array(tokenlist);
+		g_status = -2;
+		fds = init_pipes(data);
+		i = (*data)->nb_pipe;
+		while (i >= 0)
+		{
+			exec(tokenlist, data, i, fds, args);
+			i--;
+		}
+		i = (*data)->nb_pipe;
+		while (i > 0)
+		{
+			close(fds[i - 1][1]);
+			i--;
+		}
+		while (wait(&status) > 0)
+			;
+		if (!(type(args[0], (*data)->env) == BUILTIN && (*data)->nb_pipe == 0)
+			&& g_status != 130)
+			g_status = exited_status(status);
+		close_all_pipes(fds, (*data)->nb_pipe);
+		free_double_array(args);
+		free_fds_array(fds, (*data)->nb_pipe);
 	}
-	i = (*data)->nb_pipe;
-	while (i > 0)
-	{
-		close(fds[i - 1][1]);
-		i--;
-	}
-	while (wait(&status) > 0)
-		;
-	if (!(type(args[0], (*data)->env) == BUILTIN && (*data)->nb_pipe == 0)
-		&& g_status != 130)
-		g_status = exited_status(status);
-	close_all_pipes(fds, (*data)->nb_pipe);
-	free_double_array(args);
-	free_fds_array(fds, (*data)->nb_pipe);
 	(*data)->nb_pipe = 0;
 }

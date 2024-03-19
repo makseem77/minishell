@@ -1,3 +1,7 @@
+cat -e | ls
+
+<<<
+
 minishell> mkdir a
 minishell> cd a
 minishell> rm -rf ../a

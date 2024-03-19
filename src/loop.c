@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:43:34 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/19 13:12:06 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/19 14:09:11 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,8 @@ void	listening_loop(t_data **data)
 			free_token_list(tokenlist);
 		}
 		if ((*data)->here_doc)
-		{
-			unlink("tmp");
-			(*data)->here_doc = false;
-		}
+			unlink(".tmp");
+		(*data)->here_doc = false;
 		free(line);
 	}
 }

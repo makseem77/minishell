@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 15:47:33 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/19 12:59:52 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/19 14:04:20 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,19 +31,19 @@ void	sigint_handler(int sig)
 {
 	(void)sig;
 	
-	if(g_status == -2)
-		ft_putstr_fd("\n", 1);
-	else if(g_status == -3)
+	if(g_status == -3)
 		exit(0);
 	else
 	{
 		ft_putstr_fd("\n", 1);
 		rl_on_new_line();
 		rl_replace_line("", 0);
-		rl_redisplay();
+		if(g_status != -2)
+			rl_redisplay();
 	}
 	g_status = 130;
 }
+
 
 void	handle_signals(void)
 {

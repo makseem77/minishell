@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 04:28:22 by maxborde          #+#    #+#             */
-/*   Updated: 2024/03/19 12:59:32 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/19 14:14:04 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,6 +127,7 @@ int	write_to_heredoc(int fd, char *limiter)
 				free(line);
 			}
 		}
+		//NEED FREE
 		close(fd);
 		exit(0);
 	}
