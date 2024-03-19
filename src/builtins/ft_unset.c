@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 11:32:51 by maxborde          #+#    #+#             */
-/*   Updated: 2024/03/18 16:23:40 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/19 19:02:41 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,21 +132,15 @@ static bool	is_valid_variable(char *variable)
 // If it does, we remove it from the lists.
 void	unset(char **args, t_env_list **env, t_env_list **exp_list)
 {
+	args++;
 	while (*args)
 	{
 		if (!(is_valid_variable(*args)))
-		{
-			g_status = 1;
-			if (*args[0] == '\0')
-				print_error("unset", "`'", "not a valid identifier");
-			else
-				print_error("unset", *args, "not a valid identifier");
-		}
+			return ;
 		if (arg_in_list(*args, env, 0))
 			lst_del_one(env, *args, 0);
 		if (arg_in_list(*args, exp_list, ft_strlen("declare -x ")))
 			lst_del_one(exp_list, *args, ft_strlen("declare -x "));
 		args++;
 	}
-	g_status = 0;
 }

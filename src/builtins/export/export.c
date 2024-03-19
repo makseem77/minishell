@@ -143,7 +143,6 @@ void	export(char **args, t_env_list **env, t_env_list **exp_list)
 {
 	char	*newvariable;
 
-	g_status = 0;
 	if (*(++args) == NULL)
 	{
 		sort_alphabetically(exp_list, lst_size(exp_list));
