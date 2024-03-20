@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:23:46 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/19 18:59:31 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/20 15:14:15 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,8 +79,10 @@ static void	handle_cd_exit(t_token **tokenlist, t_data **data,
 void	execute_bultin(t_token **tokenlist, t_data **data, char **expression,
 		char **args)
 {
-	// printf("g_status before: %d\n", g_status);
-
+	printf("g_status before: %d\n", g_status);
+	if(g_status == 0 || g_status == -2)
+		g_status = 0;
+	printf("g_status after: %d\n", g_status);
 	if (ft_strcmp(expression[0], "echo") == 0)
 		echo(expression);
 	else if (ft_strcmp(expression[0], "env") == 0)

@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 12:24:09 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/19 19:14:14 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/20 15:15:00 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ bool	check_and_exec_single_builtin(t_token **tokenlist, t_data **data,
 	expression = args;
 	if (type(expression[0], (*data)->env) == BUILTIN && (*data)->nb_pipe == 0)
 	{
-		g_status = 0;
 		saved_stdout = dup(STDOUT_FILENO);
 		saved_stdin = dup(STDIN_FILENO);
 		configure_io(tokenlist, 0, NULL, 0);
@@ -65,11 +64,10 @@ void	exec(t_token **tokenlist, t_data **data, int index, int **fds,
 		configure_io(tokenlist, index, fds, (*data)->nb_pipe);
 		if (type(expression[0], (*data)->env) == BUILTIN)
 		{
-			if ((*data)->nb_pipe == 0 || (g_status != 1 && g_status != 2))
-				g_status = 0;
 			execute_bultin(tokenlist, data, expression, args);
 			free_after_execution(tokenlist, data, fds, args, expression,
 				path_cmd);
+			printf("g_status return: %d\n", g_status);
 			exit(g_status);
 		}
 		else if (type(expression[0], (*data)->env) == COMMAND)
@@ -83,7 +81,6 @@ void	exec(t_token **tokenlist, t_data **data, int index, int **fds,
 			print_not_found(expression[0], NULL);
 			free_after_execution(tokenlist, data, fds, args, expression,
 				path_cmd);
-			g_status = 127;
 			exit(g_status);
 		}
 		else if (!path_cmd)
