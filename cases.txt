@@ -24,11 +24,6 @@ bash error = ( No such file or directory)
 %%%%%%%%%%%%%%%%%%%%%
 ~EXTRA~
 
-$PWD 
-
-$EMPTY 
-$EMPTY echo hi 
-
 ./test_files/invalid_permission
 
 ./test_files
@@ -70,6 +65,11 @@ echo || ls -> we should output a error message and quit as we don't do bonuses
 
 
 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+$EMPTY 
+$EMPTY echo hi 
+
+$PWD 
+
 minishell> echo "Permission" > /root/test_permission.txt
 Permission
 //EXPECTED : 

@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 17:56:02 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/18 16:04:43 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/20 16:49:35 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,25 @@
 // Prints the error message.
 void	print_not_found(char *command, char *arg)
 {
-	if (command[0] == '/')
+	printf("command: %s\n", command);
+	printf("args: %s\n", arg);
+	if(!command || !command[0])
 	{
-		print_error(command, arg, "No such file or directory");
+		g_status = 0;
+		return ;
+	}
+	else if (command[0] == '/' || command[ft_strlen(command) - 1] == '/')
+	{
 		g_status = 1;
+		if(access(command, F_OK) == 0 && access(command, X_OK) == -1)
+			print_error(command, arg, "Permission denied");
+		else if(access(command, F_OK) == -1)
+			print_error(command, arg, "No such file or directory");
+		else
+		{
+			print_error(command, arg, "Is a directory");
+			g_status = 126;
+		}
 	}
 	else
 	{

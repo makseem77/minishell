@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 15:23:35 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/19 11:44:29 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/20 17:08:10 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,8 @@ int	type(char *element, t_env_list **env)
 {
 	if (!element)
 		return (-1);
+	if(!ft_strcmp("", element))
+		return (EMPTY);
 	if (!ft_strcmp("echo", element) || !ft_strcmp("cd", element)
 		|| !ft_strcmp("pwd", element) || !ft_strcmp("export", element)
 		|| !ft_strcmp("unset", element) || !ft_strcmp("env", element)
@@ -92,7 +94,7 @@ void	clean_up_redirection(t_token **tokenlist)
 	while (tmp)
 	{
 		if (tmp->ttype == REDIRECTION || tmp->ttype == REDIRECTION_FILE
-			|| tmp->ttype == HERE_DOC || tmp->ttype == DELIMITER)
+			|| tmp->ttype == HERE_DOC || tmp->ttype == DELIMITER || tmp->ttype == EMPTY)
 		{
 			if (prev)
 				prev->next = tmp->next;
@@ -163,6 +165,8 @@ void types_assignement(t_token **tokenlist, t_env_list **env, bool *heredoc)
 			tmp->ttype = META_CHAR;
 		else if (type(tmp->element, env) == COMMAND)
 			tmp->ttype = COMMAND;
+		else if(type(tmp->element, env) == EMPTY)
+			tmp->ttype = EMPTY;
 		tmp = tmp->next;
 	}
 }

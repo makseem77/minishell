@@ -27,6 +27,7 @@ typedef enum e_type
 	REDIR_EXEC,
 	HERE_DOC,
 	DELIMITER,
+	EMPTY
 }						t_type;
 
 typedef enum e_exportcases
