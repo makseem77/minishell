@@ -31,10 +31,18 @@ int	**init_pipes(t_data **data)
 	return (fds);
 }
 
-void	close_all_pipes(int **fds, int nb_pipe)
+void	close_all_pipes(t_token **tokenlist, int **fds, int nb_pipe)
 {
+	t_token	*tmp;
 	int	i = 0;
 
+	tmp = *tokenlist;
+	while(tmp)
+	{
+		if (tmp->fd_out > 1)
+			close(tmp->fd_out);
+		tmp = tmp->next;
+	}
 	while(i < nb_pipe)
 	{
 		close(fds[i][0]);

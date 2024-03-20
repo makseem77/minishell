@@ -92,11 +92,9 @@ void    configure_io(t_token **tokenlist, int index, int **fds, int nb_pipe)
 		if (fd_in != STDIN_FILENO)
 			dup2(fd_in, STDIN_FILENO);
 		if (fd_out != STDOUT_FILENO)
-		{
 			dup2(fd_out, STDOUT_FILENO);
-		}
 	}
-	close_all_pipes(fds, nb_pipe);
+	close_all_pipes(tokenlist, fds, nb_pipe);
 }
 
 int	write_to_heredoc(int fd, char *limiter)

@@ -145,7 +145,7 @@ char					*get_path_cmd(char **paths, char *cmd);
 char					**cut_arrays_into_expression(char **array, int index);
 // INIT PIPES
 int						**init_pipes(t_data **data);
-void					close_all_pipes(int **fds, int nb_pipe);
+void					close_all_pipes(t_token **tokenlist, int **fds, int nb_pipe);
 //	REDIRECTIONS
 int						get_output_fd(t_token **tokenlist, int index);
 int						get_input_fd(t_token **tokenlist, int index);

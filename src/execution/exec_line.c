@@ -58,6 +58,7 @@ void	exec(t_token **tokenlist, t_data **data, int index, int **fds,
 		return ;
 	expression = cut_arrays_into_expression(args, index);
 	path_cmd = get_path_cmd((*data)->bin_paths, expression[0]);
+	g_status = -1;
 	pid = fork();
 	if (pid == 0)
 	{
@@ -122,7 +123,7 @@ void	execute_line(t_token **tokenlist, t_data **data)
 		if (!(type(args[0], (*data)->env) == BUILTIN && (*data)->nb_pipe == 0)
 			&& g_status != 130)
 			g_status = exited_status(status);
-		close_all_pipes(fds, (*data)->nb_pipe);
+		close_all_pipes(tokenlist, fds, (*data)->nb_pipe);
 		free_double_array(args);
 		free_fds_array(fds, (*data)->nb_pipe);
 	}

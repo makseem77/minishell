@@ -42,7 +42,7 @@ void	sigint_handler(int sig)
 		ft_putstr_fd("\n", 1);
 		rl_on_new_line();
 		rl_replace_line("", 0);
-		if (g_status != -3)
+		if (g_status != -3 && g_status != -1)
 			rl_redisplay();
 	}
 	g_status = 130;
