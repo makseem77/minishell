@@ -250,7 +250,9 @@ void	create_and_read_from_heredoc(t_token *tmp, t_token *command_token)
 	if((command_token && command_token->fd_in == -1) || fd == -1)
 	{
 		if (command_token && command_token->fd_in == -1)
+		{
 			command_token->fd_out = open("/dev/null", O_WRONLY);
+		}
 		print_error(NULL, tmp->next->element, strerror(errno));
 	}
 }

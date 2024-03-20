@@ -54,13 +54,15 @@ int	get_input_fd(t_token **tokenlist, int index)
 	return (0);
 }
 
-void    configure_io(t_token **tokenlist, int index, int **fds, int nb_pipe)
+int    configure_io(t_token **tokenlist, int index, int **fds, int nb_pipe)
 {
 	int	fd_out;
 	int	fd_in;
 
 	fd_out = get_output_fd(tokenlist, index);
 	fd_in = get_input_fd(tokenlist, index);
+	if (fd_in == -1 || fd_out == -1)
+		return (0);
 	if (index == 0 && nb_pipe > 0)
 	{
 		dup2(fds[0][1], STDOUT_FILENO);
@@ -95,6 +97,7 @@ void    configure_io(t_token **tokenlist, int index, int **fds, int nb_pipe)
 			dup2(fd_out, STDOUT_FILENO);
 	}
 	close_all_pipes(tokenlist, fds, nb_pipe);
+	return (1);
 }
 
 int	write_to_heredoc(int fd, char *limiter, bool command)

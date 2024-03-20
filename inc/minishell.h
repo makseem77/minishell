@@ -150,7 +150,7 @@ void					close_all_pipes(t_token **tokenlist, int **fds, int nb_pipe);
 //	REDIRECTIONS
 int						get_output_fd(t_token **tokenlist, int index);
 int						get_input_fd(t_token **tokenlist, int index);
-void					configure_io(t_token **tokenlist, int index, int **fds,
+int					configure_io(t_token **tokenlist, int index, int **fds,
 							int nb_pipe);
 int					write_to_heredoc(int fd, char *limiter, bool command);
 //////////////////////////////////////////////////////////////////////////////////////

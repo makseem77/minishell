@@ -62,32 +62,36 @@ void	exec(t_token **tokenlist, t_data **data, int index, int **fds,
 	pid = fork();
 	if (pid == 0)
 	{
-		configure_io(tokenlist, index, fds, (*data)->nb_pipe);
-		if (type(expression[0], (*data)->env) == BUILTIN)
+		if (configure_io(tokenlist, index, fds, (*data)->nb_pipe))
 		{
-			execute_bultin(tokenlist, data, expression, args);
-			free_after_execution(tokenlist, data, fds, args, expression,
-				path_cmd);
-			exit(g_status);
+			if (type(expression[0], (*data)->env) == BUILTIN)
+			{
+				execute_bultin(tokenlist, data, expression, args);
+				free_after_execution(tokenlist, data, fds, args, expression,
+					path_cmd);
+				exit(g_status);
+			}
+			else if (type(expression[0], (*data)->env) == COMMAND)
+			{
+				execve(path_cmd, expression, env_list_to_array((*data)->env));
+				g_status = 1;
+				exit(g_status);
+			}
+			else if (type(expression[0], (*data)->env) == -1)
+			{
+				print_not_found(expression[0], NULL);
+				free_after_execution(tokenlist, data, fds, args, expression,
+					path_cmd);
+				exit(g_status);
+			}
+			else if (!path_cmd)
+			{
+				g_status = 0;
+				exit(g_status);
+			}
 		}
-		else if (type(expression[0], (*data)->env) == COMMAND)
-		{
-			execve(path_cmd, expression, env_list_to_array((*data)->env));
-			g_status = 1;
-			exit(g_status);
-		}
-		else if (type(expression[0], (*data)->env) == -1)
-		{
-			print_not_found(expression[0], NULL);
-			free_after_execution(tokenlist, data, fds, args, expression,
-				path_cmd);
-			exit(g_status);
-		}
-		else if (!path_cmd)
-		{
-			g_status = 0;
-			exit(g_status);
-		}
+		g_status = 1;
+		exit(g_status);
 	}
 	free_double_array(expression);
 	free(path_cmd);
