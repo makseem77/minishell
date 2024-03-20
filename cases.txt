@@ -1,3 +1,51 @@
+~PIPES~
+
+Test  56: ❌ export GHOST=123 | env | grep GHOST 
+mini exit code = 0
+bash exit code = 1
+
+%%%%%%%%%%%%%%%%%%%%%
+
+~REDIRECTS~
+Test  64: ❌ cat <"1""2""3""4""5" 
+mini exit code =
+bash exit code = 1
+
+Test  65: ❌ echo <"./test_files/infile" <missing <"./test_files/infile" 
+mini exit code = 0
+bash exit code = 1
+
+Test  66: ❌ echo <missing <"./test_files/infile" <missing 
+mini exit code = 0
+bash exit code = 1
+mini error = ( No such file or directory No such file or directory)
+bash error = ( No such file or directory)
+
+%%%%%%%%%%%%%%%%%%%%%
+~EXTRA~
+
+$PWD 
+
+$EMPTY 
+$EMPTY echo hi 
+
+./test_files/invalid_permission
+
+./test_files
+
+(IN TESTER FOLDER)
+Test  10: ❌ ./test_files 
+mini exit code = 127
+bash exit code = 126
+mini error = ( command not found)
+bash error = ( Is a directory)
+
+Test  11: ❌ /test_files 
+mini exit code = 1
+bash exit code = 127
+
+%%%%%%%%%%%%%%%%%%%%%
+
 minishell> export 5465 | ls
 1.txt  3.txt  Makefile  cases.txt  ignore_readline.supp  inc  libft  minishell  minishell_tester  obj  src  test  test.c
 minishell: export: 5465: not a valid identifier
