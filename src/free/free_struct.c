@@ -39,6 +39,12 @@ static void	free_variable_lists(t_env_list **export_list, t_env_list **env_list)
 	free(env_list);
 }
 
+void	free_node(t_token *token)
+{
+	free(token->element);
+	free(token);
+}
+
 void	free_lst_content(t_env_list *lst, char *var_name)
 {
 	free(lst->variable);
@@ -52,6 +58,7 @@ void	free_data_struct(t_data *data)
 	free(data->home_dir);
 	free_double_array(data->bin_paths);
 	free_variable_lists(data->exp_list, data->env);
+	free(data->path_cmd);
 	free(data);
 }
 

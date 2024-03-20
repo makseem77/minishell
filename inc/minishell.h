@@ -59,6 +59,7 @@ typedef struct s_data
 	char				*old_pwd;
 	char				*home_dir;
 	char				**bin_paths;
+	char				*path_cmd;
 	struct s_env_list	**env;
 	struct s_env_list	**exp_list;
 	int					nb_pipe;
@@ -184,6 +185,7 @@ void					free_fds_array(int **fds, int nb_pipe);
 void					free_lst_content(t_env_list *lst, char *var_name);
 void					free_data_struct(t_data *data);
 void					free_token_list(t_token **t_token);
+void					free_node(t_token *tmp);
 //////////////////////////////////////////////////////////////////////////////////////
 
 //	LOOP

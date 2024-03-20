@@ -100,8 +100,7 @@ void	clean_up_redirection(t_token **tokenlist)
 				prev->next = tmp->next;
 			else
 				*tokenlist = tmp->next;
-			free(tmp->element);
-			free(tmp);
+			free_node(tmp);
 			if(prev)
 				tmp = prev->next;
 			else	
@@ -132,6 +131,29 @@ int error_syntax(t_token *tmp, int *nb_pipe)
 	return (0);
 }
 
+t_token	*set_heredoc_type(t_token *tmp, bool *heredoc)
+{
+	*heredoc = true;
+	tmp->ttype = HERE_DOC;
+	if(tmp->next)
+	{
+		tmp = tmp->next;
+		tmp->ttype = DELIMITER;
+	}
+	return (tmp);
+}
+
+t_token	*set_redirections_type(t_token *tmp)
+{
+	tmp->ttype = REDIRECTION;
+	if(tmp->next)
+	{
+		tmp = tmp->next;
+		tmp->ttype = REDIRECTION_FILE;
+	}
+	return (tmp);
+}
+
 void types_assignement(t_token **tokenlist, t_env_list **env, bool *heredoc)
 {
 	t_token	*tmp;
@@ -140,25 +162,10 @@ void types_assignement(t_token **tokenlist, t_env_list **env, bool *heredoc)
 	while(tmp)
 	{
 		if(ft_strncmp(tmp->element, "<<", 2) == 0)
-		{
-			*heredoc = true;
-			tmp->ttype = HERE_DOC;
-			if(tmp->next)
-			{
-				tmp = tmp->next;
-				tmp->ttype = DELIMITER;
-			}
-		}
+			tmp = set_heredoc_type(tmp, heredoc);
 		else if (ft_strncmp(tmp->element, ">>", 2) == 0 || ft_strcmp(tmp->element,
 					">") == 0 || ft_strcmp(tmp->element, "<") == 0)
-		{
-			tmp->ttype = REDIRECTION;
-			if(tmp->next)
-			{
-				tmp = tmp->next;
-				tmp->ttype = REDIRECTION_FILE;
-			}
-		}
+			tmp = set_redirections_type(tmp);
 		else if (type(tmp->element, env) == BUILTIN)
 			tmp->ttype = BUILTIN;
 		else if (type(tmp->element, env) == META_CHAR)

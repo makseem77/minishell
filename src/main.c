@@ -35,6 +35,7 @@ static bool	set_data(t_data **data, char **envp)
 		(*data)->home_dir = ft_strdup(home);
 	(*data)->nb_pipe = 0;
 	(*data)->here_doc = false;
+	(*data)->path_cmd = NULL;
 	return (true);
 }
 

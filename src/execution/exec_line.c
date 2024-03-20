@@ -37,9 +37,8 @@ bool	check_and_exec_single_builtin(t_token **tokenlist, t_data **data,
 }
 
 void	free_after_execution(t_token **tokenlist, t_data **data, int **fds,
-		char **args, char **expression, char *path_cmd)
+		char **args, char **expression)
 {
-	free(path_cmd);
 	free_double_array(expression);
 	free_double_array(args);
 	free_fds_array(fds, (*data)->nb_pipe);
@@ -47,17 +46,43 @@ void	free_after_execution(t_token **tokenlist, t_data **data, int **fds,
 	free_token_list(tokenlist);
 }
 
-void	exec(t_token **tokenlist, t_data **data, int index, int **fds,
+void	exec_command(t_data **data, char **expression, char **env)
+{
+	execve((*data)->path_cmd, expression, env);
+	g_status = 1;
+	exit(g_status);
+}
+
+void	exec_builtin(t_token **tokenlist, t_data **data, char **expression, char **args, int **fds)
+{
+	execute_bultin(tokenlist, data, expression, args);
+	free_after_execution(tokenlist, data, fds, args, expression);
+	exit(g_status);
+}
+
+void	process_invalid(t_token **tokenlist, t_data **data, char **expression, char **args, int **fds)
+{
+	print_not_found(expression[0], NULL);
+	free_after_execution(tokenlist, data, fds, args, expression);
+	exit(g_status);
+}
+
+void	process_empty(void)
+{
+	g_status = 0;
+	exit(g_status);
+}
+
+void	exec_expression(t_token **tokenlist, t_data **data, int index, int **fds,
 		char **args)
 {
-	char	*path_cmd;
 	pid_t	pid;
 	char	**expression;
 
 	if (check_and_exec_single_builtin(tokenlist, data, args))
 		return ;
 	expression = cut_arrays_into_expression(args, index);
-	path_cmd = get_path_cmd((*data)->bin_paths, expression[0]);
+	(*data)->path_cmd = get_path_cmd((*data)->bin_paths, expression[0]);
 	g_status = -1;
 	pid = fork();
 	if (pid == 0)
@@ -65,36 +90,18 @@ void	exec(t_token **tokenlist, t_data **data, int index, int **fds,
 		if (configure_io(tokenlist, index, fds, (*data)->nb_pipe))
 		{
 			if (type(expression[0], (*data)->env) == BUILTIN)
-			{
-				execute_bultin(tokenlist, data, expression, args);
-				free_after_execution(tokenlist, data, fds, args, expression,
-					path_cmd);
-				exit(g_status);
-			}
+				exec_builtin(tokenlist, data, expression, args, fds);
 			else if (type(expression[0], (*data)->env) == COMMAND)
-			{
-				execve(path_cmd, expression, env_list_to_array((*data)->env));
-				g_status = 1;
-				exit(g_status);
-			}
+				exec_command(data, expression, env_list_to_array((*data)->env));
 			else if (type(expression[0], (*data)->env) == -1)
-			{
-				print_not_found(expression[0], NULL);
-				free_after_execution(tokenlist, data, fds, args, expression,
-					path_cmd);
-				exit(g_status);
-			}
-			else if (!path_cmd)
-			{
-				g_status = 0;
-				exit(g_status);
-			}
+				process_invalid(tokenlist, data, expression, args, fds);
+			else if ((*data)->path_cmd == NULL)
+				process_empty();
 		}
 		g_status = 1;
 		exit(g_status);
 	}
 	free_double_array(expression);
-	free(path_cmd);
 }
 
 void	execute_line(t_token **tokenlist, t_data **data)
@@ -112,7 +119,7 @@ void	execute_line(t_token **tokenlist, t_data **data)
 		i = (*data)->nb_pipe;
 		while (i >= 0)
 		{
-			exec(tokenlist, data, i, fds, args);
+			exec_expression(tokenlist, data, i, fds, args);
 			i--;
 		}
 		i = (*data)->nb_pipe;
