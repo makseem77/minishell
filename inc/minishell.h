@@ -36,6 +36,14 @@ typedef enum e_exportcases
 	VAR_UNDEFINED
 }						t_exportcases;
 
+typedef enum e_redirections
+{
+	HEREDOC,
+	OUTPUT_APPEND,
+	OUTPUT_TRUNCATE,
+	INPUT,
+}						t_redirections;
+
 typedef struct s_token
 {
 	char				*element;

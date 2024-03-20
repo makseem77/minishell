@@ -185,58 +185,73 @@ t_token	*get_cmd_token(t_token **tokenlist, int expr_index)
 	return (NULL);
 }
 
-int	create_and_set_fd(t_token *tmp, t_token *command_token)
+void	create_or_open_file(t_token *tmp, t_token *command_token, int mode)
+{
+	if (mode == OUTPUT_APPEND)
+	{
+		if (command_token)	
+			command_token->fd_out = open(tmp->next->element, O_CREAT | O_RDWR | O_APPEND, 0644);
+		else
+			open(tmp->next->element, O_CREAT | O_RDWR | O_APPEND, 0644);
+	}
+	if (mode == OUTPUT_TRUNCATE)
+	{
+		if (command_token)	
+			command_token->fd_out = open(tmp->next->element, O_CREAT | O_RDWR | O_TRUNC, 0644);
+		else
+			open(tmp->next->element, O_CREAT | O_RDWR | O_APPEND, 0644);
+	}
+	if (command_token)
+	{
+		if (command_token->fd_out == -1)
+			print_error(NULL, tmp->next->element, strerror(errno));
+	}
+}
+
+void	read_from_file_or_heredoc(t_token *tmp, t_token *command_token, int mode)
 {
 	int	fd;
-	fd = 0;
 
+	if (mode == HEREDOC)
+	{
+		if(!command_token)
+			fd = write_to_heredoc(open(".tmp", O_CREAT | O_RDWR | O_TRUNC, 0644), tmp->next->element);
+		else
+		{
+			command_token->fd_in = open(".tmp", O_CREAT | O_RDWR | O_TRUNC, 0644);
+			fd = write_to_heredoc(command_token->fd_in, tmp->next->element);
+		}
+	}
+	if (mode == INPUT)
+	{
+		if (command_token)
+			command_token->fd_in = open(tmp->next->element,  O_RDWR, 0644);
+		else
+			fd = open(tmp->next->element, O_RDWR, 0644);
+	}
+	if((command_token && command_token->fd_in == -1) || fd == -1)
+	{
+		if (command_token && command_token->fd_in == -1)
+			command_token->fd_out = open("/dev/null", O_WRONLY);
+		print_error(NULL, tmp->next->element, strerror(errno));
+	}
+}
+
+int	create_and_set_fd(t_token *tmp, t_token *command_token)
+{
 	if(ft_strncmp(tmp->element, ">>", 2) == 0 || ft_strcmp(tmp->element, ">") == 0)
 	{
 		if(ft_strncmp(tmp->element, ">>", 2) == 0)
-		{
-			if (command_token)	
-				command_token->fd_out = open(tmp->next->element, O_CREAT | O_RDWR | O_APPEND, 0644);
-			else
-				open(tmp->next->element, O_CREAT | O_RDWR | O_APPEND, 0644);
-		}
+			create_or_open_file(tmp, command_token, OUTPUT_APPEND);
 		else
-		{
-			if (command_token)
-				command_token->fd_out = open(tmp->next->element, O_CREAT | O_RDWR | O_TRUNC, 0644);
-			else
-				open(tmp->next->element, O_CREAT | O_RDWR | O_APPEND, 0644);
-		}
-		if (command_token)
-		{
-			if (command_token->fd_out == -1)
-				return(print_error(NULL, tmp->next->element, strerror(errno)), 1);
-		}
+			create_or_open_file(tmp, command_token, OUTPUT_TRUNCATE);
 	}
 	else if(ft_strncmp(tmp->element, "<<", 2) == 0 || ft_strcmp(tmp->element, "<") == 0)
 	{
 		if(ft_strncmp(tmp->element, "<<", 2) == 0)
-		{
-			if(!command_token)
-				fd = write_to_heredoc(open(".tmp", O_CREAT | O_RDWR | O_TRUNC, 0644), tmp->next->element);
-			else
-			{
-				command_token->fd_in = open(".tmp", O_CREAT | O_RDWR | O_TRUNC, 0644);
-				fd = write_to_heredoc(command_token->fd_in, tmp->next->element);
-			}
-		}
+			read_from_file_or_heredoc(tmp, command_token, HEREDOC);
 		else
-		{
-			if (command_token)
-				command_token->fd_in = open(tmp->next->element,  O_RDWR, 0644);
-			else
-				fd = open(tmp->next->element, O_RDWR, 0644);
-		}
-		if((command_token && command_token->fd_in == -1) || fd == -1)
-		{
-			if (command_token && command_token->fd_in == -1)
-				command_token->fd_out = open("/dev/null", O_WRONLY);
-			return(print_error(NULL, tmp->next->element, strerror(errno)), 1);
-		}
+			read_from_file_or_heredoc(tmp, command_token, INPUT);
 	}
 	return (-1);
 }
@@ -257,8 +272,6 @@ int handle_redirections(t_token **tokenlist, int *nb_pipe)
 		if (ft_strcmp(tmp->element, "|") == 0)
 			expr_index++;
 		create_and_set_fd(tmp, command_token);
-		/*if(create_and_set_fd(tmp, command_token) == 1)
-			return (1);*/	
 		tmp = tmp->next;
 	}
 	return (0);
