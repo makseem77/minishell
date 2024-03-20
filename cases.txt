@@ -18,6 +18,9 @@ echo bonjour |;ls -> segfault
 
 export "" -> should output not a valid identifier, same for unset ""
 
+echo || ls -> we should output a error message and quit as we don't do bonuses
+
+
 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 minishell> echo "Permission" > /root/test_permission.txt
 Permission

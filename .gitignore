@@ -2,3 +2,4 @@
 .vs-code/
 test.c
 minishell_tester/.cache
+compile_commands.json

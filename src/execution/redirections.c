@@ -115,7 +115,10 @@ int	write_to_heredoc(int fd, char *limiter)
 		{
 			line = readline("> ");
 			if (!line)
+			{	
+				ft_putstr_fd("\n", 1);
 				exit(1);
+			}
 			if (ft_strcmp(line, limiter) == 0)
 			{
 				free(line);
