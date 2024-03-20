@@ -46,8 +46,7 @@ minishell> echo $?
 1
 EXPECTED = 0
 
-cat -e | ls
-
+cat -e | 
 <<<
 
 minishell> mkdir a
