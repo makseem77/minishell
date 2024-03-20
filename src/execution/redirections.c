@@ -64,7 +64,7 @@ void    configure_io(t_token **tokenlist, int index, int **fds, int nb_pipe)
 	if (index == 0 && nb_pipe > 0)
 	{
 		dup2(fds[0][1], STDOUT_FILENO);
-		if (fd_in)
+		if (fd_in != -1)
 			dup2(fd_in, STDIN_FILENO);
 		if (fd_out != -1)
 			dup2(fd_out, STDOUT_FILENO);
@@ -73,7 +73,7 @@ void    configure_io(t_token **tokenlist, int index, int **fds, int nb_pipe)
 	{
 		dup2(fds[index - 1][0], STDIN_FILENO);
 		dup2(fds[index][1], STDOUT_FILENO);
-		if (fd_in)
+		if (fd_in != -1)
 			dup2(fd_in, STDIN_FILENO);
 		if (fd_out != -1)
 			dup2(fd_out, STDOUT_FILENO);
@@ -81,7 +81,7 @@ void    configure_io(t_token **tokenlist, int index, int **fds, int nb_pipe)
 	else if (index == nb_pipe && nb_pipe > 0)
 	{
 		dup2(fds[nb_pipe - 1][0], STDIN_FILENO);
-		if (fd_in)
+		if (fd_in != -1)
 			dup2(fd_in, STDIN_FILENO);
 		if (fd_out != -1)
 			dup2(fd_out, STDOUT_FILENO);
@@ -89,15 +89,15 @@ void    configure_io(t_token **tokenlist, int index, int **fds, int nb_pipe)
 	else if (index == 0 && nb_pipe == 0)
 	{
 		dup2(fd_out, STDOUT_FILENO);
-		if (fd_in != STDIN_FILENO)
+		if (fd_in != STDIN_FILENO && fd_in != -1)
 			dup2(fd_in, STDIN_FILENO);
-		if (fd_out != STDOUT_FILENO)
+		if (fd_out != STDOUT_FILENO && fd_in != -1)
 			dup2(fd_out, STDOUT_FILENO);
 	}
 	close_all_pipes(tokenlist, fds, nb_pipe);
 }
 
-int	write_to_heredoc(int fd, char *limiter)
+int	write_to_heredoc(int fd, char *limiter, bool command)
 {
 	char	*line;
 	pid_t	pid;
@@ -132,5 +132,8 @@ int	write_to_heredoc(int fd, char *limiter)
 	}
 	waitpid(pid, &g_status, 0);
 	close(fd);
-	return (open(".tmp", O_RDWR, 0644));
+	if (command)
+		return (open(".tmp", O_RDWR, 0644));
+	else
+		return (0);
 }

@@ -1,9 +1,7 @@
-~PIPES~
+PIPE
 
-Test  56: ❌ export GHOST=123 | env | grep GHOST 
-mini exit code = 0
-bash exit code = 1
-
+ls | jgwgjege
+will not return the good status code
 %%%%%%%%%%%%%%%%%%%%%
 
 ~REDIRECTS~
