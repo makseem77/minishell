@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 17:56:02 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/20 16:49:35 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/21 09:33:33 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,25 +15,23 @@
 // Prints the error message.
 void	print_not_found(char *command, char *arg)
 {
-	printf("command: %s\n", command);
-	printf("args: %s\n", arg);
 	if(!command || !command[0])
 	{
 		g_status = 0;
 		return ;
 	}
-	else if (command[0] == '/' || command[ft_strlen(command) - 1] == '/')
+	else if (command[0] == '/' || command[0] == '.' || command[ft_strlen(command) - 1] == '/')
 	{
-		g_status = 1;
+		g_status = 126;
 		if(access(command, F_OK) == 0 && access(command, X_OK) == -1)
 			print_error(command, arg, "Permission denied");
 		else if(access(command, F_OK) == -1)
-			print_error(command, arg, "No such file or directory");
-		else
 		{
-			print_error(command, arg, "Is a directory");
-			g_status = 126;
+			g_status = 127;
+			print_error(command, arg, "No such file or directory");
 		}
+		else
+			print_error(command, arg, "Is a directory");
 	}
 	else
 	{
@@ -45,7 +43,8 @@ void	print_not_found(char *command, char *arg)
 // Prints the error message.
 void	print_error(char *command, char *arg, char *error_message)
 {
-	g_status = 1;
+	if(g_status == 0)
+		g_status = 1;
 	ft_putstr_fd("minishell: ", 2);
 	if (command)
 	{

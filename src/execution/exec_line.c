@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 12:24:09 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/20 16:33:48 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/21 09:34:44 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,6 @@ void	exec_builtin(t_token **tokenlist, t_data **data, char **expression, char **
 void	process_invalid(t_token **tokenlist, t_data **data, char **expression, char **args, int **fds)
 {
 	print_not_found(expression[0], NULL);
-	printf("yeah\n");
 	free_after_execution(tokenlist, data, fds, args, expression);
 	exit(g_status);
 }

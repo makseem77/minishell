@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 15:23:35 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/20 17:08:10 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/21 09:40:30 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ static int	is_a_command(char *element, t_env_list **env)
 
 	if (is_executable(element, NULL, false))
 		return (1);
+	if(errno == EACCES)
+		return (0);
 	bin_paths = find_bin_paths(env);
 	if (!bin_paths)
 		return (0);
