@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 15:47:33 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/19 14:04:20 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/21 10:37:02 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ static void	handle_signals(int signal)
 	{
 		if (g_status == -1)
 			ft_putstr_fd("\n", 1);
+		else if(g_status == -2)
+			exit(130);
 		else
 		{
 			ft_putstr_fd("\n", 1);

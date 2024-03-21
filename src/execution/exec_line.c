@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 12:24:09 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/21 09:34:44 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/21 09:50:21 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,6 @@ void	exec_expression(t_token **tokenlist, t_data **data, int index, int **fds,
 	expression = cut_arrays_into_expression(args, index);
 	free((*data)->path_cmd);
 	(*data)->path_cmd = get_path_cmd((*data)->bin_paths, expression[0]);
-	g_status = -1;
 	pid = fork();
 	if (pid == 0)
 	{
@@ -120,7 +119,7 @@ void	execute_line(t_token **tokenlist, t_data **data)
 	if (!(g_status == 130 && (*data)->here_doc == true))
 	{
 		args = tokens_to_array(tokenlist);
-		g_status = -2;
+		g_status = -1;
 		fds = init_pipes(data);
 		i = (*data)->nb_pipe;
 		while (i >= 0)

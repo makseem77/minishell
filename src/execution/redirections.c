@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 04:28:22 by maxborde          #+#    #+#             */
-/*   Updated: 2024/03/19 14:14:04 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/21 11:41:46 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	get_output_fd(t_token **tokenlist, int index)
 {
 	t_token	*tmp;
-	int	i;
+	int		i;
 
 	tmp = *tokenlist;
 	i = 0;
@@ -36,7 +36,7 @@ int	get_output_fd(t_token **tokenlist, int index)
 int	get_input_fd(t_token **tokenlist, int index)
 {
 	t_token	*tmp;
-	int	i;
+	int		i;
 
 	tmp = *tokenlist;
 	i = 0;
@@ -54,7 +54,7 @@ int	get_input_fd(t_token **tokenlist, int index)
 	return (0);
 }
 
-int    configure_io(t_token **tokenlist, int index, int **fds, int nb_pipe)
+int	configure_io(t_token **tokenlist, int index, int **fds, int nb_pipe)
 {
 	int	fd_out;
 	int	fd_in;
@@ -87,7 +87,7 @@ int    configure_io(t_token **tokenlist, int index, int **fds, int nb_pipe)
 			dup2(fd_in, STDIN_FILENO);
 		if (fd_out != -1)
 			dup2(fd_out, STDOUT_FILENO);
-	}	
+	}
 	else if (index == 0 && nb_pipe == 0)
 	{
 		dup2(fd_out, STDOUT_FILENO);
@@ -100,24 +100,32 @@ int    configure_io(t_token **tokenlist, int index, int **fds, int nb_pipe)
 	return (1);
 }
 
-int	write_to_heredoc(int fd, char *limiter, bool command, t_data **data, t_token **tokenlist)
+int	write_to_heredoc(int fd, char *limiter, bool command, t_data **data,
+		t_token **tokenlist)
 {
 	char	*line;
-	(void)data;
-	(void)tokenlist;
+	pid_t	pid;
+	int		status;
+	static char *  limiter_stored;
 
-	g_status = -2;
-	if (0== 0)
+	g_status = -1;
+	limiter_stored = ft_strdup(limiter);
+	pid = fork();
+	if (pid == 0)
 	{
+		g_status = -2;
+		free_data_struct(*data);
+		free_token_list(tokenlist);
 		while (true)
 		{
 			line = readline("> ");
 			if (!line)
-			{	
-				ft_putstr_fd("\n", 1);
-				break ;
+			{
+				close(fd);
+				free(limiter_stored);
+				exit(0);
 			}
-			if (ft_strcmp(line, limiter) == 0)
+			if (ft_strcmp(line, limiter_stored) == 0)
 			{
 				free(line);
 				break ;
@@ -128,10 +136,17 @@ int	write_to_heredoc(int fd, char *limiter, bool command, t_data **data, t_token
 				free(line);
 			}
 		}
+		close(fd);
 	}
+	free(limiter_stored);
 	close(fd);
+	waitpid(pid, &status, 0);
+	if(status)
+		g_status = exited_status(status);
+	else
+		g_status = 0;
 	if (command)
-		return (open(".tmp", O_RDWR, 0644));
+			return (open(".tmp", O_RDWR, 0644));
 	else
 		return (0);
 }
