@@ -90,6 +90,8 @@ void	exec_expression(t_token **tokenlist, t_data **data, int index, int **fds,
 	free((*data)->path_cmd);
 	(*data)->path_cmd = get_path_cmd((*data)->bin_paths, expression[0]);
 	pid = fork();
+	if (pid)
+		signal(SIGINT, SIG_IGN);
 	if (pid == 0)
 	{
 		if (configure_io(tokenlist, index, fds, (*data)->nb_pipe))

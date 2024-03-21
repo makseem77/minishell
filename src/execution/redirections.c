@@ -111,6 +111,8 @@ int	write_to_heredoc(int fd, char *limiter, bool command, t_data **data,
 	g_status = -1;
 	limiter_stored = ft_strdup(limiter);
 	pid = fork();
+	if (pid)
+		signal(SIGINT, SIG_IGN);
 	if (pid == 0)
 	{
 		g_status = -2;

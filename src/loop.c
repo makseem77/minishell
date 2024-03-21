@@ -24,9 +24,9 @@ void	listening_loop(t_data **data)
 
 	tokenlist = NULL;
 	g_status = 0;
-	init_signals();
 	while (true)
 	{
+		init_signals();
 		line = readline("minishell> ");
 		if (!line)
 			exit_bash(EXIT_SUCCESS, data, NULL, NULL);

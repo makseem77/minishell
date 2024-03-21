@@ -360,7 +360,7 @@ void	print_token_list(t_token **tokenlist)
 int	set_token_types(t_token **tokenlist, t_data **data)
 {
 	types_assignement(tokenlist, (*data)->env, &(*data)->here_doc);
-	print_token_list(tokenlist);
+	//print_token_list(tokenlist);
 	if(handle_redirections(tokenlist, &(*data)->nb_pipe, data) == 1)
 		return (1);
 	clean_up_redirection(tokenlist);
