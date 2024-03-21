@@ -29,12 +29,23 @@ int	exited_status(int status)
 
 static void	handle_signals(int signal)
 {
+	int	i;
+	int	end;
+
+	i = 0;
+	end = 20000;
 	if (signal == SIGINT)
 	{
 		if (g_status == -1)
+		{
+			while (++i < end);
 			ft_putstr_fd("\n", 1);
+		}
 		else if(g_status == -2)
+		{
+			printf("CTRL C IN HERE DOC PROCESS -> EXIT HERE DOC PROCESS");
 			exit(130);
+		}
 		else
 		{
 			ft_putstr_fd("\n", 1);
@@ -44,6 +55,7 @@ static void	handle_signals(int signal)
 		}
 		g_status = 130;
 	}
+	// printf("END OF HANDLE SIGNALS\n");
 }
 
 void	init_signals(void)

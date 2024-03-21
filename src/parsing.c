@@ -130,6 +130,8 @@ int error_syntax(t_token *tmp, int *nb_pipe)
 		return(print_error(NULL, NULL, "special character ';'' is not authorized"), 1);
 	else if((tmp->ttype == REDIRECTION || tmp->ttype == HERE_DOC) && !tmp->next)
 		return(ft_putstr_fd("minishell: syntax error near unexpected token `newline'\n", 2), 1);
+	else if((tmp->ttype == REDIRECTION || tmp->ttype == HERE_DOC) && (ft_strncmp(tmp->next->element, ">", 1) == 0 || ft_strncmp(tmp->next->element, "<", 1) == 0))
+		return(print_error(NULL, NULL, "minishell: syntax error near unexpected token > or <"), 1);
 	return (0);
 }
 
@@ -170,10 +172,16 @@ void types_assignement(t_token **tokenlist, t_env_list **env, bool *heredoc)
 	while(tmp)
 	{
 		if(ft_strncmp(tmp->element, "<<", 2) == 0)
+		{
+			printf("yeah\n");
 			tmp = set_heredoc_type(tmp, heredoc);
+		}
 		else if (ft_strncmp(tmp->element, ">>", 2) == 0 || ft_strcmp(tmp->element,
 					">") == 0 || ft_strcmp(tmp->element, "<") == 0)
+		{
+			printf("yo\n");
 			tmp = set_redirections_type(tmp);
+		}
 		else if (type(tmp->element, env) == BUILTIN)
 			tmp->ttype = BUILTIN;
 		else if (type(tmp->element, env) == META_CHAR)
@@ -182,7 +190,8 @@ void types_assignement(t_token **tokenlist, t_env_list **env, bool *heredoc)
 			tmp->ttype = COMMAND;
 		else if(type(tmp->element, env) == EMPTY)
 			tmp->ttype = EMPTY;
-		tmp = tmp->next;
+		if (tmp)
+			tmp = tmp->next;
 	}
 }
 
@@ -333,27 +342,27 @@ int handle_redirections(t_token **tokenlist, int *nb_pipe, t_data **data)
 	return (0);
 }
 
-// void	print_token_list(t_token **tokenlist)
-// {
-// 	t_token	*tmp;
-//  	tmp = *tokenlist;
-//
-//  	while (tmp)
-//  	{
-// 		printf("Element = %s\n", tmp->element);
-//  		printf("Type = %d\n", tmp->ttype);
-//  		tmp = tmp->next;
-//  	}
-//  }
+void	print_token_list(t_token **tokenlist)
+{
+	t_token	*tmp;
+ 	tmp = *tokenlist;
+
+ 	while (tmp)
+ 	{
+		printf("Element = %s\n", tmp->element);
+ 		printf("Type = %d\n", tmp->ttype);
+ 		tmp = tmp->next;
+ 	}
+ }
 
 // Goes trough the token linked list
 // and gives a tokentype to every node of the list.
 int	set_token_types(t_token **tokenlist, t_data **data)
 {
 	types_assignement(tokenlist, (*data)->env, &(*data)->here_doc);
+	print_token_list(tokenlist);
 	if(handle_redirections(tokenlist, &(*data)->nb_pipe, data) == 1)
 		return (1);
-	// print_token_list(tokenlist);
 	clean_up_redirection(tokenlist);
 	return (0);
 }
