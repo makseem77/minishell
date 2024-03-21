@@ -27,47 +27,25 @@ int	exited_status(int status)
 	return (exit_status);
 }
 
-void	sigint_handler(int sig)
+static void	handle_signals(int signal)
 {
-	int	wait;
-	
-	(void)sig;
-	wait = 0;
-	if(g_status == -2)
-		exit(0);
-	else
+	if (signal == SIGINT)
 	{
-		while (++wait < 100000)
-			;
-		ft_putstr_fd("\n", 1);
-		rl_on_new_line();
-		rl_replace_line("", 0);
-		if (g_status != -3 && g_status != -1)
+		if (g_status == -1)
+			ft_putstr_fd("\n", 1);
+		else
+		{
+			ft_putstr_fd("\n", 1);
+			rl_on_new_line();
+			rl_replace_line("", 0);
 			rl_redisplay();
+		}
+		g_status = 130;
 	}
-	g_status = 130;
 }
 
-
-void	handle_signals(void)
+void	init_signals(void)
 {
-	struct sigaction	sa_sigint;
-	struct sigaction	sa_sigquit;
-
-	sa_sigint.sa_handler = sigint_handler;
-	sigemptyset(&sa_sigint.sa_mask);
-	sa_sigint.sa_flags = 0;
-	if (sigaction(SIGINT, &sa_sigint, NULL) == -1)
-	{
-		perror("Erreur lors de la configuration de SIGINT");
-		exit(EXIT_FAILURE);
-	}
-	sa_sigquit.sa_handler = SIG_IGN;
-	sigemptyset(&sa_sigquit.sa_mask);
-	sa_sigquit.sa_flags = 0;
-	if (sigaction(SIGQUIT, &sa_sigquit, NULL) == -1)
-	{
-		perror("Erreur lors de la configuration de SIGQUIT");
-		exit(EXIT_FAILURE);
-	}
+	signal(SIGINT, handle_signals);
+	signal(SIGQUIT, handle_signals);
 }

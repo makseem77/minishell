@@ -100,23 +100,22 @@ int    configure_io(t_token **tokenlist, int index, int **fds, int nb_pipe)
 	return (1);
 }
 
-int	write_to_heredoc(int fd, char *limiter, bool command)
+int	write_to_heredoc(int fd, char *limiter, bool command, t_data **data, t_token **tokenlist)
 {
 	char	*line;
-	pid_t	pid;
+	(void)data;
+	(void)tokenlist;
 
-	pid = fork();
-	g_status = -3;
-	if (pid == 0)
+	g_status = -2;
+	if (0== 0)
 	{
-		g_status = -2;
 		while (true)
 		{
 			line = readline("> ");
 			if (!line)
 			{	
 				ft_putstr_fd("\n", 1);
-				exit(1);
+				break ;
 			}
 			if (ft_strcmp(line, limiter) == 0)
 			{
@@ -129,11 +128,7 @@ int	write_to_heredoc(int fd, char *limiter, bool command)
 				free(line);
 			}
 		}
-		//NEED FREE
-		close(fd);
-		exit(0);
 	}
-	waitpid(pid, &g_status, 0);
 	close(fd);
 	if (command)
 		return (open(".tmp", O_RDWR, 0644));

@@ -48,7 +48,11 @@ void	free_after_execution(t_token **tokenlist, t_data **data, int **fds,
 
 void	exec_command(t_data **data, char **expression, char **env)
 {
-	execve((*data)->path_cmd, expression, env);
+	char	*path_cmd;
+	
+	path_cmd = ft_strdup((*data)->path_cmd);
+	free_data_struct(*data);
+	execve(path_cmd, expression, env);
 	g_status = 1;
 	exit(g_status);
 }
@@ -63,12 +67,14 @@ void	exec_builtin(t_token **tokenlist, t_data **data, char **expression, char **
 void	process_invalid(t_token **tokenlist, t_data **data, char **expression, char **args, int **fds)
 {
 	print_not_found(expression[0], NULL);
+	printf("yeah\n");
 	free_after_execution(tokenlist, data, fds, args, expression);
 	exit(g_status);
 }
 
-void	process_empty(void)
+void	process_empty(t_token **tokenlist, t_data **data, char **expression, char **args, int **fds)
 {
+	free_after_execution(tokenlist, data, fds, args, expression);
 	g_status = 0;
 	exit(g_status);
 }
@@ -82,6 +88,7 @@ void	exec_expression(t_token **tokenlist, t_data **data, int index, int **fds,
 	if (check_and_exec_single_builtin(tokenlist, data, args))
 		return ;
 	expression = cut_arrays_into_expression(args, index);
+	free((*data)->path_cmd);
 	(*data)->path_cmd = get_path_cmd((*data)->bin_paths, expression[0]);
 	g_status = -1;
 	pid = fork();
@@ -96,7 +103,7 @@ void	exec_expression(t_token **tokenlist, t_data **data, int index, int **fds,
 			else if (type(expression[0], (*data)->env) == -1)
 				process_invalid(tokenlist, data, expression, args, fds);
 			else if ((*data)->path_cmd == NULL)
-				process_empty();
+				process_empty(tokenlist, data, expression, args, fds);
 		}
 		g_status = 1;
 		exit(g_status);

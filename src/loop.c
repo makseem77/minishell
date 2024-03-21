@@ -24,7 +24,7 @@ void	listening_loop(t_data **data)
 
 	tokenlist = NULL;
 	g_status = 0;
-	handle_signals();
+	init_signals();
 	while (true)
 	{
 		line = readline("minishell> ");
@@ -41,10 +41,11 @@ void	listening_loop(t_data **data)
 			// 	printf("element: %s\n", tmp->element);
 			// 	printf("type: %d\n", tmp->ttype);
 			// }
-			if (!set_token_types(tokenlist, (*data)->env, &(*data)->nb_pipe,
-					&(*data)->here_doc))
+			if (!set_token_types(tokenlist, data))
+			{
 				if (*tokenlist)
 					execute_line(tokenlist, data);
+			}
 			free_token_list(tokenlist);
 		}
 		if ((*data)->here_doc)

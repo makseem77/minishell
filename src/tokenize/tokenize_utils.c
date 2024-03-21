@@ -32,7 +32,8 @@ size_t	compute_len(char *line)
 		return (1);
 	while (line[len])
 	{
-		if ((line[len] == ' ' || line[len] == '|' || line[len] == '>' || line[len] == '<') && flag_double_quotes % 2 == 0
+		if ((line[len] == ' ' || (line[len] >= '\t' && line[len] <= '\r') || line[len] == '|' 
+			|| line[len] == '>' || line[len] == '<') && flag_double_quotes % 2 == 0
 			&& flag_single_quotes % 2 == 0)
 			break ;
 		if (line[len] == '"' && flag_single_quotes % 2 == 0)

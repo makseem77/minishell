@@ -153,7 +153,7 @@ int						get_output_fd(t_token **tokenlist, int index);
 int						get_input_fd(t_token **tokenlist, int index);
 int					configure_io(t_token **tokenlist, int index, int **fds,
 							int nb_pipe);
-int					write_to_heredoc(int fd, char *limiter, bool command);
+int					write_to_heredoc(int fd, char *limiter, bool command, t_data **data, t_token **tokenlist);
 //////////////////////////////////////////////////////////////////////////////////////
 
 //////////////////////////////////////////////////////////////////////////////////////
@@ -192,12 +192,11 @@ void					free_node(t_token *tmp);
 void					listening_loop(t_data **data);
 
 //	PARSING
-int						set_token_types(t_token **tokenlist, t_env_list **env,
-							int *nb_pipe, bool *heredoc);
+int						set_token_types(t_token **tokenlist, t_data **data);
 int						type(char *element, t_env_list **env);
 
 //	SIGNALS
-void					handle_signals(void);
+void						init_signals(void);
 int						exited_status(int status);
 
 #endif

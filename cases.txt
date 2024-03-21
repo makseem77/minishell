@@ -1,3 +1,13 @@
+PARSING AND TOKENIZING
+
+ls ""
+should output a error message
+
+VALGRIND AND LEAKS
+
+exit | echo hello
+has some leaks
+
 PIPE
 
 ls | jgwgjege

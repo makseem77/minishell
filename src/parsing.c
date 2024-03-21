@@ -119,13 +119,13 @@ int error_syntax(t_token *tmp, int *nb_pipe)
 {
 	if (ft_strcmp(tmp->element, "|") == 0)
 	{
-		if (!tmp->next)
+		if (!tmp->next || ft_strcmp(tmp->next->element, "|") == 0)
 			return(print_error(NULL, NULL, "pipe should be followed by a command"), 1);
 		else
 			(*nb_pipe)++;
 	}
-	else if (ft_strcmp(tmp->element, ";") == 0 || ft_strcmp(tmp->element, "\\") == 0)
-		return(print_error(NULL, NULL, "special characters ';'' or '\\' are not authorized"), 1);
+	else if (ft_strcmp(tmp->element, ";") == 0)
+		return(print_error(NULL, NULL, "special character ';'' is not authorized"), 1);
 	else if((tmp->ttype == REDIRECTION || tmp->ttype == HERE_DOC) && !tmp->next)
 		return(ft_putstr_fd("minishell: syntax error near unexpected token `newline'\n", 2), 1);
 	return (0);
@@ -138,7 +138,10 @@ t_token	*set_heredoc_type(t_token *tmp, bool *heredoc)
 	if(tmp->next)
 	{
 		tmp = tmp->next;
-		tmp->ttype = DELIMITER;
+		if (ft_strcmp(tmp->element, ">") != 0)
+			tmp->ttype = DELIMITER;
+		else
+			return (NULL);
 	}
 	return (tmp);
 }
@@ -149,7 +152,10 @@ t_token	*set_redirections_type(t_token *tmp)
 	if(tmp->next)
 	{
 		tmp = tmp->next;
-		tmp->ttype = REDIRECTION_FILE;
+		if (ft_strncmp(tmp->element, ">", 1)  || ft_strncmp(tmp->element, "<", 1) != 0)
+			tmp->ttype = REDIRECTION_FILE;
+		else
+			return (NULL);
 	}
 	return (tmp);
 }
@@ -240,19 +246,19 @@ int	create_or_truncate(t_token *tmp, t_token *command_token)
 	return (-1);
 }
 
-void	create_and_read_from_heredoc(t_token *tmp, t_token *command_token)
+void	create_and_read_from_heredoc(t_token *tmp, t_token *command_token, t_data **data, t_token **tokenlist)
 {
 	int	fd;
 
 	fd = 0;
 	if(!command_token)
-		fd = write_to_heredoc(open(".tmp", O_CREAT | O_RDWR | O_TRUNC, 0644), tmp->next->element, false);
+		fd = write_to_heredoc(open(".tmp", O_CREAT | O_RDWR | O_TRUNC, 0644), tmp->next->element, false, data, tokenlist);
 	else
 	{
 		if (command_token->fd_in > 1)
 			close(command_token->fd_in);
 		command_token->fd_in = open(".tmp", O_CREAT | O_RDWR | O_TRUNC, 0644);
-		fd = write_to_heredoc(command_token->fd_in, tmp->next->element, true);
+		fd = write_to_heredoc(command_token->fd_in, tmp->next->element, true, data, tokenlist);
 	}
 	if((command_token && command_token->fd_in == -1) || fd == -1)
 	{
@@ -285,7 +291,7 @@ void	read_from_file(t_token *tmp, t_token *command_token)
 	}
 }
 
-int	create_and_set_fd(t_token *tmp, t_token *command_token)
+int	create_and_set_fd(t_token *tmp, t_token *command_token, t_data **data, t_token **tokenlist)
 {
 	if(ft_strncmp(tmp->element, ">>", 2) == 0 || ft_strcmp(tmp->element, ">") == 0)
 	{
@@ -297,14 +303,14 @@ int	create_and_set_fd(t_token *tmp, t_token *command_token)
 	else if(ft_strncmp(tmp->element, "<<", 2) == 0 || ft_strcmp(tmp->element, "<") == 0)
 	{
 		if(ft_strncmp(tmp->element, "<<", 2) == 0)
-			create_and_read_from_heredoc(tmp, command_token);
+			create_and_read_from_heredoc(tmp, command_token, data, tokenlist);
 		else
 			read_from_file(tmp, command_token);
 	}
 	return (-1);
 }
 
-int handle_redirections(t_token **tokenlist, int *nb_pipe)
+int handle_redirections(t_token **tokenlist, int *nb_pipe, t_data **data)
 {
 	t_token	*tmp;
 	t_token	*command_token;
@@ -319,7 +325,7 @@ int handle_redirections(t_token **tokenlist, int *nb_pipe)
 		command_token = get_cmd_token(tokenlist, expr_index);
 		if (ft_strcmp(tmp->element, "|") == 0)
 			expr_index++;
-		create_and_set_fd(tmp, command_token);
+		create_and_set_fd(tmp, command_token, data, tokenlist);
 		tmp = tmp->next;
 	}
 	return (0);
@@ -328,25 +334,24 @@ int handle_redirections(t_token **tokenlist, int *nb_pipe)
 // void	print_token_list(t_token **tokenlist)
 // {
 // 	t_token	*tmp;
-// 	tmp = *tokenlist;
-
-// 	while (tmp)
-// 	{
+//  	tmp = *tokenlist;
+//
+//  	while (tmp)
+//  	{
 // 		printf("Element = %s\n", tmp->element);
-// 		printf("Type = %d\n", tmp->ttype);
-// 		tmp = tmp->next;
-// 	}
-// }
+//  		printf("Type = %d\n", tmp->ttype);
+//  		tmp = tmp->next;
+//  	}
+//  }
 
 // Goes trough the token linked list
 // and gives a tokentype to every node of the list.
-int	set_token_types(t_token **tokenlist, t_env_list **env, int *nb_pipe, bool *heredoc)
+int	set_token_types(t_token **tokenlist, t_data **data)
 {
-	(void)nb_pipe;
-	types_assignement(tokenlist, env, heredoc);
-	if(handle_redirections(tokenlist, nb_pipe) == 1)
+	types_assignement(tokenlist, (*data)->env, &(*data)->here_doc);
+	if(handle_redirections(tokenlist, &(*data)->nb_pipe, data) == 1)
 		return (1);
-	clean_up_redirection(tokenlist);
 	// print_token_list(tokenlist);
+	clean_up_redirection(tokenlist);
 	return (0);
 }
