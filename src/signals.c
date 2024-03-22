@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 15:47:33 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/21 10:37:02 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/22 10:38:41 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,18 +36,11 @@ static void	handle_signals(int signal)
 	end = 70000;
 	if (signal == SIGINT)
 	{
-		//printf("g_status = %d\n", g_status);
 		if (g_status == -1)
-		{
-			while (++i < end);
-			ft_putstr_fd("\n", 1);
-		}
-		else if(g_status == -2)
-		{
-			//printf("CTRL C IN HERE DOC PROCESS -> EXIT HERE DOC PROCESS");
-			ft_putstr_fd("\n", 1);
+			while (++i < end)
+				;
+		else if (g_status == -2)
 			exit(130);
-		}
 		else
 		{
 			ft_putstr_fd("\n", 1);
@@ -55,9 +48,10 @@ static void	handle_signals(int signal)
 			rl_replace_line("", 0);
 			rl_redisplay();
 		}
+		if (g_status == -1 || g_status == -2)
+			ft_putstr_fd("\n", 1);
 		g_status = 130;
 	}
-	// printf("END OF HANDLE SIGNALS\n");
 }
 
 void	init_signals(void)

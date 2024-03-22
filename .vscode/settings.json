@@ -18,6 +18,7 @@
         "tmp": "cpp",
         "readline.h": "c",
         "unistd.h": "c",
-        "stdio.h": "c"
+        "stdio.h": "c",
+        "check_cmd.C": "cpp"
     }
 }

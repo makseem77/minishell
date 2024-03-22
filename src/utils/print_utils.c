@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 17:56:02 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/21 09:33:33 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/22 11:38:25 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,18 @@
 // Prints the error message.
 void	print_not_found(char *command, char *arg)
 {
-	if(!command || !command[0])
+	if (!command || !command[0])
 	{
 		g_status = 0;
 		return ;
 	}
-	else if (command[0] == '/' || command[0] == '.' || command[ft_strlen(command) - 1] == '/')
+	else if (command[0] == '/' || command[0] == '.'
+		|| command[ft_strlen(command) - 1] == '/')
 	{
 		g_status = 126;
-		if(access(command, F_OK) == 0 && access(command, X_OK) == -1)
+		if (access(command, F_OK) == 0 && access(command, X_OK) == -1)
 			print_error(command, arg, "Permission denied");
-		else if(access(command, F_OK) == -1)
+		else if (access(command, F_OK) == -1)
 		{
 			g_status = 127;
 			print_error(command, arg, "No such file or directory");
@@ -43,7 +44,7 @@ void	print_not_found(char *command, char *arg)
 // Prints the error message.
 void	print_error(char *command, char *arg, char *error_message)
 {
-	if(g_status == 0)
+	if (g_status == 0)
 		g_status = 1;
 	ft_putstr_fd("minishell: ", 2);
 	if (command)
@@ -58,6 +59,31 @@ void	print_error(char *command, char *arg, char *error_message)
 	}
 	ft_putstr_fd(error_message, 2);
 	ft_putstr_fd("\n", 2);
+}
+
+int	error_syntax(t_token *tmp, int *nb_pipe)
+{
+	if (ft_strcmp(tmp->element, "|") == 0)
+	{
+		if (!tmp->next || ft_strcmp(tmp->next->element, "|") == 0)
+			return (print_error(NULL, NULL,
+					"pipe should be followed by a command"), 1);
+		else
+			(*nb_pipe)++;
+	}
+	else if (ft_strcmp(tmp->element, ";") == 0)
+		return (print_error(NULL, NULL,
+				"special character ';'' is not authorized"), 1);
+	else if ((tmp->ttype == REDIRECTION || tmp->ttype == HERE_DOC)
+		&& !tmp->next)
+		return (ft_putstr_fd("minishell: syntax error near unexpected token"
+				" `newline'\n", 2), 1);
+	else if ((tmp->ttype == REDIRECTION || tmp->ttype == HERE_DOC)
+		&& (ft_strncmp(tmp->next->element, ">", 1) == 0
+			|| ft_strncmp(tmp->next->element, "<", 1) == 0))
+		return (print_error(NULL, NULL,
+				"minishell: syntax error near unexpected token > or <"), 1);
+	return (0);
 }
 
 // Prints the export list.

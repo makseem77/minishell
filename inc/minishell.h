@@ -147,13 +147,15 @@ char					*get_path_cmd(char **paths, char *cmd);
 char					**cut_arrays_into_expression(char **array, int index);
 // INIT PIPES
 int						**init_pipes(t_data **data);
-void					close_all_pipes(t_token **tokenlist, int **fds, int nb_pipe);
+void					close_all_pipes(t_token **tokenlist, int **fds,
+							int nb_pipe);
 //	REDIRECTIONS
 int						get_output_fd(t_token **tokenlist, int index);
 int						get_input_fd(t_token **tokenlist, int index);
-int					configure_io(t_token **tokenlist, int index, int **fds,
+int						configure_io(t_token **tokenlist, int index, int **fds,
 							int nb_pipe);
-int					write_to_heredoc(int fd, char *limiter, bool command, t_data **data, t_token **tokenlist);
+int						write_to_heredoc(int fd, char *limiter, bool command,
+							t_data **data, t_token **tokenlist);
 //////////////////////////////////////////////////////////////////////////////////////
 
 //////////////////////////////////////////////////////////////////////////////////////
@@ -169,6 +171,7 @@ int						lst_size(t_env_list **lst);
 void					print_not_found(char *command, char *arg);
 void					print_error(char *command, char *arg,
 							char *error_message);
+int						error_syntax(t_token *tmp, int *nb_pipe);
 void					print_export(t_env_list **export_variables);
 //	ENV UTILS
 t_env_list				**dup_env(char **env);
@@ -176,7 +179,6 @@ char					**find_bin_paths(t_env_list **env);
 char					*get_env(char *variable, t_env_list **env);
 char					**env_list_to_array(t_env_list **env);
 //////////////////////////////////////////////////////////////////////////////////////
-
 //	FREE FOLDER
 //	FREE ARRAY
 void					free_double_array(char **darray);
@@ -187,6 +189,28 @@ void					free_data_struct(t_data *data);
 void					free_token_list(t_token **t_token);
 void					free_node(t_token *tmp);
 //////////////////////////////////////////////////////////////////////////////////////
+// PARSING FOLDER
+
+// REDIRECTIONS FOLDER
+// FD REDIRECTS
+int						create_or_append(t_token *tmp, t_token *command_token);
+int						create_or_truncate(t_token *tmp,
+							t_token *command_token);
+void					create_and_read_from_heredoc(t_token *tmp,
+							t_token *command_token, t_data **data,
+							t_token **tokenlist);
+void					read_from_file(t_token *tmp, t_token *command_token);
+// PARS REDIRECTS
+void					clean_up_redirection(t_token **tokenlist);
+int						handle_redirections(t_token **tokenlist, int *nb_pipe,
+							t_data **data);
+
+// CHECK CMD
+int						is_a_command(char *element, t_env_list **env);
+// SET TYPE
+int						type(char *element, t_env_list **env);
+int						set_token_types(t_token **tokenlist, t_data **data);
+//////////////////////////////////////////////////////////////////////////////////////
 
 //	LOOP
 void					listening_loop(t_data **data);
@@ -196,7 +220,7 @@ int						set_token_types(t_token **tokenlist, t_data **data);
 int						type(char *element, t_env_list **env);
 
 //	SIGNALS
-void						init_signals(void);
+void					init_signals(void);
 int						exited_status(int status);
 
 #endif

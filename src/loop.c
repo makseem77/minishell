@@ -6,13 +6,13 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:43:34 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/20 17:04:22 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/22 10:33:51 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int		g_status;
+int		g_status = 0;
 
 // The main loop of the program
 // It reads the input from the user and processes it
@@ -23,7 +23,6 @@ void	listening_loop(t_data **data)
 	t_token	**tokenlist;
 
 	tokenlist = NULL;
-	g_status = 0;
 	while (true)
 	{
 		init_signals();
@@ -35,17 +34,9 @@ void	listening_loop(t_data **data)
 		tokenlist = tokenize(line, (*data)->env);
 		if (tokenlist)
 		{
-			//print the token list
-			// for(t_token *tmp = *tokenlist; tmp; tmp = tmp->next)
-			// {
-			// 	printf("element: %s\n", tmp->element);
-			// 	printf("type: %d\n", tmp->ttype);
-			// }
 			if (!set_token_types(tokenlist, data))
-			{
 				if (*tokenlist)
 					execute_line(tokenlist, data);
-			}
 			free_token_list(tokenlist);
 		}
 		if ((*data)->here_doc)
