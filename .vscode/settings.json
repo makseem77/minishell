@@ -19,6 +19,7 @@
         "readline.h": "c",
         "unistd.h": "c",
         "stdio.h": "c",
-        "check_cmd.C": "cpp"
+        "check_cmd.C": "cpp",
+        "waitstatus.h": "c"
     }
 }

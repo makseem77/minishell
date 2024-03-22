@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 15:47:33 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/22 15:35:56 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/22 17:54:09 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,12 @@ int	exited_status(int status)
 {
 	int	exit_status;
 
+	printf("status: %d\n", status);
 	if (WIFEXITED(status))
 		exit_status = WEXITSTATUS(status);
 	if (WIFSIGNALED(status))
 	{
+		printf("status: %d\n", status);
 		exit_status = WTERMSIG(status);
 		if (exit_status != 131)
 			exit_status += 128;
