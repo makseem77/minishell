@@ -63,6 +63,7 @@ typedef struct s_data
 	struct s_env_list	**env;
 	struct s_env_list	**exp_list;
 	int					nb_pipe;
+	int					**pipe_fds;
 	bool				here_doc;
 }						t_data;
 
@@ -153,8 +154,7 @@ void					close_all_pipes(t_token **tokenlist, int **fds,
 //	REDIRECTIONS
 int						get_output_fd(t_token **tokenlist, int index);
 int						get_input_fd(t_token **tokenlist, int index);
-int						configure_io(t_token **tokenlist, int index, int **fds,
-							int nb_pipe);
+int						configure_io(t_token **tokenlist, int index, t_data **data);
 int						write_to_heredoc(int fd, char *limiter, bool command,
 							t_data **data, t_token **tokenlist);
 //////////////////////////////////////////////////////////////////////////////////////

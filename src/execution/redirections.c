@@ -54,7 +54,7 @@ int	get_input_fd(t_token **tokenlist, int index)
 	return (0);
 }
 
-int	configure_io(t_token **tokenlist, int index, int **fds, int nb_pipe)
+int	configure_io(t_token **tokenlist, int index, t_data **data)
 {
 	int	fd_out;
 	int	fd_in;
@@ -63,32 +63,32 @@ int	configure_io(t_token **tokenlist, int index, int **fds, int nb_pipe)
 	fd_in = get_input_fd(tokenlist, index);
 	if (fd_in == -1 || fd_out == -1)
 		return (0);
-	if (index == 0 && nb_pipe > 0)
+	if (index == 0 && (*data)->nb_pipe > 0)
 	{
-		dup2(fds[0][1], STDOUT_FILENO);
+		dup2((*data)->pipe_fds[0][1], STDOUT_FILENO);
 		if (fd_in != -1)
 			dup2(fd_in, STDIN_FILENO);
 		if (fd_out != -1)
 			dup2(fd_out, STDOUT_FILENO);
 	}
-	else if (index > 0 && index < nb_pipe)
+	else if (index > 0 && index < (*data)->nb_pipe)
 	{
-		dup2(fds[index - 1][0], STDIN_FILENO);
-		dup2(fds[index][1], STDOUT_FILENO);
+		dup2((*data)->pipe_fds[index - 1][0], STDIN_FILENO);
+		dup2((*data)->pipe_fds[index][1], STDOUT_FILENO);
 		if (fd_in != -1)
 			dup2(fd_in, STDIN_FILENO);
 		if (fd_out != -1)
 			dup2(fd_out, STDOUT_FILENO);
 	}
-	else if (index == nb_pipe && nb_pipe > 0)
+	else if (index == (*data)->nb_pipe && (*data)->nb_pipe > 0)
 	{
-		dup2(fds[nb_pipe - 1][0], STDIN_FILENO);
+		dup2((*data)->pipe_fds[(*data)->nb_pipe - 1][0], STDIN_FILENO);
 		if (fd_in != -1)
 			dup2(fd_in, STDIN_FILENO);
 		if (fd_out != -1)
 			dup2(fd_out, STDOUT_FILENO);
 	}
-	else if (index == 0 && nb_pipe == 0)
+	else if (index == 0 && (*data)->nb_pipe == 0)
 	{
 		dup2(fd_out, STDOUT_FILENO);
 		if (fd_in != STDIN_FILENO && fd_in != -1)
@@ -96,7 +96,7 @@ int	configure_io(t_token **tokenlist, int index, int **fds, int nb_pipe)
 		if (fd_out != STDOUT_FILENO && fd_in != -1)
 			dup2(fd_out, STDOUT_FILENO);
 	}
-	close_all_pipes(tokenlist, fds, nb_pipe);
+	close_all_pipes(tokenlist, (*data)->pipe_fds, (*data)->nb_pipe);
 	return (1);
 }
 
