@@ -71,6 +71,7 @@ void	free_and_exit(t_data **data, t_token **token, char **args, int status)
 		free_double_array(args);
 	free_data_struct(*data);
 	g_status = g_status % 256;
+	printf("Hello\n");
 	exit(g_status);
 }
 

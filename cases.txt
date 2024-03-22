@@ -1,10 +1,20 @@
+EXIT
+
+minishell> exit
+
+Invalid read of size 8 
++ open file descriptors (check valgrind)
+
+
+minishell> exit 1
+open file descriptors (check valgrind)
+
+minishell> exit | COMMAND
+valgrind still reachable
+
+PARSING TOKENIZING
 ls ""
 should output a error message
-
-VALGRIND AND LEAKS
-
-exit | echo hello
-has some leaks
 
 PIPE
 
@@ -27,9 +37,10 @@ bash exit code = 1
 mini error = ( No such file or directory No such file or directory)
 bash error = ( No such file or directory)
 
-%%%%%%%%%%%%%%%%%%%%%
-PARSING AND TOKENIZING
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+export "" -> should output not a valid identifier, same for unset ""
 
+echo || ls -> we should output a error message and quit as we don't do bonuses
 
 minishell> mkdir a
 minishell> cd a
@@ -38,12 +49,11 @@ puis cd ou pwd par exemple
 
 echo bonjour |;ls -> segfault
 
-export "" -> should output not a valid identifier, same for unset ""
+echo |;
+then
+ls
 
-echo || ls -> we should output a error message and quit as we don't do bonuses
-
-
-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+ls will output nothing
 $EMPTY 
 $EMPTY echo hi 
 

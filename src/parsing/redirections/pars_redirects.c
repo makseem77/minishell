@@ -98,7 +98,10 @@ int	handle_redirections(t_token **tokenlist, int *nb_pipe, t_data **data)
 	while (tmp)
 	{
 		if (error_syntax(tmp, nb_pipe))
+		{
+			(*data)->nb_pipe = 0;
 			return (1);
+		}
 		command_token = get_cmd_token(tokenlist, expr_index);
 		if (ft_strcmp(tmp->element, "|") == 0)
 			expr_index++;

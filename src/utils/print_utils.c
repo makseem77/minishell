@@ -63,7 +63,10 @@ void	print_error(char *command, char *arg, char *error_message)
 
 int	error_syntax(t_token *tmp, int *nb_pipe)
 {
-	if (ft_strcmp(tmp->element, "|") == 0)
+	if (ft_strcmp(tmp->element, ";") == 0)
+		return (print_error(NULL, NULL,
+				"special character ';'' is not authorized"), 1);
+	else if (ft_strcmp(tmp->element, "|") == 0)
 	{
 		if (!tmp->next || ft_strcmp(tmp->next->element, "|") == 0)
 			return (print_error(NULL, NULL,
@@ -71,9 +74,6 @@ int	error_syntax(t_token *tmp, int *nb_pipe)
 		else
 			(*nb_pipe)++;
 	}
-	else if (ft_strcmp(tmp->element, ";") == 0)
-		return (print_error(NULL, NULL,
-				"special character ';'' is not authorized"), 1);
 	else if ((tmp->ttype == REDIRECTION || tmp->ttype == HERE_DOC)
 		&& !tmp->next)
 		return (ft_putstr_fd("minishell: syntax error near unexpected token"
