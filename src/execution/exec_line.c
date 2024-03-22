@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 12:24:09 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/21 09:50:21 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/22 16:22:24 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,13 @@ void	process_empty(t_token **tokenlist, t_data **data, char **expression, char *
 	exit(g_status);
 }
 
+bool is_minishell(char *cmd)
+{
+	if(access(cmd, X_OK) == 0 && ft_strcmp(cmd + (ft_strlen(cmd) - ft_strlen("/minishell")), "/minishell") == 0)
+		return (true);
+	return (false);
+}
+
 void	exec_expression(t_token **tokenlist, t_data **data, int index, int **fds,
 		char **args)
 {
@@ -90,7 +97,7 @@ void	exec_expression(t_token **tokenlist, t_data **data, int index, int **fds,
 	free((*data)->path_cmd);
 	(*data)->path_cmd = get_path_cmd((*data)->bin_paths, expression[0]);
 	pid = fork();
-	if (pid)
+	if (pid && is_minishell(expression[0]))
 		signal(SIGINT, SIG_IGN);
 	if (pid == 0)
 	{

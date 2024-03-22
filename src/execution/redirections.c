@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 04:28:22 by maxborde          #+#    #+#             */
-/*   Updated: 2024/03/21 11:41:46 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/22 15:01:12 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,6 +123,7 @@ int	write_to_heredoc(int fd, char *limiter, bool command, t_data **data,
 			line = readline("> ");
 			if (!line)
 			{
+				ft_putstr_fd("\n", 1);
 				close(fd);
 				free(limiter_stored);
 				exit(0);
@@ -145,8 +146,11 @@ int	write_to_heredoc(int fd, char *limiter, bool command, t_data **data,
 	waitpid(pid, &status, 0);
 	if(status)
 		g_status = exited_status(status);
-	else
+	else if(g_status != 130)
+	{
+		// printf("gs = %d\n", g_status);
 		g_status = 0;
+	}
 	if (command)
 			return (open(".tmp", O_RDWR, 0644));
 	else
