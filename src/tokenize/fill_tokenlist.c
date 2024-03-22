@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tokenize.c                                         :+:      :+:    :+:   */
+/*   fill_tokenlist.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 15:23:42 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/15 18:37:12 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/22 12:27:05 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,37 @@ static t_token	*create_new_token(char *element)
 	}
 	token->next = NULL;
 	return (token);
+}
+
+// Returns the len of the element it encounters in the line.
+// Elements in line are separated by whitespaces, but we have to check
+// that the whitespaces are not inside quotes.
+static size_t	compute_len(char *line)
+{
+	size_t	len;
+	int		flag_double_quotes;
+	int		flag_single_quotes;
+
+	len = 0;
+	flag_double_quotes = 0;
+	flag_single_quotes = 0;
+	if (ft_strncmp(line, ">>", 2) == 0 || ft_strncmp(line, "<<", 2) == 0)
+		return (2);
+	else if (*line == '|' || *line == '>' || *line == '<')
+		return (1);
+	while (line[len])
+	{
+		if ((line[len] == ' ' || (line[len] >= '\t' && line[len] <= '\r')
+				|| line[len] == '|' || line[len] == '>' || line[len] == '<')
+			&& flag_double_quotes % 2 == 0 && flag_single_quotes % 2 == 0)
+			break ;
+		if (line[len] == '"' && flag_single_quotes % 2 == 0)
+			flag_double_quotes++;
+		if (line[len] == '\'' && flag_double_quotes % 2 == 0)
+			flag_single_quotes++;
+		len++;
+	}
+	return (len);
 }
 
 // Takes the pointer to line and extracts
@@ -58,60 +89,8 @@ static char	*get_element(char *line)
 	return (element);
 }
 
-// Will return 1 if the element is or has a variable ($VAR), 0 if
-// it is not and -1 if we have unclosed quotes.
-// "$VAR" is interpreted as a variable where '$VAR' is not.
-static int	is_or_has_a_variable(char *element)
-{
-	int	dquotesflag;
-	int	squotesflag;
-	int	i;
-
-	dquotesflag = 0;
-	squotesflag = 0;
-	i = 0;
-	while (element[i])
-	{
-		if(element[i] == '$' && (squotesflag % 2 == 0) && element[i + 1] == '?')
-			return (1);
-		if (element[i] == '$' && (squotesflag % 2 == 0)
-			&& (isalpha(element[i + 1]) || isdigit(element[i + 1])
-				|| element[i + 1] == '_'))
-			return (1);
-		if (element[i] == '\'' && dquotesflag % 2 == 0)
-			squotesflag++;
-		if (element[i] == '"' && squotesflag % 2 == 0)
-			dquotesflag++;
-		i++;
-	}
-	return (0);
-}
-
-char	*convert_element(char *element, t_env_list **env)
-{
-	char	*new_element;
-	int	i;
-	int	j;
-
-	new_element = malloc(sizeof(char) * (compute_new_element_len(element, env) + 1));
-	i = 0;
-	j = 0;
-	while (element[i])
-	{
-		if(ft_strncmp(&element[i], "$?", 2) == 0)
-			convert_exit_status_into_value(&new_element[j], &i, &j);
-		else if (element[i] == '$' && (isalpha(element[i + 1]) || isdigit(element[i + 1])
-				|| element[i + 1] == '_'))
-			convert_var_into_value(&element[i], &new_element[j], env, &i, &j);
-		else
-			new_element[j++] = element[i++];
-	}
-	new_element[j] = 0;
-	free(element);
-	return (new_element);
-}
 // Creates and adds a new token to the end of tokenlist.
-// Returns the pointer to line incremented by the len of the element 
+// Returns the pointer to line incremented by the len of the element
 // to the end of the element.
 // If the element is a var ($VAR) it will replace the variable by its value.
 // If the element has a variable in it,

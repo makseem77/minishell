@@ -1,76 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tokenize_utils.c                                   :+:      :+:    :+:   */
+/*   clean_up.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/12 17:40:09 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/09 22:06:11 by ymeziane         ###   ########.fr       */
+/*   Created: 2024/03/22 11:57:41 by ymeziane          #+#    #+#             */
+/*   Updated: 2024/03/22 12:27:42 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// Returns the len of the element it encounters in the line.
-// Elements in line are separated by whitespaces, but we have to check
-// that the whitespaces are not inside quotes.
-size_t	compute_len(char *line)
-{
-	size_t	len;
-	int		flag_double_quotes;
-	int		flag_single_quotes;
-
-	len = 0;
-	flag_double_quotes = 0;
-	flag_single_quotes = 0;
-	if(ft_strncmp(line, ">>", 2) == 0)
-		return (2);
-	if(ft_strncmp(line, "<<", 2) == 0)
-		return (2);
-	else if (*line == '|' || *line == '>' || *line == '<')
-		return (1);
-	while (line[len])
-	{
-		if ((line[len] == ' ' || (line[len] >= '\t' && line[len] <= '\r') || line[len] == '|' 
-			|| line[len] == '>' || line[len] == '<') && flag_double_quotes % 2 == 0
-			&& flag_single_quotes % 2 == 0)
-			break ;
-		if (line[len] == '"' && flag_single_quotes % 2 == 0)
-			flag_double_quotes++;
-		if (line[len] == '\'' && flag_double_quotes % 2 == 0)
-			flag_single_quotes++;
-		len++;
-	}
-	return (len);
-}
-
-// Returns the number of quotes we need to delete on the element.
-// We don't count the squotes or dquotes that are inside quotes.
-int	count_del_quotes(char *element)
-{
-	size_t	single_quote;
-	size_t	double_quote;
-
-	single_quote = 0;
-	double_quote = 0;
-	while (*element)
-	{
-		if (*element == '\'' && double_quote % 2 == 0)
-			single_quote++;
-		if (*element == '"' && single_quote % 2 == 0)
-			double_quote++;
-		element++;
-	}
-	if (single_quote % 2 != 0 || double_quote % 2 != 0)
-	{
-		ft_putstr_fd("Error: Unmatched quotes\n", 2);
-		return (-1);
-	}
-	return (single_quote + double_quote);
-}
-
-static void	new_element_clean_up(char *element, char *new_element)
+static void	clean_up_new_el(char *element, char *new_element)
 {
 	int	i;
 	int	j;
@@ -98,11 +40,36 @@ static void	new_element_clean_up(char *element, char *new_element)
 	new_element[j] = '\0';
 }
 
+// Returns the number of quotes we need to delete on the element.
+// We don't count the squotes or dquotes that are inside quotes.
+static int	count_del_quotes(char *element)
+{
+	size_t	single_quote;
+	size_t	double_quote;
+
+	single_quote = 0;
+	double_quote = 0;
+	while (*element)
+	{
+		if (*element == '\'' && double_quote % 2 == 0)
+			single_quote++;
+		if (*element == '"' && single_quote % 2 == 0)
+			double_quote++;
+		element++;
+	}
+	if (single_quote % 2 != 0 || double_quote % 2 != 0)
+	{
+		ft_putstr_fd("Error: Unmatched quotes\n", 2);
+		return (-1);
+	}
+	return (single_quote + double_quote);
+}
+
 // This function takes the element and returns it cleaned from the quotes.
 char	*clean_up_quotes(char *element)
 {
 	char	*new_element;
-	int	quotes_to_del;
+	int		quotes_to_del;
 
 	quotes_to_del = count_del_quotes(element);
 	if (quotes_to_del == -1)
@@ -111,7 +78,7 @@ char	*clean_up_quotes(char *element)
 		return (NULL);
 	}
 	new_element = malloc(ft_strlen(element) - (quotes_to_del) + 1);
-	new_element_clean_up(element, new_element);
+	clean_up_new_el(element, new_element);
 	free(element);
 	return (new_element);
 }

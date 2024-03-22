@@ -80,23 +80,24 @@ typedef struct s_env_list
 
 //////////////////////////////////////////////////////////////////////////////////////
 //	TOKENIZE FOLDER
-//	TOKENIZE
-t_token					**tokenize(char *line, t_env_list **env);
 
-//	TOKENIZE UTILS
-size_t					compute_len(char *element);
-int						count_del_quotes(char *element);
+//	VARIABLE FOLDER
+//	CHECK VARIABLE
+char					*convert_element(char *element, t_env_list **env);
+int						is_or_has_a_variable(char *element);
+// CONVERT TO VALUE
+char					*get_var_value(char *var_name, t_env_list **env);
+char					*extract_var_name_from_ele(char *var_in_element);
+void					convert_var_into_value(char *element_at_var,
+							char *new_element, t_env_list **env, int index[2]);
+void					convert_exit_status_into_value(char *new_element,
+							int index[2]);
+
+// CLEAN UP
 char					*clean_up_quotes(char *element);
 int						clean_up_tokens(t_token **tokenlist);
-
-//	HANDLE_ENV_VARS
-void					convert_var_into_value(char *element_at_var,
-							char *new_element, t_env_list **env, int *i,
-							int *j);
-void					convert_exit_status_into_value(char *new_element,
-							int *i, int *j);
-int						compute_new_element_len(char *element,
-							t_env_list **env);
+// FILL TOKENLIST
+t_token					**tokenize(char *line, t_env_list **env);
 //////////////////////////////////////////////////////////////////////////////////////
 
 //////////////////////////////////////////////////////////////////////////////////////
