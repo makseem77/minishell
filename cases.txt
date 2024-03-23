@@ -12,10 +12,6 @@ open file descriptors (check valgrind)
 minishell> exit | COMMAND
 valgrind still reachable
 
-PARSING TOKENIZING
-ls ""
-should output a error message
-
 PIPE
 
 ls | jgwgjege
@@ -38,6 +34,16 @@ mini error = ( No such file or directory No such file or directory)
 bash error = ( No such file or directory)
 
 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+PARSING TOKENIZING
+export """
+segfaults
+
+"" 
+invalid read of size 1
+
+ls ""
+should output a error message
+
 export "" -> should output not a valid identifier, same for unset ""
 
 echo || ls -> we should output a error message and quit as we don't do bonuses

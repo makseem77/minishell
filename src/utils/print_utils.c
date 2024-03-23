@@ -15,8 +15,14 @@
 // Prints the error message.
 void	print_not_found(char *command, char *arg)
 {
-	if (command[0] == '/' || command[0] == '.'
-		|| command[ft_strlen(command) - 1] == '/')
+	int	commandlen;
+	
+	if (command)
+		commandlen = ft_strlen(command);
+	else
+		commandlen = 0;
+	if (command && commandlen  && (command[0] == '/' || command[0] == '.'
+		|| command[commandlen] == '/'))
 	{
 		g_status = 126;
 		if (access(command, F_OK) == 0 && access(command, X_OK) == -1)

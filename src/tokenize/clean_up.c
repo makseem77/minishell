@@ -73,10 +73,7 @@ t_token	*clean_up_quotes(t_token *tmp)
 
 	quotes_to_del = count_del_quotes(tmp->element);
 	if (quotes_to_del == -1)
-	{
-		free(tmp->element);
 		return (NULL);
-	}
 	if (ft_strcmp(tmp->element, "\"\"") == 0 || ft_strcmp(tmp->element, "\'\'") == 0)
 		tmp->ttype = EMPTY;
 	new_element = malloc(ft_strlen(tmp->element) - (quotes_to_del) + 1);
@@ -95,8 +92,8 @@ int	clean_up_tokens(t_token **tokenlist)
 	while (tmp)
 	{
 		tmp = clean_up_quotes(tmp);
-		if (tmp->ttype == EMPTY)
-			printf("yeah\n");
+		if (!tmp)
+			return (-1);
 		if (tmp->element == NULL)
 			return (-1);
 		tmp = tmp->next;

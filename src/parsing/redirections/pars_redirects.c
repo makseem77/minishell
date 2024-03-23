@@ -29,10 +29,8 @@ void	clean_up_redirection(t_token **tokenlist)
 	prev = NULL;
 	while (tmp)
 	{
-		printf("TMP = %s\n", tmp->element);
 		if (is_to_be_deleted(tmp))
 		{
-			printf("TO DEL TMP = %s\n", tmp->element);
 			if (prev)
 				prev->next = tmp->next;
 			else
