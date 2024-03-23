@@ -12,10 +12,12 @@
 
 #include "minishell.h"
 
-static bool	is_to_be_deleted(int ttype)
+static bool	is_to_be_deleted(t_token *tmp)
 {
-	return ((ttype == REDIRECTION || ttype == REDIRECTION_FILE
-			|| ttype == HERE_DOC || ttype == DELIMITER || ttype == EMPTY));
+	if (ft_strcmp(tmp->element, "") == 0 && tmp->ttype != EMPTY)
+		return (true);
+	return ((tmp->ttype == REDIRECTION || tmp->ttype == REDIRECTION_FILE
+			|| tmp->ttype == HERE_DOC || tmp->ttype == DELIMITER));
 }
 
 void	clean_up_redirection(t_token **tokenlist)
@@ -27,8 +29,10 @@ void	clean_up_redirection(t_token **tokenlist)
 	prev = NULL;
 	while (tmp)
 	{
-		if (is_to_be_deleted(tmp->ttype))
+		printf("TMP = %s\n", tmp->element);
+		if (is_to_be_deleted(tmp))
 		{
+			printf("TO DEL TMP = %s\n", tmp->element);
 			if (prev)
 				prev->next = tmp->next;
 			else

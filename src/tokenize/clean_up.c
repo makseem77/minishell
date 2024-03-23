@@ -66,21 +66,24 @@ static int	count_del_quotes(char *element)
 }
 
 // This function takes the element and returns it cleaned from the quotes.
-char	*clean_up_quotes(char *element)
+t_token	*clean_up_quotes(t_token *tmp)
 {
 	char	*new_element;
 	int		quotes_to_del;
 
-	quotes_to_del = count_del_quotes(element);
+	quotes_to_del = count_del_quotes(tmp->element);
 	if (quotes_to_del == -1)
 	{
-		free(element);
+		free(tmp->element);
 		return (NULL);
 	}
-	new_element = malloc(ft_strlen(element) - (quotes_to_del) + 1);
-	clean_up_new_el(element, new_element);
-	free(element);
-	return (new_element);
+	if (ft_strcmp(tmp->element, "\"\"") == 0 || ft_strcmp(tmp->element, "\'\'") == 0)
+		tmp->ttype = EMPTY;
+	new_element = malloc(ft_strlen(tmp->element) - (quotes_to_del) + 1);
+	clean_up_new_el(tmp->element, new_element);
+	free(tmp->element);
+	tmp->element = new_element;
+	return (tmp);
 }
 
 // Goes trough all the tokens and cleans up the element in every one of them.
@@ -91,7 +94,9 @@ int	clean_up_tokens(t_token **tokenlist)
 	tmp = *tokenlist;
 	while (tmp)
 	{
-		tmp->element = clean_up_quotes(tmp->element);
+		tmp = clean_up_quotes(tmp);
+		if (tmp->ttype == EMPTY)
+			printf("yeah\n");
 		if (tmp->element == NULL)
 			return (-1);
 		tmp = tmp->next;

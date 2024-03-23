@@ -95,7 +95,7 @@ void					convert_exit_status_into_value(char *new_element,
 							int index[2]);
 
 // CLEAN UP
-char					*clean_up_quotes(char *element);
+t_token					*clean_up_quotes(t_token *tmp);
 int						clean_up_tokens(t_token **tokenlist);
 // FILL TOKENLIST
 t_token					**tokenize(char *line, t_env_list **env);

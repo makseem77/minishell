@@ -14,8 +14,6 @@
 
 int	type(char *element, t_env_list **env)
 {
-	if (!element)
-		return (EMPTY);
 	if (!ft_strcmp("echo", element) || !ft_strcmp("cd", element)
 		|| !ft_strcmp("pwd", element) || !ft_strcmp("export", element)
 		|| !ft_strcmp("unset", element) || !ft_strcmp("env", element)
@@ -82,8 +80,6 @@ static void	types_assignement(t_token **tokenlist, t_env_list **env,
 			tmp->ttype = META_CHAR;
 		else if (type(tmp->element, env) == COMMAND)
 			tmp->ttype = COMMAND;
-		else if (type(tmp->element, env) == EMPTY)
-			tmp->ttype = EMPTY;
 		if (tmp)
 			tmp = tmp->next;
 	}

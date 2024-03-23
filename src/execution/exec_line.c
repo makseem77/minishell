@@ -36,12 +36,11 @@ bool	check_and_exec_single_builtin(t_token **tokenlist, t_data **data,
 		return (false);
 }
 
-void	free_after_execution(t_token **tokenlist, t_data **data, int **fds,
-		char **args, char **expression)
+void	free_after_execution(t_token **tokenlist, t_data **data, char **args, char **expression)
 {
 	free_double_array(expression);
 	free_double_array(args);
-	free_fds_array(fds, (*data)->nb_pipe);
+	free_fds_array((*data)->pipe_fds, (*data)->nb_pipe);
 	free_data_struct(*data);
 	free_token_list(tokenlist);
 }
@@ -60,20 +59,20 @@ void	exec_command(t_data **data, char **expression, char **env)
 void	exec_builtin(t_token **tokenlist, t_data **data, char **expression, char **args)
 {
 	execute_bultin(tokenlist, data, expression, args);
-	free_after_execution(tokenlist, data, (*data)->pipe_fds, args, expression);
+	free_after_execution(tokenlist, data, args, expression);
 	exit(g_status);
 }
 
 void	process_invalid(t_token **tokenlist, t_data **data, char **expression, char **args)
 {
 	print_not_found(expression[0], NULL);
-	free_after_execution(tokenlist, data, (*data)->pipe_fds, args, expression);
+	free_after_execution(tokenlist, data, args, expression);
 	exit(g_status);
 }
 
 void	process_empty(t_token **tokenlist, t_data **data, char **expression, char **args)
 {
-	free_after_execution(tokenlist, data, (*data)->pipe_fds, args, expression);
+	free_after_execution(tokenlist, data, args, expression);
 	g_status = 0;
 	exit(g_status);
 }
