@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 10:26:56 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/18 15:34:25 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/23 13:15:01 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,13 +81,13 @@ void	exit_bash(char *status, t_data **data, t_token **token, char **args)
 	int		is_valid;
 	bool	too_many_args;
 
-	too_many_args = (args && args[2]);
 	if (!status || (*data)->nb_pipe > 0)
 	{
 		if (!status && (*data)->nb_pipe == 0)
 			ft_putstr_fd("exit\n", 1);
 		free_and_exit(data, token, args, EXIT_SUCCESS);
 	}
+	too_many_args = (args && args[2]);
 	if (too_many_args)
 	{
 		ft_putstr_fd("exit\n", 1);

@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 04:28:22 by maxborde          #+#    #+#             */
-/*   Updated: 2024/03/22 18:05:22 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/23 12:55:06 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,9 +123,7 @@ int	write_to_heredoc(int fd, char *limiter, bool command, t_data **data,
 			line = readline("> ");
 			if (!line || ft_strcmp(line, limiter_stored) == 0)
 			{
-				if(!line)
-					ft_putstr_fd("\n", 1);
-				else
+				if(line)
 					free(line);
 				free(limiter_stored);
 				close(fd);

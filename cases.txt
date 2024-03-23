@@ -1,9 +1,11 @@
+valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes --suppressions=ignore_readline.supp --tra
+ce-children=yes ./minishell
+
 EXIT
 
 minishell> exit
 
-Invalid read of size 8 
-+ open file descriptors (check valgrind)
+open file descriptors (check valgrind)
 
 
 minishell> exit 1
