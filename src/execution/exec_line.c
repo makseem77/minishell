@@ -110,6 +110,8 @@ void	exec_expression(t_token **tokenlist, t_data **data, int index, char **args)
 			else if ((*data)->path_cmd == NULL)
 				process_empty(tokenlist, data, expression, args);
 		}
+		else
+			free_after_execution(tokenlist, data, args, expression);
 		g_status = 1;
 		exit(g_status);
 	}
