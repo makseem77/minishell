@@ -32,6 +32,8 @@ bool	check_and_exec_single_builtin(t_token **tokenlist, t_data **data,
 			// close(saved_stdout);
 			// close(saved_stdin);
 		}
+		else
+			g_status = 1;
 		return (true);
 	}
 	else
@@ -101,6 +103,7 @@ void	exec_expression(t_token **tokenlist, t_data **data, int index, char **args)
 		signal(SIGINT, SIG_IGN);
 	if (pid == 0)
 	{
+		ft_putstr_fd("hola\n", 2);
 		if (configure_io(tokenlist, index, data))
 		{
 			if (type(expression[0], (*data)->env) == BUILTIN)

@@ -23,6 +23,15 @@ will not return the good status code
 %%%%%%%%%%%%%%%%%%%%%
 
 ~REDIRECTS~
+
+
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+Test  66: ❌ echo <missing <"./test_files/infile" <missing 
+mini exit code = 0
+bash exit code = 1
+mini error = ( No such file or directory No such file or directory)
+bash error = ( No such file or directory)
+
 Test  64: ❌ cat <"1""2""3""4""5" 
 mini exit code =
 bash exit code = 1
@@ -31,13 +40,6 @@ Test  65: ❌ echo <"./test_files/infile" <missing <"./test_files/infile"
 mini exit code = 0
 bash exit code = 1
 
-Test  66: ❌ echo <missing <"./test_files/infile" <missing 
-mini exit code = 0
-bash exit code = 1
-mini error = ( No such file or directory No such file or directory)
-bash error = ( No such file or directory)
-
-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 minishell> < cat -e 1
 minishell: cat: No such file or directory
 minishell: -e: command not found
