@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 15:23:35 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/22 10:53:48 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/25 18:52:40 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ void	read_from_file(t_token *tmp, t_token *command_token)
 		command_token->fd_in = open(tmp->next->element, O_RDWR, 0644);
 	}
 	else
-		fd = open(tmp->next->element, O_RDWR, 0644);
+		print_error(NULL, tmp->next->element, "No such file or directory");
 	if ((command_token && command_token->fd_in == -1) || fd == -1)
 	{
 		if (command_token && command_token->fd_in == -1 && command_token->fd_out != -1)
