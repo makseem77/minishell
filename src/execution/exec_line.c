@@ -16,20 +16,22 @@ bool	check_and_exec_single_builtin(t_token **tokenlist, t_data **data,
 		char **args)
 {
 	char	**expression;
-	int		saved_stdout;
-	int		saved_stdin;
+	// int		saved_stdout;
+	// int		saved_stdin;
 
 	expression = args;
 	if (type(expression[0], (*data)->env) == BUILTIN && (*data)->nb_pipe == 0)
 	{
-		saved_stdout = dup(STDOUT_FILENO);
-		saved_stdin = dup(STDIN_FILENO);
-		configure_io(tokenlist, 0, data);
-		execute_bultin(tokenlist, data, expression, args);
-		dup2(saved_stdout, STDOUT_FILENO);
-		dup2(saved_stdin, STDIN_FILENO);
-		close(saved_stdout);
-		close(saved_stdin);
+		// saved_stdout = dup(STDOUT_FILENO);
+		// saved_stdin = dup(STDIN_FILENO);
+		if (configure_io(tokenlist, 0, data))
+		{
+			execute_bultin(tokenlist, data, expression, args);
+			// dup2(saved_stdout, STDOUT_FILENO);
+			// dup2(saved_stdin, STDIN_FILENO);
+			// close(saved_stdout);
+			// close(saved_stdin);
+		}
 		return (true);
 	}
 	else
