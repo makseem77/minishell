@@ -1,31 +1,41 @@
 valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes --suppressions=ignore_readline.supp --tra
 ce-children=yes ./minishell
 
+minishell> ls | > EOF | ls
+some fd leaks + memory leaks
 
-
-EXIT
-
-minishell> exit
-
-open file descriptors (check valgrind)
-
-
-minishell> exit 1
-open file descriptors (check valgrind)
+valgrind still reachable
 
 minishell> exit | COMMAND
 valgrind still reachable
+
+CTRL + C in the heredoc, fd leak
 
 PIPE
 
 ls | jgwgjege
 will not return the good status code
-%%%%%%%%%%%%%%%%%%%%%
-
-~REDIRECTS~
-
+mini: 0 (+ open fds in the end)
+bash: 127
 
 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+minishell> ls | > EOF 
+some fd leaks
+
+minishell> ls | INVALIDCOMMAND
+some fd leaks
+
+EXIT
+
+minishell> exit
+open file descriptors (check valgrind)
+
+minishell> exit 1
+open file descriptors (check valgrind)
+
+
+open file descriptors (check valgrind)
+
 Test  66: ❌ echo <missing <"./test_files/infile" <missing 
 mini exit code = 0
 bash exit code = 1

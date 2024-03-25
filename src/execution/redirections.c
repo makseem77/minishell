@@ -142,10 +142,7 @@ int	write_to_heredoc(int fd, char *limiter, bool command, t_data **data,
 	if(status)
 		g_status = exited_status(status);
 	else if(g_status != 130)
-	{
-		// printf("gs = %d\n", g_status);
 		g_status = 0;
-	}
 	if (command)
 			return (open(".tmp", O_RDWR, 0644));
 	else

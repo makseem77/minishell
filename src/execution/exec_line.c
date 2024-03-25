@@ -76,6 +76,7 @@ void	process_invalid(t_token **tokenlist, t_data **data, char **expression, char
 
 void	process_empty(t_token **tokenlist, t_data **data, char **expression, char **args)
 {
+	printf("hole\n");
 	free_after_execution(tokenlist, data, args, expression);
 	g_status = 0;
 	exit(g_status);
@@ -83,6 +84,8 @@ void	process_empty(t_token **tokenlist, t_data **data, char **expression, char *
 
 bool is_minishell(char *cmd)
 {
+	if (!cmd)
+		return (false);
 	if(access(cmd, X_OK) == 0 && ft_strcmp(cmd + (ft_strlen(cmd) - ft_strlen("/minishell")), "/minishell") == 0)
 		return (true);
 	return (false);
@@ -103,7 +106,6 @@ void	exec_expression(t_token **tokenlist, t_data **data, int index, char **args)
 		signal(SIGINT, SIG_IGN);
 	if (pid == 0)
 	{
-		ft_putstr_fd("hola\n", 2);
 		if (configure_io(tokenlist, index, data))
 		{
 			if (type(expression[0], (*data)->env) == BUILTIN)
@@ -116,7 +118,10 @@ void	exec_expression(t_token **tokenlist, t_data **data, int index, char **args)
 				process_empty(tokenlist, data, expression, args);
 		}
 		else
+		{
+			close_all_pipes(tokenlist, (*data)->pipe_fds, (*data)->nb_pipe);
 			free_after_execution(tokenlist, data, args, expression);
+		}
 		g_status = 1;
 		exit(g_status);
 	}
