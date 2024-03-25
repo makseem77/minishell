@@ -51,7 +51,7 @@ int	get_input_fd(t_token **tokenlist, int index)
 		}
 		tmp = tmp->next;
 	}
-	return (0);
+	return (-1);
 }
 
 int	configure_io(t_token **tokenlist, int index, t_data **data)
