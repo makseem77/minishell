@@ -12,11 +12,25 @@
 
 #include "minishell.h"
 
+char	**duplicate_expression(char **array, int i)
+{
+	char	**expression;
+
+	expression = malloc(sizeof(char *) * (i + 1));
+	i = 0;
+	while (array[i] && ft_strcmp(array[i], "|"))
+	{
+		expression[i] = ft_strdup(array[i]);
+		i++;
+	}
+	expression[i] = 0;
+	return (expression);
+}
+
 char	**cut_arrays_into_expression(char **array, int index)
 {
 	int		i;
 	int		pipecount;
-	char	**expression;
 
 	i = 0;
 	pipecount = 0;
@@ -35,15 +49,7 @@ char	**cut_arrays_into_expression(char **array, int index)
 	}
 	while (array[i] && ft_strcmp(array[i], "|"))
 		i++;
-	expression = malloc(sizeof(char *) * (i + 1));
-	i = 0;
-	while (array[i] && ft_strcmp(array[i], "|"))
-	{
-		expression[i] = ft_strdup(array[i]);
-		i++;
-	}
-	expression[i] = 0;
-	return (expression);
+	return (duplicate_expression(array, i));
 }
 
 char	*get_path_cmd(char **paths, char *cmd)

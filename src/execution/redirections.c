@@ -21,10 +21,13 @@ int	get_output_fd(t_token **tokenlist, int index)
 	i = 0;
 	while (tmp)
 	{
-		if (i == index)
-			return (tmp->fd_out);
-		else
-			i++;
+		if (tmp->ttype == COMMAND || tmp->ttype == BUILTIN)
+		{
+			if (i == index)
+				return (tmp->fd_out);
+			else
+				i++;
+		}
 		tmp = tmp->next;
 	}
 	return (1);
@@ -39,13 +42,16 @@ int	get_input_fd(t_token **tokenlist, int index)
 	i = 0;
 	while (tmp)
 	{
-		if (i == index)
-			return (tmp->fd_in);
-		else
-			i++;
+		if (tmp->ttype == COMMAND || tmp->ttype == BUILTIN)
+		{
+			if (i == index)
+				return (tmp->fd_in);
+			else
+				i++;
+		}
 		tmp = tmp->next;
 	}
-	return (-1);
+	return (0);
 }
 
 void	configure_io_helper(int *fd_in_and_out, t_data **data, int index, int cases)

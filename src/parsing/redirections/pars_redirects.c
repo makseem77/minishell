@@ -80,7 +80,7 @@ static t_token	*get_cmd_token(t_token **tokenlist, int expr_index)
 	i = 0;
 	while (tmp)
 	{
-		if ((tmp->ttype == COMMAND || tmp->ttype == BUILTIN || tmp->ttype == -1) && i == expr_index)
+		if ((tmp->ttype == COMMAND || tmp->ttype == BUILTIN) && i == expr_index)
 			return (tmp);
 		if (ft_strcmp(tmp->element, "|") == 0)
 			i++;
