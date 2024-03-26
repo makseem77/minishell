@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 10:26:56 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/23 13:15:01 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/26 15:51:29 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,8 @@ void	free_and_exit(t_data **data, t_token **token, char **args, int status)
 		free_token_list(token);
 	if (args)
 		free_double_array(args);
+	if((*data)->nb_pipe > 0)
+		free_fds_array((*data)->pipe_fds, (*data)->nb_pipe);
 	free_data_struct(*data);
 	g_status = g_status % 256;
 	exit(g_status);
@@ -99,6 +101,7 @@ void	exit_bash(char *status, t_data **data, t_token **token, char **args)
 	{
 		ft_putstr_fd("exit\n", 1);
 		print_error("exit", status, "numeric argument required");
+		free(status);
 		free_and_exit(data, token, args, 2);
 	}
 	ft_putstr_fd("exit\n", 1);

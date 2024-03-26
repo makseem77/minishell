@@ -4,7 +4,6 @@ ce-children=yes ./minishell
 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 FREE
 
-minishell> exit | COMMAND
 
 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 INCORRECT G STATUS
@@ -15,19 +14,14 @@ ctrl + c in heredoc
 
 ls | jgwgjege
 
+ls | exit
+
+exit | ls
+
 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 FD LEAKS
 
 CTRL + C in the heredoc, fd .tmp open
-
-minishell> ls | > EOF 
-
-minishell> ls | INVALIDCOMMAND
-
-minishell> exit
-
-minishell> exit 1
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 12:24:09 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/26 13:06:32 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/26 15:32:41 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,21 @@ bool	check_and_exec_single_builtin(t_token **tokenlist, t_data **data,
 	expression = args;
 	if (type(expression[0], (*data)->env) == BUILTIN && (*data)->nb_pipe == 0)
 	{
-		saved_stdout = dup(STDOUT_FILENO);
-		saved_stdin = dup(STDIN_FILENO);
+		if(ft_strcmp(expression[0], "exit") != 0)
+		{
+			saved_stdout = dup(STDOUT_FILENO);
+			saved_stdin = dup(STDIN_FILENO);
+		}
 		if (configure_io(tokenlist, 0, data))
 		{
 			execute_bultin(tokenlist, data, expression, args);
-			dup2(saved_stdout, STDOUT_FILENO);
-			dup2(saved_stdin, STDIN_FILENO);
-			close(saved_stdout);
-			close(saved_stdin);
+			if(ft_strcmp(expression[0], "exit") != 0)
+			{
+				dup2(saved_stdout, STDOUT_FILENO);
+				dup2(saved_stdin, STDIN_FILENO);
+				close(saved_stdout);
+				close(saved_stdin);
+			}
 		}
 		else
 			g_status = 1;
