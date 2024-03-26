@@ -1,6 +1,14 @@
 valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes --suppressions=ignore_readline.supp --tra
 ce-children=yes ./minishell
 
+
+minishell> wfwe | ;s
+
+FREE
+minishell> echo -n yanis | ls
+
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
 INCORRECT G STATUS
 
 < ewfwfe | ls
