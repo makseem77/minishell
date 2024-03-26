@@ -6,17 +6,16 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 10:59:37 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/16 16:24:04 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/26 12:26:51 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	**cut_arrays_into_expression(char **array, int index)
+static int	get_expression_length(char **array, int index)
 {
 	int		i;
 	int		pipecount;
-	char	**expression;
 
 	i = 0;
 	pipecount = 0;
@@ -26,16 +25,23 @@ char	**cut_arrays_into_expression(char **array, int index)
 		{
 			pipecount++;
 			if (pipecount == index)
-			{
-				array++;
 				break ;
-			}
 		}
 		array++;
 	}
 	while (array[i] && ft_strcmp(array[i], "|"))
 		i++;
-	expression = malloc(sizeof(char *) * (i + 1));
+	return (i);
+}
+
+char	**cut_arrays_into_expression(char **array, int index)
+{
+	int		i;
+	int		expression_length;
+	char	**expression;
+
+	expression_length = get_expression_length(array, index);
+	expression = malloc(sizeof(char *) * (expression_length + 1));
 	i = 0;
 	while (array[i] && ft_strcmp(array[i], "|"))
 	{

@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 15:47:33 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/23 12:54:50 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/26 12:10:39 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,20 +39,16 @@ static void	handle_signals(int signal)
 		if (g_status == -1)
 			while (++i < end)
 				;
-		else if (g_status == -2)
-		{
-			ft_putstr_fd("\n", 1);
-			rl_on_new_line();
-			rl_replace_line("", 0);
-			g_status = 130;
-			execve("/bin/bash", (char *[]){"/bin/bash", "-c", "exit", "130", NULL}, NULL);
-		}
 		else
 		{
 			ft_putstr_fd("\n", 1);
 			rl_on_new_line();
 			rl_replace_line("", 0);
-			rl_redisplay();
+			if (g_status == -2)
+				execve("/bin/bash", (char *[]){"/bin/bash", "-c", "exit", "130",
+					NULL}, NULL);
+			else
+				rl_redisplay();
 		}
 		if (g_status == -1 || g_status == -2)
 			ft_putstr_fd("\n", 1);

@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 12:24:09 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/25 18:54:02 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/26 11:54:09 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,21 +16,21 @@ bool	check_and_exec_single_builtin(t_token **tokenlist, t_data **data,
 		char **args)
 {
 	char	**expression;
-	// int		saved_stdout;
-	// int		saved_stdin;
+	int		saved_stdout;
+	int		saved_stdin;
 
 	expression = args;
 	if (type(expression[0], (*data)->env) == BUILTIN && (*data)->nb_pipe == 0)
 	{
-		// saved_stdout = dup(STDOUT_FILENO);
-		// saved_stdin = dup(STDIN_FILENO);
+		saved_stdout = dup(STDOUT_FILENO);
+		saved_stdin = dup(STDIN_FILENO);
 		if (configure_io(tokenlist, 0, data))
 		{
 			execute_bultin(tokenlist, data, expression, args);
-			// dup2(saved_stdout, STDOUT_FILENO);
-			// dup2(saved_stdin, STDIN_FILENO);
-			// close(saved_stdout);
-			// close(saved_stdin);
+			dup2(saved_stdout, STDOUT_FILENO);
+			dup2(saved_stdin, STDIN_FILENO);
+			close(saved_stdout);
+			close(saved_stdin);
 		}
 		else
 			g_status = 1;

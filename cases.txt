@@ -1,7 +1,17 @@
 valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes --suppressions=ignore_readline.supp --tra
 ce-children=yes ./minishell
 
-minishell> ls | > EOF | ls
+INCORRECT G STATUS
+
+< ewfwfe | ls
+
+ctrl + c in heredoc
+
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+wfwe | ls
+
+minishell> > EOF | ls
 some fd leaks + memory leaks
 
 valgrind still reachable

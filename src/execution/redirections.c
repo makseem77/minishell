@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 04:28:22 by maxborde          #+#    #+#             */
-/*   Updated: 2024/03/23 12:55:06 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/26 11:55:14 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,8 @@ int	configure_io(t_token **tokenlist, int index, t_data **data)
 
 	fd_out = get_output_fd(tokenlist, index);
 	fd_in = get_input_fd(tokenlist, index);
-	if (fd_in == -1 || fd_out == -1)
-		return (0);
+	// if (fd_in == -1 || fd_out == -1)
+	// 	return (0);
 	if (index == 0 && (*data)->nb_pipe > 0)
 	{
 		dup2((*data)->pipe_fds[0][1], STDOUT_FILENO);

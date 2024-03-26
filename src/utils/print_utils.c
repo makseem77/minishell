@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 17:56:02 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/25 18:56:09 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/26 12:12:48 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,13 @@
 void	print_not_found(char *command, char *arg)
 {
 	int	commandlen;
-	
+
 	if (command)
 		commandlen = ft_strlen(command);
 	else
 		commandlen = 0;
-	if (command && commandlen  && (command[0] == '/' || command[0] == '.'
-		|| command[commandlen] == '/'))
+	if (command && commandlen && (command[0] == '/' || command[0] == '.'
+			|| command[commandlen] == '/'))
 	{
 		g_status = 126;
 		if (access(command, F_OK) == 0 && access(command, X_OK) == -1)
