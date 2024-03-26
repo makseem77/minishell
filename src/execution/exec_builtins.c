@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:23:46 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/26 15:57:44 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/26 17:16:16 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ static void	handle_cd_exit(t_token **tokenlist, t_data **data,
 		char **expression, char **args)
 {
 	char *expression_next;
+	bool too_many_args;
 
 	expression_next = NULL;
 	if(*(expression + 1))
@@ -74,11 +75,13 @@ static void	handle_cd_exit(t_token **tokenlist, t_data **data,
 	}
 	else if (ft_strcmp(*expression, "exit") == 0)
 	{
-		free_double_array(expression);
+		too_many_args = (args && args[2]);
+		if(!too_many_args)
+			free_double_array(args);
 		if (expression_next)
-			exit_bash(expression_next, data, tokenlist, args);
+			exit_bash(expression_next, data, tokenlist, too_many_args);
 		else
-			exit_bash(NULL, data, tokenlist, args);
+			exit_bash(NULL, data, tokenlist, too_many_args);
 	}
 }
 

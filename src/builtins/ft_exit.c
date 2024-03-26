@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 10:26:56 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/26 15:51:29 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/26 17:16:37 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,13 +62,11 @@ int	is_valid_status(char *status)
 	return (!overflow);
 }
 
-void	free_and_exit(t_data **data, t_token **token, char **args, int status)
+void	free_and_exit(t_data **data, t_token **token, int status)
 {
 	g_status = status;
 	if (token)
 		free_token_list(token);
-	if (args)
-		free_double_array(args);
 	if((*data)->nb_pipe > 0)
 		free_fds_array((*data)->pipe_fds, (*data)->nb_pipe);
 	free_data_struct(*data);
@@ -78,20 +76,19 @@ void	free_and_exit(t_data **data, t_token **token, char **args, int status)
 
 // Exits the program with the given status.
 // If the status is not a valid number, it will print the error message.
-void	exit_bash(char *status, t_data **data, t_token **token, char **args)
+void	exit_bash(char *status, t_data **data, t_token **token, bool too_many_args)
 {
 	int		is_valid;
-	bool	too_many_args;
 
 	if (!status || (*data)->nb_pipe > 0)
 	{
 		if (!status && (*data)->nb_pipe == 0)
 			ft_putstr_fd("exit\n", 1);
-		free_and_exit(data, token, args, EXIT_SUCCESS);
+		free_and_exit(data, token, EXIT_SUCCESS);
 	}
-	too_many_args = (args && args[2]);
 	if (too_many_args)
 	{
+		free(status);
 		ft_putstr_fd("exit\n", 1);
 		print_error("exit", NULL, "too many arguments");
 		return ;
@@ -102,8 +99,9 @@ void	exit_bash(char *status, t_data **data, t_token **token, char **args)
 		ft_putstr_fd("exit\n", 1);
 		print_error("exit", status, "numeric argument required");
 		free(status);
-		free_and_exit(data, token, args, 2);
+		free_and_exit(data, token, 2);
 	}
 	ft_putstr_fd("exit\n", 1);
-	free_and_exit(data, token, args, g_status);
+	free(status);
+	free_and_exit(data, token, g_status);
 }

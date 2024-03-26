@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 04:28:22 by maxborde          #+#    #+#             */
-/*   Updated: 2024/03/26 14:02:31 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/26 16:27:31 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,53 +84,4 @@ int	configure_io(t_token **tokenlist, int index, t_data **data)
 	}
 	close_all_pipes(tokenlist, (*data)->pipe_fds, (*data)->nb_pipe);
 	return (1);
-}
-
-int	write_to_heredoc(int fd, char *limiter, bool command, t_data **data,
-		t_token **tokenlist)
-{
-	char	*line;
-	pid_t	pid;
-	int		status;
-	static char *  limiter_stored;
-
-	g_status = -1;
-	limiter_stored = ft_strdup(limiter);
-	pid = fork();
-	if (pid)
-		signal(SIGINT, SIG_IGN);
-	if (pid == 0)
-	{
-		g_status = -2;
-		free_data_struct(*data);
-		free_token_list(tokenlist);
-		while (true)
-		{
-			line = readline("> ");
-			if (!line || ft_strcmp(line, limiter_stored) == 0)
-			{
-				if(line)
-					free(line);
-				free(limiter_stored);
-				close(fd);
-				exit(0);
-			}
-			else
-			{
-				ft_putendl_fd(line, fd);
-				free(line);
-			}
-		}
-	}
-	free(limiter_stored);
-	close(fd);
-	waitpid(pid, &status, 0);
-	if(status)
-		g_status = exited_status(status);
-	else if(g_status != 130)
-		g_status = 0;
-	if (command)
-			return (open(".tmp", O_RDWR, 0644));
-	else
-		return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 12:24:09 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/26 15:32:41 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/26 16:56:35 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ void	exec_command(t_data **data, char **expression, char **env)
 
 void	exec_builtin(t_token **tokenlist, t_data **data, char **expression, char **args)
 {
+
 	execute_bultin(tokenlist, data, expression, args);
 	free_after_execution(tokenlist, data, args, expression);
 	exit(g_status);

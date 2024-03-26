@@ -8,20 +8,10 @@ FREE
 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 INCORRECT G STATUS
 
-< ewfwfe | ls
-
-ctrl + c in heredoc
-
-ls | jgwgjege
-
-ls | exit
-
-exit | ls
 
 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 FD LEAKS
 
-CTRL + C in the heredoc, fd .tmp open
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
