@@ -90,6 +90,12 @@ int	clean_up_tokens(t_token **tokenlist)
 	t_token	*tmp;
 
 	tmp = *tokenlist;
+	tmp = clean_up_quotes(tmp);
+	if (ft_strncmp(tmp->element, "|", 1) == 0) 
+	{
+		print_error(NULL, NULL, "syntax error near unexpected token `|'");
+		return (-1);
+	}
 	while (tmp)
 	{
 		tmp = clean_up_quotes(tmp);
