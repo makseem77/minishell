@@ -1,76 +1,45 @@
 valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes --suppressions=ignore_readline.supp --tra
 ce-children=yes ./minishell
 
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+BAD OUTPUT
 
-minishell> wfwe | ;s
-
+minishell> < cat -e 1
+minishell: cat: No such file or directory
+minishell: -e: command not found
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 FREE
+
 minishell> echo -n yanis | ls
 
-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+minishell> > EOF | ls
 
+minishell> exit | COMMAND
+
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 INCORRECT G STATUS
 
 < ewfwfe | ls
 
 ctrl + c in heredoc
 
-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-
-wfwe | ls
-
-minishell> > EOF | ls
-some fd leaks + memory leaks
-
-valgrind still reachable
-
-minishell> exit | COMMAND
-valgrind still reachable
-
-CTRL + C in the heredoc, fd leak
-
-PIPE
-
 ls | jgwgjege
-will not return the good status code
-mini: 0 (+ open fds in the end)
-bash: 127
 
 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+FD LEAKS
+
+CTRL + C in the heredoc, fd .tmp open
+
 minishell> ls | > EOF 
-some fd leaks
 
 minishell> ls | INVALIDCOMMAND
-some fd leaks
-
-EXIT
 
 minishell> exit
-open file descriptors (check valgrind)
 
 minishell> exit 1
-open file descriptors (check valgrind)
 
 
-open file descriptors (check valgrind)
-
-Test  66: ❌ echo <missing <"./test_files/infile" <missing 
-mini exit code = 0
-bash exit code = 1
-mini error = ( No such file or directory No such file or directory)
-bash error = ( No such file or directory)
-
-Test  64: ❌ cat <"1""2""3""4""5" 
-mini exit code =
-bash exit code = 1
-
-Test  65: ❌ echo <"./test_files/infile" <missing <"./test_files/infile" 
-mini exit code = 0
-bash exit code = 1
-
-minishell> < cat -e 1
-minishell: cat: No such file or directory
-minishell: -e: command not found
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 PARSING TOKENIZING
 export """
