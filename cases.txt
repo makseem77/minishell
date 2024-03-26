@@ -2,16 +2,7 @@ valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds
 ce-children=yes ./minishell
 
 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-minishell> < efwefwewfe
-minishell: efwefwewfe: No such file or directory
-
-cat <"./test_files/infile" | grep hello 
-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 FREE
-
-minishell> echo -n yanis | ls
-
-minishell> > EOF | ls
 
 minishell> exit | COMMAND
 
@@ -39,7 +30,6 @@ minishell> exit 1
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-BAD OUTPUT
 
 minishell> < efwefwewfe | ls
 minishell: efwefwewfe: No such file or directory
