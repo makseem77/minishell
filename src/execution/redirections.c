@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 04:28:22 by maxborde          #+#    #+#             */
-/*   Updated: 2024/03/26 12:49:45 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/26 14:02:31 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,10 @@ int	get_output_fd(t_token **tokenlist, int index)
 	i = 0;
 	while (tmp)
 	{
-		if (tmp->ttype == COMMAND || tmp->ttype == BUILTIN)
-		{
-			if (i == index)
-				return (tmp->fd_out);
-			else
-				i++;
-		}
+		if (i == index)
+			return (tmp->fd_out);
+		else
+			i++;
 		tmp = tmp->next;
 	}
 	return (1);
@@ -42,13 +39,10 @@ int	get_input_fd(t_token **tokenlist, int index)
 	i = 0;
 	while (tmp)
 	{
-		if (tmp->ttype == COMMAND || tmp->ttype == BUILTIN)
-		{
-			if (i == index)
-				return (tmp->fd_in);
-			else
-				i++;
-		}
+		if (i == index)
+			return (tmp->fd_in);
+		else
+			i++;
 		tmp = tmp->next;
 	}
 	return (-1);
@@ -61,40 +55,32 @@ int	configure_io(t_token **tokenlist, int index, t_data **data)
 
 	fd_out = get_output_fd(tokenlist, index);
 	fd_in = get_input_fd(tokenlist, index);
-	// if (fd_in == -1 || fd_out == -1)
-	// 	return (0);
+	if (fd_in == -1 || fd_out == -1)
+		return (0);
 	if (index == 0 && (*data)->nb_pipe > 0)
 	{
 		dup2((*data)->pipe_fds[0][1], STDOUT_FILENO);
-		if (fd_in != -1)
-			dup2(fd_in, STDIN_FILENO);
-		if (fd_out != -1)
-			dup2(fd_out, STDOUT_FILENO);
+		dup2(fd_in, STDIN_FILENO);
+		dup2(fd_out, STDOUT_FILENO);
 	}
 	else if (index > 0 && index < (*data)->nb_pipe)
 	{
 		dup2((*data)->pipe_fds[index - 1][0], STDIN_FILENO);
 		dup2((*data)->pipe_fds[index][1], STDOUT_FILENO);
-		if (fd_in != -1)
-			dup2(fd_in, STDIN_FILENO);
-		if (fd_out != -1)
-			dup2(fd_out, STDOUT_FILENO);
+		dup2(fd_in, STDIN_FILENO);
+		dup2(fd_out, STDOUT_FILENO);
 	}
 	else if (index == (*data)->nb_pipe && (*data)->nb_pipe > 0)
 	{
 		dup2((*data)->pipe_fds[(*data)->nb_pipe - 1][0], STDIN_FILENO);
-		if (fd_in != -1)
-			dup2(fd_in, STDIN_FILENO);
-		if (fd_out != -1)
-			dup2(fd_out, STDOUT_FILENO);
+		dup2(fd_in, STDIN_FILENO);
+		dup2(fd_out, STDOUT_FILENO);
 	}
 	else if (index == 0 && (*data)->nb_pipe == 0)
 	{
 		dup2(fd_out, STDOUT_FILENO);
-		if (fd_in != STDIN_FILENO && fd_in != -1)
-			dup2(fd_in, STDIN_FILENO);
-		if (fd_out != STDOUT_FILENO && fd_in != -1)
-			dup2(fd_out, STDOUT_FILENO);
+		dup2(fd_in, STDIN_FILENO);
+		dup2(fd_out, STDOUT_FILENO);
 	}
 	close_all_pipes(tokenlist, (*data)->pipe_fds, (*data)->nb_pipe);
 	return (1);

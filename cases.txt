@@ -7,6 +7,14 @@ BAD OUTPUT
 minishell> < cat -e 1
 minishell: cat: No such file or directory
 minishell: -e: command not found
+
+minishell> < efwefwewfe
+minishell: efwefwewfe: No such file or directory
+minishell> < efwefwewfe | ls
+minishell: efwefwewfe: No such file or directory
+1  2  cases.txt  compile_commands.json  eof  EOF  ewfewfe  fwefwfe  ignore_readline.supp  inc  libft  Makefile  minishell  minishell_tester  obj  src  test.c  test.txt
+
+cat <"./test_files/infile" | grep hello 
 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 FREE
 
