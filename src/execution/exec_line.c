@@ -76,7 +76,6 @@ void	process_invalid(t_token **tokenlist, t_data **data, char **expression, char
 
 void	process_empty(t_token **tokenlist, t_data **data, char **expression, char **args)
 {
-	printf("hole\n");
 	free_after_execution(tokenlist, data, args, expression);
 	g_status = 0;
 	exit(g_status);
