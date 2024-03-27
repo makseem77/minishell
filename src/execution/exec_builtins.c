@@ -64,6 +64,7 @@ static void	handle_cd(t_data **data, char **expression)
 			if (*(expression + 2))
 			{
 				print_error("cd", NULL, "too many arguments");
+				free(expression_next);
 				return ;
 			}
 			cd(*(expression + 1), data);
@@ -71,6 +72,7 @@ static void	handle_cd(t_data **data, char **expression)
 		else
 			cd(NULL, data);
 	}
+	free(expression_next);
 }
 
 static void	handle_exit(t_token **tokenlist, t_data **data, char **expression,

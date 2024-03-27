@@ -77,8 +77,9 @@ void	process_invalid(t_token **tokenlist, t_data **data, char **expression,
 
 bool	is_minishell(char *cmd)
 {
-	if (!cmd)
+	if (!cmd || ft_strlen(cmd) < ft_strlen("/minishell"))
 		return (false);
+	printf("CMD = %s\n", cmd);
 	if (access(cmd, X_OK) == 0 && ft_strcmp(cmd + (ft_strlen(cmd)
 				- ft_strlen("/minishell")), "/minishell") == 0)
 		return (true);
@@ -140,7 +141,10 @@ void	execute_line(t_token **tokenlist, t_data **data)
 		i = (*data)->nb_pipe;
 		while (i >= 0)
 		{
-			right_pid = exec_expression(tokenlist, data, i, args);
+			if ((*data)->nb_pipe == i)
+				right_pid = exec_expression(tokenlist, data, i, args);
+			else
+				exec_expression(tokenlist, data, i, args);	
 			i--;
 		}
 		i = (*data)->nb_pipe;

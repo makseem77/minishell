@@ -67,7 +67,7 @@ int	error_syntax(t_token *tmp, int *nb_pipe)
 	if (ft_strcmp(tmp->element, ";") == 0 || ft_strcmp(tmp->element, "\\") == 0)
 		return (print_error(NULL, NULL,
 				"special character ';' or '\\' is not authorized"), 1);
-	else if (ft_strcmp(tmp->element, "|") == 0)
+	else if (ft_strcmp(tmp->element, "|") == 0 && tmp->ttype != DELIMITER)
 	{
 		if (!tmp->next || ft_strcmp(tmp->next->element, "|") == 0)
 			return (print_error(NULL, NULL,
