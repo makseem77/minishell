@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 10:49:32 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/22 11:36:30 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/27 16:26:44 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	clean_up_redirection(t_token **tokenlist)
 	}
 }
 
-static int	create_and_set_fd(t_token *tmp, t_token *command_token,
+static void	create_and_set_fd(t_token *tmp, t_token *command_token,
 		t_data **data, t_token **tokenlist)
 {
 	if (ft_strncmp(tmp->element, ">>", 2) == 0 || ft_strcmp(tmp->element,
@@ -68,7 +68,6 @@ static int	create_and_set_fd(t_token *tmp, t_token *command_token,
 		else
 			read_from_file(tmp, command_token);
 	}
-	return (-1);
 }
 
 static t_token	*get_cmd_token(t_token **tokenlist, int expr_index)

@@ -1,6 +1,7 @@
 .ccls-cache/
 .vs-code/
 test.c
+test
 minishell_tester/
 .cache/
 compile_commands.json

@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 12:24:09 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/27 10:30:13 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/27 16:33:13 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,14 +75,6 @@ void	process_invalid(t_token **tokenlist, t_data **data, char **expression,
 	exit(g_status);
 }
 
-void	process_empty(t_token **tokenlist, t_data **data, char **expression,
-		char **args)
-{
-	free_after_execution(tokenlist, data, args, expression);
-	g_status = 0;
-	exit(g_status);
-}
-
 bool	is_minishell(char *cmd)
 {
 	if (!cmd)
@@ -93,18 +85,21 @@ bool	is_minishell(char *cmd)
 	return (false);
 }
 
-void	exec_expression(t_token **tokenlist, t_data **data, int index,
+pid_t	exec_expression(t_token **tokenlist, t_data **data, int index,
 		char **args)
 {
 	pid_t	pid;
+	pid_t	pid_right;
 	char	**expression;
 
 	if (check_and_exec_single_builtin(tokenlist, data, args))
-		return ;
+		return 0;
 	expression = cut_arrays_into_expression(args, index);
 	free((*data)->path_cmd);
 	(*data)->path_cmd = get_path_cmd((*data)->bin_paths, expression[0]);
 	pid = fork();
+	if((*data)->nb_pipe == index)
+		pid_right = pid;
 	if (pid && is_minishell(expression[0]))
 		signal(SIGINT, SIG_IGN);
 	if (pid == 0)
@@ -117,8 +112,6 @@ void	exec_expression(t_token **tokenlist, t_data **data, int index,
 				exec_command(data, expression, env_list_to_array((*data)->env));
 			else if (type(expression[0], (*data)->env) == -1)
 				process_invalid(tokenlist, data, expression, args);
-			else if ((*data)->path_cmd == NULL)
-				process_empty(tokenlist, data, expression, args);
 		}
 		else
 		{
@@ -129,6 +122,7 @@ void	exec_expression(t_token **tokenlist, t_data **data, int index,
 		exit(g_status);
 	}
 	free_double_array(expression);
+	return (pid_right);
 }
 
 void	execute_line(t_token **tokenlist, t_data **data)
@@ -136,6 +130,7 @@ void	execute_line(t_token **tokenlist, t_data **data)
 	int		i;
 	char	**args;
 	int		status;
+	pid_t	right_pid;
 
 	if (!(g_status == 130 && (*data)->here_doc == true))
 	{
@@ -145,7 +140,7 @@ void	execute_line(t_token **tokenlist, t_data **data)
 		i = (*data)->nb_pipe;
 		while (i >= 0)
 		{
-			exec_expression(tokenlist, data, i, args);
+			right_pid = exec_expression(tokenlist, data, i, args);
 			i--;
 		}
 		i = (*data)->nb_pipe;
@@ -154,7 +149,8 @@ void	execute_line(t_token **tokenlist, t_data **data)
 			close((*data)->pipe_fds[i - 1][1]);
 			i--;
 		}
-		while (wait(&status) > 0)
+		waitpid(right_pid, &status, 0);
+		while (wait(NULL) > 0)
 			;
 		if (!(type(args[0], (*data)->env) == BUILTIN && (*data)->nb_pipe == 0)
 			&& g_status != 130)

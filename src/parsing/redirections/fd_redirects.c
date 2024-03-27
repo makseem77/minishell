@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 15:23:35 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/26 12:14:08 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/27 16:26:29 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,10 @@ int	create_or_append(t_token *tmp, t_token *command_token)
 	if (command_token)
 	{
 		if (command_token->fd_out == -1)
+		{
+			g_status = 1;
 			print_error(NULL, tmp->next->element, strerror(errno));
+		}
 	}
 	return (-1);
 }
