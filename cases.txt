@@ -1,8 +1,6 @@
 valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes --suppressions=ignore_readline.supp --tra
 ce-children=yes ./minishell
 
-> 1 > test.c > 2 should output no Permission
-
 Test  56: ✅ grep hi <./test_files/infile 
 Test  57: ✅ grep hi "<infile" <         ./test_files/infile 
 Test  58: ✅ echo hi < ./test_files/infile bye bye 
