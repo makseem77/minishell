@@ -6,13 +6,13 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 15:23:35 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/27 16:26:29 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/27 17:24:52 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-int	create_or_append(t_token *tmp, t_token *command_token)
+int	create_or_append(t_token *tmp, t_token *command_token, t_data **data)
 {
 	int	fd;
 
@@ -23,6 +23,11 @@ int	create_or_append(t_token *tmp, t_token *command_token)
 			close(command_token->fd_out);
 		command_token->fd_out = open(tmp->next->element,
 				O_CREAT | O_RDWR | O_APPEND, 0644);
+		if ((*data)->invalid_file)
+		{
+			command_token->fd_out = -1;
+			return (1);
+		}
 	}
 	else
 		fd = open(tmp->next->element, O_CREAT | O_RDWR | O_APPEND, 0644);
@@ -34,12 +39,13 @@ int	create_or_append(t_token *tmp, t_token *command_token)
 		{
 			g_status = 1;
 			print_error(NULL, tmp->next->element, strerror(errno));
+			return (0);
 		}
 	}
-	return (-1);
+	return (1);
 }
 
-int	create_or_truncate(t_token *tmp, t_token *command_token)
+int	create_or_truncate(t_token *tmp, t_token *command_token, t_data **data)
 {
 	int	fd;
 
@@ -50,17 +56,23 @@ int	create_or_truncate(t_token *tmp, t_token *command_token)
 			close(command_token->fd_out);
 		command_token->fd_out = open(tmp->next->element,
 				O_CREAT | O_RDWR | O_TRUNC, 0644);
+		if ((*data)->invalid_file)
+		{
+			command_token->fd_out = -1;
+			return (1);
+		}
 	}
 	else
 		fd = open(tmp->next->element, O_CREAT | O_RDWR | O_TRUNC, 0644);
 	if (fd != -1)
 		close(fd);
-	if (command_token)
+	if (command_token && command_token->fd_out == -1)
 	{
-		if (command_token->fd_out == -1)
-			print_error(NULL, tmp->next->element, strerror(errno));
+		g_status = 1;
+		print_error(NULL, tmp->next->element, strerror(errno));
+		return (0);
 	}
-	return (-1);
+	return (1);
 }
 
 void	create_and_read_from_heredoc(t_token *tmp, t_token *command_token,

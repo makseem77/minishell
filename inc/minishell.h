@@ -65,6 +65,7 @@ typedef struct s_data
 	int					nb_pipe;
 	int					**pipe_fds;
 	bool				here_doc;
+	bool				invalid_file;
 }						t_data;
 
 typedef struct s_env_list
@@ -197,9 +198,9 @@ void					free_node(t_token *tmp);
 
 // REDIRECTIONS FOLDER
 // FD REDIRECTS
-int						create_or_append(t_token *tmp, t_token *command_token);
+int						create_or_append(t_token *tmp, t_token *command_token, t_data **data);
 int						create_or_truncate(t_token *tmp,
-							t_token *command_token);
+							t_token *command_token, t_data **data);
 void					create_and_read_from_heredoc(t_token *tmp,
 							t_token *command_token, t_data **data,
 							t_token **tokenlist);

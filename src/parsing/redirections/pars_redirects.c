@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 10:49:32 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/27 16:26:44 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/27 17:19:27 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,16 +49,16 @@ void	clean_up_redirection(t_token **tokenlist)
 	}
 }
 
-static void	create_and_set_fd(t_token *tmp, t_token *command_token,
+static int	create_and_set_fd(t_token *tmp, t_token *command_token,
 		t_data **data, t_token **tokenlist)
 {
 	if (ft_strncmp(tmp->element, ">>", 2) == 0 || ft_strcmp(tmp->element,
 			">") == 0)
 	{
 		if (ft_strncmp(tmp->element, ">>", 2) == 0)
-			create_or_append(tmp, command_token);
+			return (create_or_append(tmp, command_token, data));
 		else
-			create_or_truncate(tmp, command_token);
+			return (create_or_truncate(tmp, command_token, data));
 	}
 	else if (ft_strncmp(tmp->element, "<<", 2) == 0 || ft_strcmp(tmp->element,
 			"<") == 0)
@@ -68,6 +68,7 @@ static void	create_and_set_fd(t_token *tmp, t_token *command_token,
 		else
 			read_from_file(tmp, command_token);
 	}
+	return (1);
 }
 
 static t_token	*get_cmd_token(t_token **tokenlist, int expr_index)
@@ -96,6 +97,7 @@ int	handle_redirections(t_token **tokenlist, int *nb_pipe, t_data **data)
 
 	tmp = *tokenlist;
 	expr_index = 0;
+	(*data)->invalid_file = false;
 	while (tmp)
 	{
 		if (error_syntax(tmp, nb_pipe))
@@ -106,7 +108,8 @@ int	handle_redirections(t_token **tokenlist, int *nb_pipe, t_data **data)
 		command_token = get_cmd_token(tokenlist, expr_index);
 		if (ft_strcmp(tmp->element, "|") == 0)
 			expr_index++;
-		create_and_set_fd(tmp, command_token, data, tokenlist);
+		if (!create_and_set_fd(tmp, command_token, data, tokenlist))
+			(*data)->invalid_file = true;
 		tmp = tmp->next;
 	}
 	return (0);
