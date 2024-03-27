@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 10:26:56 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/26 17:16:37 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/27 10:10:32 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	free_and_exit(t_data **data, t_token **token, int status)
 	g_status = status;
 	if (token)
 		free_token_list(token);
-	if((*data)->nb_pipe > 0)
+	if ((*data)->nb_pipe > 0)
 		free_fds_array((*data)->pipe_fds, (*data)->nb_pipe);
 	free_data_struct(*data);
 	g_status = g_status % 256;
@@ -76,32 +76,29 @@ void	free_and_exit(t_data **data, t_token **token, int status)
 
 // Exits the program with the given status.
 // If the status is not a valid number, it will print the error message.
-void	exit_bash(char *status, t_data **data, t_token **token, bool too_many_args)
+void	exit_bash(char *status, t_data **data, t_token **token,
+		bool too_many_args)
 {
 	int		is_valid;
 
-	if (!status || (*data)->nb_pipe > 0)
-	{
-		if (!status && (*data)->nb_pipe == 0)
-			ft_putstr_fd("exit\n", 1);
-		free_and_exit(data, token, EXIT_SUCCESS);
-	}
-	if (too_many_args)
-	{
-		free(status);
+	if (status || (*data)->nb_pipe == 0)
 		ft_putstr_fd("exit\n", 1);
-		print_error("exit", NULL, "too many arguments");
-		return ;
-	}
+	if (!status || (*data)->nb_pipe > 0)
+		free_and_exit(data, token, EXIT_SUCCESS);
 	is_valid = is_valid_status(status);
 	if (!is_valid)
 	{
-		ft_putstr_fd("exit\n", 1);
 		print_error("exit", status, "numeric argument required");
 		free(status);
 		free_and_exit(data, token, 2);
 	}
-	ft_putstr_fd("exit\n", 1);
+	if (too_many_args)
+	{
+		free(status);
+		print_error("exit", NULL, "too many arguments");
+		g_status = 1;
+		return ;
+	}
 	free(status);
 	free_and_exit(data, token, g_status);
 }

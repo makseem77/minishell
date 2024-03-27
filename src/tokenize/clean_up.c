@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 11:57:41 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/26 12:13:32 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/27 09:44:46 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ int	clean_up_tokens(t_token **tokenlist)
 
 	tmp = *tokenlist;
 	tmp = clean_up_quotes(tmp);
-	if (ft_strncmp(tmp->element, "|", 1) == 0) 
+	if (ft_strncmp(tmp->element, "|", 1) == 0)
 	{
 		print_error(NULL, NULL, "syntax error near unexpected token `|'");
 		return (-1);

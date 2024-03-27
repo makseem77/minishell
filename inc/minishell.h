@@ -122,7 +122,8 @@ void					echo(char **args);
 //	ENV
 void					env(char **args, t_env_list **env);
 //	EXIT
-void					exit_bash(char *status, t_data **data, t_token **token, bool too_many_args);
+void					exit_bash(char *status, t_data **data, t_token **token,
+							bool too_many_args);
 //	PWD
 void					pwd(void);
 char					*get_current_dir(void);
@@ -137,11 +138,13 @@ int						compute_bytes_to_cmp(char *variableinlist,
 //////////////////////////////////////////////////////////////////////////////////////
 //	EXECUTION FOLDER
 //	EXEC_BUILTINS
-void					execute_bultin(t_token **tokenlist, t_data **data,
+void					exec_builtins(t_token **tokenlist, t_data **data,
 							char **expression, char **args);
 size_t					count_tokens(t_token **token);
 char					**tokens_to_array(t_token **token);
 //	EXEC_LINE
+void					free_after_execution(t_token **tokenlist, t_data **data,
+							char **args, char **expression);
 void					execute_line(t_token **tokenlist, t_data **data);
 //	EXEC_UTILS
 char					*get_path_cmd(char **paths, char *cmd);
@@ -153,7 +156,8 @@ void					close_all_pipes(t_token **tokenlist, int **fds,
 //	REDIRECTIONS
 int						get_output_fd(t_token **tokenlist, int index);
 int						get_input_fd(t_token **tokenlist, int index);
-int						configure_io(t_token **tokenlist, int index, t_data **data);
+int						configure_io(t_token **tokenlist, int index,
+							t_data **data);
 int						write_to_heredoc(int fd, char *limiter, bool command,
 							t_data **data, t_token **tokenlist);
 //////////////////////////////////////////////////////////////////////////////////////

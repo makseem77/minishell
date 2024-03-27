@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 16:05:17 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/02 18:33:21 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/27 10:22:38 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 int	**init_pipes(t_data **data)
 {
-	int **fds;
-	int i;
+	int	**fds;
+	int	i;
 
 	if ((*data)->nb_pipe)
 		fds = malloc(sizeof(int *) * (*data)->nb_pipe);
@@ -34,10 +34,11 @@ int	**init_pipes(t_data **data)
 void	close_all_pipes(t_token **tokenlist, int **fds, int nb_pipe)
 {
 	t_token	*tmp;
-	int	i = 0;
+	int		i;
 
+	i = 0;
 	tmp = *tokenlist;
-	while(tmp)
+	while (tmp)
 	{
 		if (tmp->fd_out > 1)
 			close(tmp->fd_out);
@@ -45,7 +46,7 @@ void	close_all_pipes(t_token **tokenlist, int **fds, int nb_pipe)
 			close(tmp->fd_in);
 		tmp = tmp->next;
 	}
-	while(i < nb_pipe)
+	while (i < nb_pipe)
 	{
 		close(fds[i][0]);
 		close(fds[i][1]);

@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 04:28:22 by maxborde          #+#    #+#             */
-/*   Updated: 2024/03/26 16:27:31 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/27 10:23:37 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,8 @@ int	get_input_fd(t_token **tokenlist, int index)
 	return (0);
 }
 
-void	configure_io_helper(int *fd_in_and_out, t_data **data, int index, int cases)
+void	configure_io_helper(int *fd_in_and_out, t_data **data, int index
+		, int cases)
 {
 	if (cases == 0)
 	{
@@ -93,7 +94,7 @@ int	configure_io(t_token **tokenlist, int index, t_data **data)
 	if (fd_in_and_out[0] == -1 || fd_in_and_out[1] == -1)
 		return (0);
 	if (index == 0 && (*data)->nb_pipe > 0)
-		configure_io_helper(fd_in_and_out, data, index,  0);
+		configure_io_helper(fd_in_and_out, data, index, 0);
 	else if (index > 0 && index < (*data)->nb_pipe)
 		configure_io_helper(fd_in_and_out, data, index, 1);
 	else if (index == (*data)->nb_pipe && (*data)->nb_pipe > 0)
@@ -104,4 +105,3 @@ int	configure_io(t_token **tokenlist, int index, t_data **data)
 	free(fd_in_and_out);
 	return (1);
 }
-

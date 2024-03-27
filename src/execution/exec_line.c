@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 12:24:09 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/26 16:56:35 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/27 10:30:13 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,15 @@ bool	check_and_exec_single_builtin(t_token **tokenlist, t_data **data,
 	expression = args;
 	if (type(expression[0], (*data)->env) == BUILTIN && (*data)->nb_pipe == 0)
 	{
-		if(ft_strcmp(expression[0], "exit") != 0)
+		if (ft_strcmp(expression[0], "exit") != 0)
 		{
 			saved_stdout = dup(STDOUT_FILENO);
 			saved_stdin = dup(STDIN_FILENO);
 		}
 		if (configure_io(tokenlist, 0, data))
 		{
-			execute_bultin(tokenlist, data, expression, args);
-			if(ft_strcmp(expression[0], "exit") != 0)
+			exec_builtins(tokenlist, data, expression, args);
+			if (ft_strcmp(expression[0], "exit") != 0)
 			{
 				dup2(saved_stdout, STDOUT_FILENO);
 				dup2(saved_stdin, STDIN_FILENO);
@@ -46,7 +46,8 @@ bool	check_and_exec_single_builtin(t_token **tokenlist, t_data **data,
 		return (false);
 }
 
-void	free_after_execution(t_token **tokenlist, t_data **data, char **args, char **expression)
+void	free_after_execution(t_token **tokenlist, t_data **data, char **args,
+		char **expression)
 {
 	free_double_array(expression);
 	free_double_array(args);
@@ -58,7 +59,7 @@ void	free_after_execution(t_token **tokenlist, t_data **data, char **args, char 
 void	exec_command(t_data **data, char **expression, char **env)
 {
 	char	*path_cmd;
-	
+
 	path_cmd = ft_strdup((*data)->path_cmd);
 	free_data_struct(*data);
 	execve(path_cmd, expression, env);
@@ -66,38 +67,34 @@ void	exec_command(t_data **data, char **expression, char **env)
 	exit(g_status);
 }
 
-void	exec_builtin(t_token **tokenlist, t_data **data, char **expression, char **args)
-{
-
-	execute_bultin(tokenlist, data, expression, args);
-	free_after_execution(tokenlist, data, args, expression);
-	exit(g_status);
-}
-
-void	process_invalid(t_token **tokenlist, t_data **data, char **expression, char **args)
+void	process_invalid(t_token **tokenlist, t_data **data, char **expression,
+		char **args)
 {
 	print_not_found(expression[0], NULL);
 	free_after_execution(tokenlist, data, args, expression);
 	exit(g_status);
 }
 
-void	process_empty(t_token **tokenlist, t_data **data, char **expression, char **args)
+void	process_empty(t_token **tokenlist, t_data **data, char **expression,
+		char **args)
 {
 	free_after_execution(tokenlist, data, args, expression);
 	g_status = 0;
 	exit(g_status);
 }
 
-bool is_minishell(char *cmd)
+bool	is_minishell(char *cmd)
 {
 	if (!cmd)
 		return (false);
-	if(access(cmd, X_OK) == 0 && ft_strcmp(cmd + (ft_strlen(cmd) - ft_strlen("/minishell")), "/minishell") == 0)
+	if (access(cmd, X_OK) == 0 && ft_strcmp(cmd + (ft_strlen(cmd)
+				- ft_strlen("/minishell")), "/minishell") == 0)
 		return (true);
 	return (false);
 }
 
-void	exec_expression(t_token **tokenlist, t_data **data, int index, char **args)
+void	exec_expression(t_token **tokenlist, t_data **data, int index,
+		char **args)
 {
 	pid_t	pid;
 	char	**expression;
@@ -115,7 +112,7 @@ void	exec_expression(t_token **tokenlist, t_data **data, int index, char **args)
 		if (configure_io(tokenlist, index, data))
 		{
 			if (type(expression[0], (*data)->env) == BUILTIN)
-				exec_builtin(tokenlist, data, expression, args);
+				exec_builtins(tokenlist, data, expression, args);
 			else if (type(expression[0], (*data)->env) == COMMAND)
 				exec_command(data, expression, env_list_to_array((*data)->env));
 			else if (type(expression[0], (*data)->env) == -1)

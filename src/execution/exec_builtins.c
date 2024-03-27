@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:23:46 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/26 17:16:16 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/27 10:44:36 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,14 +49,12 @@ char	**tokens_to_array(t_token **token)
 	return (args);
 }
 
-static void	handle_cd_exit(t_token **tokenlist, t_data **data,
-		char **expression, char **args)
+static void	handle_cd(t_data **data, char **expression)
 {
-	char *expression_next;
-	bool too_many_args;
+	char	*expression_next;
 
 	expression_next = NULL;
-	if(*(expression + 1))
+	if (*(expression + 1))
 		expression_next = ft_strdup(*(expression + 1));
 	if (ft_strcmp(*expression, "cd") == 0)
 	{
@@ -73,10 +71,21 @@ static void	handle_cd_exit(t_token **tokenlist, t_data **data,
 		else
 			cd(NULL, data);
 	}
-	else if (ft_strcmp(*expression, "exit") == 0)
+}
+
+static void	handle_exit(t_token **tokenlist, t_data **data, char **expression,
+		char **args)
+{
+	char	*expression_next;
+	bool	too_many_args;
+
+	expression_next = NULL;
+	if (*(expression + 1))
+		expression_next = ft_strdup(*(expression + 1));
+	if (ft_strcmp(*expression, "exit") == 0)
 	{
 		too_many_args = (args && args[2]);
-		if(!too_many_args)
+		if (!too_many_args)
 			free_double_array(args);
 		if (expression_next)
 			exit_bash(expression_next, data, tokenlist, too_many_args);
@@ -86,7 +95,7 @@ static void	handle_cd_exit(t_token **tokenlist, t_data **data,
 }
 
 // Executes the builtin command in the token.
-void	execute_bultin(t_token **tokenlist, t_data **data, char **expression,
+void	exec_builtins(t_token **tokenlist, t_data **data, char **expression,
 		char **args)
 {
 	g_status = 0;
@@ -100,5 +109,11 @@ void	execute_bultin(t_token **tokenlist, t_data **data, char **expression,
 		pwd();
 	else if (ft_strcmp(expression[0], "unset") == 0)
 		unset(expression, (*data)->env, (*data)->exp_list);
-	handle_cd_exit(tokenlist, data, expression, args);
+	handle_cd(data, expression);
+	handle_exit(tokenlist, data, expression, args);
+	if ((*data)->nb_pipe > 0)
+	{
+		free_after_execution(tokenlist, data, args, expression);
+		exit(g_status);
+	}
 }

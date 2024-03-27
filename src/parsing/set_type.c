@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 10:40:45 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/26 15:00:26 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/27 09:45:11 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	type(char *element, t_env_list **env)
 {
-	if(!element)
+	if (!element)
 		return (-1);
 	if (!ft_strcmp("echo", element) || !ft_strcmp("cd", element)
 		|| !ft_strcmp("pwd", element) || !ft_strcmp("export", element)

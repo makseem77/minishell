@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 17:56:02 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/26 15:02:43 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/27 09:44:08 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	print_not_found(char *command, char *arg)
 		else
 			print_error(command, arg, "Is a directory");
 	}
-	else if(command)
+	else if (command)
 	{
 		print_error(command, arg, "command not found");
 		g_status = 127;

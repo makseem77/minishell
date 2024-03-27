@@ -6,14 +6,14 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 15:47:33 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/26 16:31:41 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/27 10:07:10 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-static char *  limiter_stored;
-static int fd_hd;
-
 #include "minishell.h"
+
+static char	*g_limiter_stored;
+static int	g_fd_hd;
 
 int	exited_status(int status)
 {
@@ -49,8 +49,8 @@ static void	handle_signals(int signal)
 			rl_replace_line("", 0);
 			if (g_status == -2)
 			{
-				close(fd_hd);
-				free(limiter_stored);
+				close(g_fd_hd);
+				free(g_limiter_stored);
 				exit(130);
 			}
 			else
@@ -76,8 +76,8 @@ int	write_to_heredoc(int fd, char *limiter, bool command, t_data **data,
 	int		status;
 
 	g_status = -1;
-	limiter_stored = ft_strdup(limiter);
-	fd_hd = fd;
+	g_limiter_stored = ft_strdup(limiter);
+	g_fd_hd = fd;
 	pid = fork();
 	if (pid)
 		signal(SIGINT, SIG_IGN);
@@ -89,11 +89,11 @@ int	write_to_heredoc(int fd, char *limiter, bool command, t_data **data,
 		while (true)
 		{
 			line = readline("> ");
-			if (!line || ft_strcmp(line, limiter_stored) == 0)
+			if (!line || ft_strcmp(line, g_limiter_stored) == 0)
 			{
-				if(line)
+				if (line)
 					free(line);
-				free(limiter_stored);
+				free(g_limiter_stored);
 				close(fd);
 				exit(0);
 			}
@@ -104,15 +104,15 @@ int	write_to_heredoc(int fd, char *limiter, bool command, t_data **data,
 			}
 		}
 	}
-	free(limiter_stored);
+	free(g_limiter_stored);
 	close(fd);
 	waitpid(pid, &status, 0);
-	if(status)
+	if (status)
 		g_status = exited_status(status);
-	else if(g_status != 130)
+	else if (g_status != 130)
 		g_status = 0;
 	if (command)
-			return (open(".tmp", O_RDWR, 0644));
+		return (open(".tmp", O_RDWR, 0644));
 	else
 		return (0);
 }
