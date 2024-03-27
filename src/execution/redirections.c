@@ -42,7 +42,7 @@ int	get_input_fd(t_token **tokenlist, int index)
 	i = 0;
 	while (tmp)
 	{
-		if (tmp->ttype == COMMAND || tmp->ttype == BUILTIN)
+		if (tmp->ttype == COMMAND || tmp->ttype == BUILTIN || tmp->fd_in == -1)
 		{
 			if (i == index)
 				return (tmp->fd_in);
