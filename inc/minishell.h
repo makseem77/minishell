@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/03/28 12:59:41 by ymeziane          #+#    #+#             */
+/*   Updated: 2024/03/28 13:00:48 by ymeziane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -74,13 +86,16 @@ typedef struct s_env_list
 	struct s_env_list	*next;
 }						t_env_list;
 
-// 1. start with the listening loop that will read the user-input from the terminal.
-// 2. scan the user-input and cut it into tokens. for instance: "cat file.txt" would give 2 tokens: "cat"
+// 1. start with the listening loop that will read the user-input
+//	from the terminal.
+// 2. scan the user-input and cut it into tokens. for instance:
+//	"cat file.txt" would give 2 tokens: "cat"
 //-> COMMAND and "file.txt" -> FILENAME.
 // Save data on each token in a struct.
-// 3. Start executing the user-input by going trough each token one by one.
+// 3. Start executing the user-input by going trough each token
+//	one by one.
 
-//////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////
 //	TOKENIZE FOLDER
 
 //	VARIABLE FOLDER
@@ -100,9 +115,9 @@ t_token					*clean_up_quotes(t_token *tmp);
 int						clean_up_tokens(t_token **tokenlist);
 // FILL TOKENLIST
 t_token					**tokenize(char *line, t_env_list **env);
-//////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////
 
-//////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////
 //	BUILTINS FOLDER
 
 //	EXPORT FOLDER
@@ -134,22 +149,29 @@ void					unset(char **args, t_env_list **env,
 							t_env_list **exp_list);
 int						compute_bytes_to_cmp(char *variableinlist,
 							char *variablename);
-//////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////
 
-//////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////
 //	EXECUTION FOLDER
-//	EXEC_BUILTINS
-void					exec_builtins(t_token **tokenlist, t_data **data,
-							char **expression, char **args);
-size_t					count_tokens(t_token **token);
-char					**tokens_to_array(t_token **token);
-//	EXEC_LINE
+
+//  EXEC LINE FOLDER
+// EXEC LINE
 void					free_after_execution(t_token **tokenlist, t_data **data,
 							char **args, char **expression);
 void					execute_line(t_token **tokenlist, t_data **data);
+// EXEC EXPRESSION
+pid_t					exec_expression(t_token **tokenlist, t_data **data,
+							int index, char **args);
+
+//	EXEC_BUILTINS
+void					exec_builtins(t_token **tokenlist, t_data **data,
+							char **expression, char **args);
+bool					check_and_exec_single_builtin(t_token **tokenlist,
+							t_data **data, char **args);
 //	EXEC_UTILS
 char					*get_path_cmd(char **paths, char *cmd);
 char					**cut_arrays_into_expression(char **array, int index);
+char					**tokens_to_array(t_token **token);
 // INIT PIPES
 int						**init_pipes(t_data **data);
 void					close_all_pipes(t_token **tokenlist, int **fds,
@@ -161,9 +183,9 @@ int						configure_io(t_token **tokenlist, int index,
 							t_data **data);
 int						write_to_heredoc(int fd, char *limiter, bool command,
 							t_data **data, t_token **tokenlist);
-//////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////
 
-//////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////
 //	UTILS FOLDER
 //	LST UTILS
 int						lst_del_one(t_env_list **lst, char *variable,
@@ -183,7 +205,7 @@ t_env_list				**dup_env(char **env);
 char					**find_bin_paths(t_env_list **env);
 char					*get_env(char *variable, t_env_list **env);
 char					**env_list_to_array(t_env_list **env);
-//////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////
 //	FREE FOLDER
 //	FREE ARRAY
 void					free_double_array(char **darray);
@@ -193,14 +215,15 @@ void					free_lst_content(t_env_list *lst, char *var_name);
 void					free_data_struct(t_data *data);
 void					free_token_list(t_token **t_token);
 void					free_node(t_token *tmp);
-//////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////
 // PARSING FOLDER
 
 // REDIRECTIONS FOLDER
 // FD REDIRECTS
-int						create_or_append(t_token *tmp, t_token *command_token, t_data **data);
-int						create_or_truncate(t_token *tmp,
-							t_token *command_token, t_data **data);
+int						create_or_append(t_token *tmp, t_token *command_token,
+							t_data **data);
+int						create_or_truncate(t_token *tmp, t_token *command_token,
+							t_data **data);
 void					create_and_read_from_heredoc(t_token *tmp,
 							t_token *command_token, t_data **data,
 							t_token **tokenlist);
@@ -215,7 +238,7 @@ int						is_a_command(char *element, t_env_list **env);
 // SET TYPE
 int						type(char *element, t_env_list **env);
 int						set_token_types(t_token **tokenlist, t_data **data);
-//////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////
 
 //	LOOP
 void					listening_loop(t_data **data);

@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 11:57:41 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/27 16:30:45 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/28 12:17:51 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ int	clean_up_tokens(t_token **tokenlist)
 	t_token	*tmp;
 
 	tmp = *tokenlist;
-	if(!tmp)
+	if (!tmp)
 		return (-1);
 	tmp = clean_up_quotes(tmp);
 	if (ft_strncmp(tmp->element, "|", 1) == 0)

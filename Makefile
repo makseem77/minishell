@@ -19,7 +19,8 @@ SRC_FILES = main loop signals\
 			tokenize/clean_up tokenize/fill_tokenlist \
 			parsing/redirections/pars_redirects parsing/redirections/fd_redirects \
 			parsing/check_cmd parsing/set_type \
-			execution/exec_builtins execution/exec_line execution/exec_utils execution/pipes execution/redirections \
+			execution/exec_line/exec_line execution/exec_line/exec_expression \
+			execution/exec_builtins execution/exec_utils execution/pipes execution/redirections \
 			utils/lst_utils utils/print_utils utils/env_utils \
 			free/free_array free/free_struct \
 

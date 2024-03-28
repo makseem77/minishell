@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 15:23:35 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/27 17:24:52 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/28 12:17:37 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,12 @@ int	create_or_append(t_token *tmp, t_token *command_token, t_data **data)
 		if (fd != -1)
 			close(fd);
 		else
-			return(print_error(NULL, tmp->next->element, strerror(errno)), g_status = 1, 0);
+			return (print_error(NULL, tmp->next->element, strerror(errno)),
+				g_status = 1, 0);
 	}
 	if (command_token && command_token->fd_out == -1)
-		return(print_error(NULL, tmp->next->element, strerror(errno)), g_status = 1, 0);
+		return (print_error(NULL, tmp->next->element, strerror(errno)),
+			g_status = 1, 0);
 	return (1);
 }
 
@@ -59,10 +61,12 @@ int	create_or_truncate(t_token *tmp, t_token *command_token, t_data **data)
 		if (fd != -1)
 			close(fd);
 		else
-			return(print_error(NULL, tmp->next->element, strerror(errno)), g_status = 1, 0);
+			return (print_error(NULL, tmp->next->element, strerror(errno)),
+				g_status = 1, 0);
 	}
 	if (command_token && command_token->fd_out == -1)
-		return(print_error(NULL, tmp->next->element, strerror(errno)), g_status = 1, 0);
+		return (print_error(NULL, tmp->next->element, strerror(errno)),
+			g_status = 1, 0);
 	return (1);
 }
 

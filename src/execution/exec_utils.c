@@ -6,13 +6,13 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 10:59:37 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/26 13:06:18 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/28 12:37:39 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	**duplicate_expression(char **array, int i)
+static char	**duplicate_expression(char **array, int i)
 {
 	char	**expression;
 
@@ -78,4 +78,41 @@ char	*get_path_cmd(char **paths, char *cmd)
 		paths++;
 	}
 	return (NULL);
+}
+
+static size_t	count_tokens(t_token **token)
+{
+	int		i;
+	t_token	*tmp;
+
+	i = 0;
+	tmp = *token;
+	while (tmp)
+	{
+		i++;
+		tmp = tmp->next;
+	}
+	return (i);
+}
+
+// Returns the tokens in the tokenlist as an array of strings.
+char	**tokens_to_array(t_token **token)
+{
+	size_t	nb_tokens;
+	t_token	*tmp;
+	char	**args;
+	size_t	i;
+
+	nb_tokens = count_tokens(token);
+	args = (char **)malloc(sizeof(char *) * (nb_tokens + 1));
+	tmp = *token;
+	i = 0;
+	while (tmp)
+	{
+		args[i] = ft_strdup(tmp->element);
+		i++;
+		tmp = tmp->next;
+	}
+	args[i] = NULL;
+	return (args);
 }
