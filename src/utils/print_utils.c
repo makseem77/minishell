@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 17:56:02 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/28 10:01:23 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/28 15:18:22 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	print_not_found(char *command, char *arg)
 			print_error(command, arg, "Permission denied");
 		else if (access(command, F_OK) == -1)
 		{
-			g_status = 127;
+			g_status = 1;
 			print_error(command, arg, "No such file or directory");
 		}
 		else
@@ -37,16 +37,15 @@ void	print_not_found(char *command, char *arg)
 	}
 	else if (command)
 	{
-		print_error(command, arg, "command not found");
 		g_status = 127;
+		print_error(command, arg, "command not found");
 	}
 }
 
 // Prints the error message.
 void	print_error(char *command, char *arg, char *error_message)
 {
-	if (g_status == 0)
-		g_status = 1;
+	g_status = 1;
 	ft_putstr_fd("minishell: ", 2);
 	if (command)
 	{

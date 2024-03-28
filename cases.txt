@@ -1,5 +1,9 @@
 valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes --suppressions=ignore_readline.supp --trace-children=yes ./minishell
 
+minishell> cat -e < 5465
+minishell: 5465: No such file or directory
+minishell> echo $?
+139
 
 echo feur | exit | echo quoicoubeh => still RECHEABLE
 
