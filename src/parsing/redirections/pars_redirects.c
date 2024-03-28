@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 10:49:32 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/27 17:19:27 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/28 10:10:25 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,10 +101,12 @@ int	handle_redirections(t_token **tokenlist, int *nb_pipe, t_data **data)
 	while (tmp)
 	{
 		if (error_syntax(tmp, nb_pipe))
-		{
-			(*data)->nb_pipe = 0;
-			return (1);
-		}
+			return ((*data)->nb_pipe = 0, 1);
+		tmp = tmp->next;
+	}
+	tmp = *tokenlist;
+	while (tmp)
+	{
 		command_token = get_cmd_token(tokenlist, expr_index);
 		if (ft_strcmp(tmp->element, "|") == 0)
 			expr_index++;

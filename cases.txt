@@ -1,22 +1,9 @@
-valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes --suppressions=ignore_readline.supp --tra
-ce-children=yes ./minishell
+valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes --suppressions=ignore_readline.supp --trace-children=yes ./minishell
 
-. Invalid read FIXED
 
-minishell> echo hello
-minishell> exit -> leaks
-
-minishell> exit -> leaks
-
-	les deux cas en dessous decoulent  surement des deux du dessus
-
-	echo feur | exit | echo quoicoubeh
-
-	echo feur |e| echo test
+echo feur | exit | echo quoicoubeh => still RECHEABLE
 
 heredoc open at exit
-
-cat << |
 
 Test  56: ✅ grep hi <./test_files/infile 
 Test  57: ✅ grep hi "<infile" <         ./test_files/infile 

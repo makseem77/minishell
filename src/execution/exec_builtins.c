@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:23:46 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/27 10:44:36 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/28 09:47:37 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,12 +54,12 @@ static void	handle_cd(t_data **data, char **expression)
 	char	*expression_next;
 
 	expression_next = NULL;
-	if (*(expression + 1))
-		expression_next = ft_strdup(*(expression + 1));
+
 	if (ft_strcmp(*expression, "cd") == 0)
 	{
-		free(expression_next);
 		if (*(expression + 1))
+			expression_next = ft_strdup(*(expression + 1));
+		if (expression_next)
 		{
 			if (*(expression + 2))
 			{
@@ -82,10 +82,10 @@ static void	handle_exit(t_token **tokenlist, t_data **data, char **expression,
 	bool	too_many_args;
 
 	expression_next = NULL;
-	if (*(expression + 1))
-		expression_next = ft_strdup(*(expression + 1));
 	if (ft_strcmp(*expression, "exit") == 0)
 	{
+		if (*(expression + 1))
+			expression_next = ft_strdup(*(expression + 1));
 		too_many_args = (args && args[2]);
 		if (!too_many_args)
 			free_double_array(args);

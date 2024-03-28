@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 17:56:02 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/27 09:44:08 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/28 10:01:23 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int	error_syntax(t_token *tmp, int *nb_pipe)
 	if (ft_strcmp(tmp->element, ";") == 0 || ft_strcmp(tmp->element, "\\") == 0)
 		return (print_error(NULL, NULL,
 				"special character ';' or '\\' is not authorized"), 1);
-	else if (ft_strcmp(tmp->element, "|") == 0 && tmp->ttype != DELIMITER)
+	else if (ft_strcmp(tmp->element, "|") == 0)
 	{
 		if (!tmp->next || ft_strcmp(tmp->next->element, "|") == 0)
 			return (print_error(NULL, NULL,

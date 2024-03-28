@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 12:24:09 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/27 16:33:13 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/28 08:53:31 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,6 @@ bool	is_minishell(char *cmd)
 {
 	if (!cmd || ft_strlen(cmd) < ft_strlen("/minishell"))
 		return (false);
-	printf("CMD = %s\n", cmd);
 	if (access(cmd, X_OK) == 0 && ft_strcmp(cmd + (ft_strlen(cmd)
 				- ft_strlen("/minishell")), "/minishell") == 0)
 		return (true);
