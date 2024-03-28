@@ -86,6 +86,12 @@ typedef struct s_env_list
 	struct s_env_list	*next;
 }						t_env_list;
 
+typedef struct s_heredoc_handler
+{
+	char				*g_limiter_stored;
+	int	g_fd_hd;
+}						t_heredoc_handler;
+
 // 1. start with the listening loop that will read the user-input
 //	from the terminal.
 // 2. scan the user-input and cut it into tokens. for instance:
@@ -181,8 +187,8 @@ int						get_output_fd(t_token **tokenlist, int index);
 int						get_input_fd(t_token **tokenlist, int index);
 int						configure_io(t_token **tokenlist, int index,
 							t_data **data);
-int						write_to_heredoc(int fd, char *limiter, bool command,
-							t_data **data, t_token **tokenlist);
+void						set_up_heredoc(int fd, char *limiter);
+int						write_to_heredoc(bool command, t_data **data, t_token **tokenlist);
 //////////////////////////////////////////////////////////////////
 
 //////////////////////////////////////////////////////////////////

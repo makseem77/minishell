@@ -76,16 +76,15 @@ void	create_and_read_from_heredoc(t_token *tmp, t_token *command_token,
 	int	fd;
 
 	fd = 0;
+	set_up_heredoc(open(".tmp", O_CREAT | O_RDWR | O_TRUNC, 0644), tmp->next->element);
 	if (!command_token)
-		fd = write_to_heredoc(open(".tmp", O_CREAT | O_RDWR | O_TRUNC, 0644),
-				tmp->next->element, false, data, tokenlist);
+		fd = write_to_heredoc(false, data, tokenlist);
 	else
 	{
 		if (command_token->fd_in > 1)
 			close(command_token->fd_in);
 		command_token->fd_in = open(".tmp", O_CREAT | O_RDWR | O_TRUNC, 0644);
-		fd = write_to_heredoc(command_token->fd_in, tmp->next->element, true,
-				data, tokenlist);
+		fd = write_to_heredoc(true, data, tokenlist);
 	}
 	if ((command_token && command_token->fd_in == -1) || fd == -1)
 	{

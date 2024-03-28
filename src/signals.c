@@ -12,8 +12,7 @@
 
 #include "minishell.h"
 
-static char	*g_limiter_stored;
-static int	g_fd_hd;
+static	t_heredoc_handler	heredoc_struct;
 
 int	exited_status(int status)
 {
@@ -49,8 +48,8 @@ static void	handle_signals(int signal)
 			rl_replace_line("", 0);
 			if (g_status == -2)
 			{
-				close(g_fd_hd);
-				free(g_limiter_stored);
+				close(heredoc_struct.g_fd_hd);
+				free(heredoc_struct.g_limiter_stored);
 				exit(130);
 			}
 			else
@@ -68,16 +67,19 @@ void	init_signals(void)
 	signal(SIGQUIT, handle_signals);
 }
 
-int	write_to_heredoc(int fd, char *limiter, bool command, t_data **data,
-		t_token **tokenlist)
+void	set_up_heredoc(int fd, char *limiter)
+{
+	heredoc_struct.g_limiter_stored = ft_strdup(limiter);
+	heredoc_struct.g_fd_hd = fd;
+	g_status = -1;
+}
+
+int	write_to_heredoc(bool command, t_data **data, t_token **tokenlist)
 {
 	char	*line;
 	pid_t	pid;
 	int		status;
 
-	g_status = -1;
-	g_limiter_stored = ft_strdup(limiter);
-	g_fd_hd = fd;
 	pid = fork();
 	if (pid)
 		signal(SIGINT, SIG_IGN);
@@ -89,23 +91,23 @@ int	write_to_heredoc(int fd, char *limiter, bool command, t_data **data,
 		while (true)
 		{
 			line = readline("> ");
-			if (!line || ft_strcmp(line, g_limiter_stored) == 0)
+			if (!line || ft_strcmp(line, heredoc_struct.g_limiter_stored) == 0)
 			{
 				if (line)
 					free(line);
-				free(g_limiter_stored);
-				close(fd);
+				free(heredoc_struct.g_limiter_stored);
+				close(heredoc_struct.g_fd_hd);
 				exit(0);
 			}
 			else
 			{
-				ft_putendl_fd(line, fd);
+				ft_putendl_fd(line, heredoc_struct.g_fd_hd);
 				free(line);
 			}
 		}
 	}
-	free(g_limiter_stored);
-	close(fd);
+	free(heredoc_struct.g_limiter_stored);
+	close(heredoc_struct.g_fd_hd);
 	waitpid(pid, &status, 0);
 	if (status)
 		g_status = exited_status(status);

@@ -13,11 +13,11 @@ minishell: 5465: No such file or directory
 minishell> echo $?
 139       FIXED
 
-echo feur | exit | echo quoicoubeh => still RECHEABLE
+echo feur | exit | echo quoicoubeh => still REACHEABLE
 exit | ls
 ls | exit
 
-heredoc open at exit
+heredoc open at exit FIXED I THINK
 
 Test  56: ✅ grep hi <./test_files/infile 
 Test  57: ✅ grep hi "<infile" <         ./test_files/infile 
