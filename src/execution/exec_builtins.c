@@ -1,5 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   exec_builtins.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
@@ -44,11 +42,12 @@ static void	handle_exit(t_token **tokenlist, t_data **data, char **expression,
 	bool	too_many_args;
 
 	expression_next = NULL;
+	too_many_args = false;
 	if (ft_strcmp(*expression, "exit") == 0)
 	{
 		if (*(expression + 1))
 			expression_next = ft_strdup(*(expression + 1));
-		too_many_args = (args && args[2]);
+		too_many_args = (args && args[0] && args[1]);
 		if (!too_many_args)
 			free_double_array(args);
 		if (expression_next)

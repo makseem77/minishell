@@ -1,11 +1,21 @@
 valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes --suppressions=ignore_readline.supp --trace-children=yes ./minishell
 
+minishell> exit  -> invalid read of size 8   FIXED
+
+minishell> < filethatexists ->  filethatexists open at exit  FIXED
+
+minishell> < wgeg wgwge -> invalid free and valgrind errors    FIXED 
+minishell> < wgeg cat -> invalid free and valgrind errors       FIXED 
+
+
 minishell> cat -e < 5465
 minishell: 5465: No such file or directory
 minishell> echo $?
-139
+139       FIXED
 
 echo feur | exit | echo quoicoubeh => still RECHEABLE
+exit | ls
+ls | exit
 
 heredoc open at exit
 

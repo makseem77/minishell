@@ -92,7 +92,10 @@ int	configure_io(t_token **tokenlist, int index, t_data **data)
 	fd_in_and_out[0] = get_input_fd(tokenlist, index);
 	fd_in_and_out[1] = get_output_fd(tokenlist, index);
 	if (fd_in_and_out[0] == -1 || fd_in_and_out[1] == -1)
+	{
+		free(fd_in_and_out);
 		return (0);
+	}
 	if (index == 0 && (*data)->nb_pipe > 0)
 		configure_io_helper(fd_in_and_out, data, index, 0);
 	else if (index > 0 && index < (*data)->nb_pipe)

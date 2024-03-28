@@ -64,7 +64,6 @@ static void	execute_child_process(t_token **tokenlist, t_data **data, int index,
 		free_after_execution(tokenlist, data, args, expression);
 	}
 	g_status = 1;
-	free_double_array(expression);
 }
 
 pid_t	exec_expression(t_token **tokenlist, t_data **data, int index,
