@@ -45,7 +45,8 @@ void	print_not_found(char *command, char *arg)
 // Prints the error message.
 void	print_error(char *command, char *arg, char *error_message)
 {
-	g_status = 1;
+	if (ft_strcmp(error_message, "numeric argument required") != 0)
+		g_status = 1;
 	ft_putstr_fd("minishell: ", 2);
 	if (command)
 	{

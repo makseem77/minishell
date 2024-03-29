@@ -62,9 +62,9 @@ int	is_valid_status(char *status)
 	return (!overflow);
 }
 
-void	free_and_exit(t_data **data, t_token **token, char **args, int status, char **expression)
+void	free_and_exit(t_data **data, t_token **token, char **args, char **expression)
 {
-	g_status = status;
+	printf("G_STATUS =  %d\n", g_status);
 	free_double_array(args);
 	if (token)
 		free_token_list(token);
@@ -84,26 +84,21 @@ void	exit_bash(char **args, t_data **data, t_token **token, char **expression)
 {
 	int		is_valid;
 
-	if (!expression)
-	{
+	if (!expression) 
+		return (ft_putstr_fd("exit\n", 1), free_and_exit(data, token, args, expression));
+	if (expression || (expression[0] && expression[1]))  
 		ft_putstr_fd("exit\n", 1);
-		free_and_exit(data, token, args, g_status, expression);
-	}
-	if (expression || (expression[0] && expression[1]) || (*data)->nb_pipe == 0)
-		ft_putstr_fd("exit\n", 1);
-	if (!(expression[1]) || (*data)->nb_pipe > 0)
-		free_and_exit(data, token, args, EXIT_SUCCESS, expression);
+	if (!(expression[1]))
+		return(g_status = EXIT_SUCCESS, free_and_exit(data, token, args, expression));
 	is_valid = is_valid_status(expression[1]);
 	if (!is_valid)
 	{
-		print_error("exit", expression[1], "numeric argument required");
-		free_and_exit(data, token, args, 2, expression);
+		g_status = 2;
+		return (print_error("exit", expression[1], "numeric argument required"), free_and_exit(data, token, args, expression));
 	}
 	if (expression[1] && expression[2])
 	{
-		print_error("exit", NULL, "too many arguments");
-		g_status = 1;
-		return ;
+		return (g_status = 1, print_error("exit", NULL, "too many arguments"));
 	}
-	free_and_exit(data, token, args, g_status, expression);
+	free_and_exit(data, token, args, expression);
 }

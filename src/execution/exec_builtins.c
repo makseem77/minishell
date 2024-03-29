@@ -66,10 +66,11 @@ void	print_darray(char **darray)
 void	exec_builtins(t_token **tokenlist, t_data **data, char **expression,
 		char **args)
 {
-	printf("EXPR\n");
-	print_darray(expression);
-	printf("ARGS\n");
-	print_darray(args);
+	// printf("EXPR\n");
+	// print_darray(expression);
+	// printf("ARGS\n");
+	// print_darray(args);
+	// printf("\n\n\n\n\n");
 	g_status = 0;
 	if (ft_strcmp(expression[0], "echo") == 0)
 		echo(expression);

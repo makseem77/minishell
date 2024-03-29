@@ -15,7 +15,7 @@ minishell> echo $?
 
 echo feur | exit | echo quoicoubeh => still REACHEABLE
 exit | ls
-ls | exit
+ls | exit    FIXED
 
 heredoc open at exit FIXED I THINK
 
