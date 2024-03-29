@@ -38,29 +38,38 @@ static void	handle_cd(t_data **data, char **expression)
 static void	handle_exit(t_token **tokenlist, t_data **data, char **expression,
 		char **args)
 {
-	char	*expression_next;
-	bool	too_many_args;
+	bool	expression_next;
 
-	expression_next = NULL;
-	too_many_args = false;
 	if (ft_strcmp(*expression, "exit") == 0)
 	{
-		if (*(expression + 1))
-			expression_next = ft_strdup(*(expression + 1));
-		too_many_args = (args && args[0] && args[1]);
-		if (!too_many_args)
-			free_double_array(args);
+		expression_next = (*(expression + 1));
 		if (expression_next)
-			exit_bash(expression_next, data, tokenlist, too_many_args);
+			exit_bash(args, data, tokenlist, expression);
 		else
-			exit_bash(NULL, data, tokenlist, too_many_args);
+			exit_bash(args, data, tokenlist, expression);
 	}
 }
 
+void	print_darray(char **darray)
+{
+	int	i;
+
+	i = 0;
+	printf("START OF PRINT\n");
+	while (darray[i])
+	{
+		printf("DARRAY[%d] = %s\n", i, darray[i]);
+		i++;
+	}
+}
 // Executes the builtin command in the token.
 void	exec_builtins(t_token **tokenlist, t_data **data, char **expression,
 		char **args)
 {
+	printf("EXPR\n");
+	print_darray(expression);
+	printf("ARGS\n");
+	print_darray(args);
 	g_status = 0;
 	if (ft_strcmp(expression[0], "echo") == 0)
 		echo(expression);
