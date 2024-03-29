@@ -13,7 +13,7 @@
 #include "minishell.h"
 
 // Creates a new token, adds a duplicate of element and returns it.
-static t_token	*create_new_token(char *element)
+t_token	*create_new_token(char *element)
 {
 	t_token	*token;
 

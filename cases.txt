@@ -1,5 +1,12 @@
 valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes --suppressions=ignore_readline.supp --trace-children=yes ./minishell
 
+minishell> ls > 1 > 2 > 3 > 1.txt > 4 > 5
+minishell: 1.txt: Permission denied
+4 et 5 still open at exit		FIXED
+
+minishell> ls > 1 < filethatdoesntexit
+fd leak			FIXED
+
 minishell> exit  -> invalid read of size 8   FIXED
 
 minishell> < filethatexists ->  filethatexists open at exit  FIXED
@@ -17,7 +24,7 @@ echo feur | exit | echo quoicoubeh => still REACHEABLE
 exit | ls
 ls | exit    FIXED
 
-heredoc open at exit FIXED I THINK
+heredoc open at exit FIXED
 
 Test  56: ✅ grep hi <./test_files/infile 
 Test  57: ✅ grep hi "<infile" <         ./test_files/infile 

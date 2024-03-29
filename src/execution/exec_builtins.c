@@ -49,28 +49,10 @@ static void	handle_exit(t_token **tokenlist, t_data **data, char **expression,
 			exit_bash(args, data, tokenlist, expression);
 	}
 }
-
-void	print_darray(char **darray)
-{
-	int	i;
-
-	i = 0;
-	printf("START OF PRINT\n");
-	while (darray[i])
-	{
-		printf("DARRAY[%d] = %s\n", i, darray[i]);
-		i++;
-	}
-}
 // Executes the builtin command in the token.
 void	exec_builtins(t_token **tokenlist, t_data **data, char **expression,
 		char **args)
 {
-	// printf("EXPR\n");
-	// print_darray(expression);
-	// printf("ARGS\n");
-	// print_darray(args);
-	// printf("\n\n\n\n\n");
 	g_status = 0;
 	if (ft_strcmp(expression[0], "echo") == 0)
 		echo(expression);

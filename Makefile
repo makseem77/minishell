@@ -17,7 +17,7 @@ SRC_FILES = main loop signals\
 			builtins/export/export builtins/export/export_utils \
 			tokenize/variable/check_variable tokenize/variable/convert_to_value \
 			tokenize/clean_up tokenize/fill_tokenlist \
-			parsing/redirections/pars_redirects parsing/redirections/fd_redirects \
+			parsing/redirections/pars_redirects parsing/redirections/fd_redirects parsing/redirections/redirections_utils \
 			parsing/check_cmd parsing/set_type \
 			execution/exec_line/exec_line execution/exec_line/exec_expression \
 			execution/exec_builtins execution/exec_utils execution/pipes execution/redirections \

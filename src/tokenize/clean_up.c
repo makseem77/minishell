@@ -109,3 +109,29 @@ int	clean_up_tokens(t_token **tokenlist)
 	}
 	return (1);
 }
+
+// void	clean_up_redirection(t_token **tokenlist)
+// {
+// 	t_token	*tmp;
+// 	t_token	*next;
+// 	char	**holder;
+// 	int	i;
+//
+// 	tmp = *tokenlist;
+// 	prev = NULL;
+// 	while (tmp)
+// 	{
+// 		if (has_separator(tmp->element))
+// 		{
+// 			holder = ft_split(tmp->element, ' ');
+// 			tmp->element = ft_strdup(holder[i]); 
+// 			while (holder[i])
+// 			{
+// 				next = tmp->next;
+// 				tmp->next = create_new_token();
+// 				tmp->next->next = next;
+// 			}
+// 		}
+// 		
+// 	}
+// }

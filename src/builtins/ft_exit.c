@@ -64,7 +64,6 @@ int	is_valid_status(char *status)
 
 void	free_and_exit(t_data **data, t_token **token, char **args, char **expression)
 {
-	printf("G_STATUS =  %d\n", g_status);
 	free_double_array(args);
 	if (token)
 		free_token_list(token);

@@ -67,6 +67,13 @@ void	init_signals(void)
 	signal(SIGQUIT, handle_signals);
 }
 
+void	free_in_hd(t_heredoc_handler heredoc_struct)
+{
+	free(heredoc_struct.g_limiter_stored);
+	if (heredoc_struct.g_fd_hd != -1)
+		close(heredoc_struct.g_fd_hd);
+}
+
 void	set_up_heredoc(int fd, char *limiter)
 {
 	heredoc_struct.g_limiter_stored = ft_strdup(limiter);
@@ -74,9 +81,34 @@ void	set_up_heredoc(int fd, char *limiter)
 	g_status = -1;
 }
 
-int	write_to_heredoc(bool command, t_data **data, t_token **tokenlist)
+void	heredoc_loop(t_data **data, t_token **tokenlist)
 {
 	char	*line;
+
+	free_token_list(tokenlist);
+	free_data_struct(*data);
+	while (true)
+	{
+		line = readline("> ");
+		if (!line || ft_strcmp(line, heredoc_struct.g_limiter_stored) == 0)
+		{
+			if (line)
+				free(line);
+			else
+				ft_putstr_fd("\n", 1);
+			free_in_hd(heredoc_struct);
+			exit(0);
+		}
+		else
+		{
+			ft_putendl_fd(line, heredoc_struct.g_fd_hd);
+			free(line);
+		}
+	}
+}
+
+int	write_to_heredoc(bool command, t_data **data, t_token **tokenlist)
+{
 	pid_t	pid;
 	int		status;
 
@@ -86,28 +118,9 @@ int	write_to_heredoc(bool command, t_data **data, t_token **tokenlist)
 	if (pid == 0)
 	{
 		g_status = -2;
-		free_data_struct(*data);
-		free_token_list(tokenlist);
-		while (true)
-		{
-			line = readline("> ");
-			if (!line || ft_strcmp(line, heredoc_struct.g_limiter_stored) == 0)
-			{
-				if (line)
-					free(line);
-				free(heredoc_struct.g_limiter_stored);
-				close(heredoc_struct.g_fd_hd);
-				exit(0);
-			}
-			else
-			{
-				ft_putendl_fd(line, heredoc_struct.g_fd_hd);
-				free(line);
-			}
-		}
+		heredoc_loop(data, tokenlist);
 	}
-	free(heredoc_struct.g_limiter_stored);
-	close(heredoc_struct.g_fd_hd);
+	free_in_hd(heredoc_struct);
 	waitpid(pid, &status, 0);
 	if (status)
 		g_status = exited_status(status);

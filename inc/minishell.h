@@ -121,6 +121,7 @@ t_token					*clean_up_quotes(t_token *tmp);
 int						clean_up_tokens(t_token **tokenlist);
 // FILL TOKENLIST
 t_token					**tokenize(char *line, t_env_list **env);
+t_token					*create_new_token(char *element);
 //////////////////////////////////////////////////////////////////
 
 //////////////////////////////////////////////////////////////////
@@ -188,6 +189,9 @@ int						configure_io(t_token **tokenlist, int index,
 							t_data **data);
 void						set_up_heredoc(int fd, char *limiter);
 int						write_to_heredoc(bool command, t_data **data, t_token **tokenlist);
+int	create_or_append_helper(t_token *tmp, t_token *command_token, t_data **data);
+int	create_or_truncate_helper(t_token *tmp, t_token *command_token, t_data **data);
+void	read_from_file_helper(t_token *tmp, t_token *command_token);
 //////////////////////////////////////////////////////////////////
 
 //////////////////////////////////////////////////////////////////
