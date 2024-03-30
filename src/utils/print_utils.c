@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 17:56:02 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/28 15:18:22 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/03/30 23:14:14 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	print_not_found(char *command, char *arg)
 			print_error(command, arg, "Permission denied");
 		else if (access(command, F_OK) == -1)
 		{
-			g_status = 1;
+			g_status = 127;
 			print_error(command, arg, "No such file or directory");
 		}
 		else
@@ -37,7 +37,6 @@ void	print_not_found(char *command, char *arg)
 	}
 	else if (command)
 	{
-		printf("G_STAT BEFORE = %d\n", g_status);
 		print_error(command, arg, "command not found");
 		g_status = 127;
 	}
@@ -46,9 +45,8 @@ void	print_not_found(char *command, char *arg)
 // Prints the error message.
 void	print_error(char *command, char *arg, char *error_message)
 {
-	if (ft_strcmp(error_message, "numeric argument required") != 0 && g_status != 127)
+	if (ft_strcmp(error_message, "numeric argument required") != 0 && g_status != 127 && g_status != 126)
 		g_status = 1;
-	printf("G_STAT AFTER = %d\n", g_status);
 	ft_putstr_fd("minishell: ", 2);
 	if (command)
 	{
