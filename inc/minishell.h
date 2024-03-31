@@ -118,9 +118,9 @@ void					convert_exit_status_into_value(char *new_element,
 
 // CLEAN UP
 t_token					*clean_up_quotes(t_token *tmp);
-int						clean_up_tokens(t_token **tokenlist);
+int						clean_up_tokens(t_token **tokenlist, t_data **data);
 // FILL TOKENLIST
-t_token					**tokenize(char *line, t_env_list **env);
+t_token					**tokenize(char *line, t_data **data);
 t_token					*create_new_token(char *element);
 //////////////////////////////////////////////////////////////////
 
@@ -239,8 +239,7 @@ void					create_and_read_from_heredoc(t_token *tmp,
 void					read_from_file(t_token *tmp, t_token *command_token);
 // PARS REDIRECTS
 void					clean_up_redirection(t_token **tokenlist);
-int						handle_redirections(t_token **tokenlist, int *nb_pipe,
-							t_data **data);
+int						handle_redirections(t_token **tokenlist, t_data **data);
 
 // CHECK CMD
 int						is_a_command(char *element, t_env_list **env);

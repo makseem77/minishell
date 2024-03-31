@@ -85,7 +85,7 @@ t_token	*clean_up_quotes(t_token *tmp)
 }
 
 // Goes trough all the tokens and cleans up the element in every one of them.
-int	clean_up_tokens(t_token **tokenlist)
+int	clean_up_tokens(t_token **tokenlist, t_data **data)
 {
 	t_token	*tmp;
 
@@ -100,6 +100,8 @@ int	clean_up_tokens(t_token **tokenlist)
 	}
 	while (tmp)
 	{
+		if (error_syntax(tmp, &(*data)->nb_pipe))
+			return ((*data)->nb_pipe = 0, -1);
 		tmp = clean_up_quotes(tmp);
 		if (!tmp)
 			return (-1);

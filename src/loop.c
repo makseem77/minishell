@@ -31,7 +31,7 @@ void	listening_loop(t_data **data)
 			exit_bash(EXIT_SUCCESS, data, NULL, NULL);
 		if (*line)
 			add_history(line);
-		tokenlist = tokenize(line, (*data)->env);
+		tokenlist = tokenize(line, data);
 		if (tokenlist)
 		{
 			if (!set_token_types(tokenlist, data))

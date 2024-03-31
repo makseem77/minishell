@@ -89,7 +89,7 @@ static t_token	*get_cmd_token(t_token **tokenlist, int expr_index)
 	return (NULL);
 }
 
-int	handle_redirections(t_token **tokenlist, int *nb_pipe, t_data **data)
+int	handle_redirections(t_token **tokenlist, t_data **data)
 {
 	t_token	*tmp;
 	t_token	*command_token;
@@ -98,12 +98,6 @@ int	handle_redirections(t_token **tokenlist, int *nb_pipe, t_data **data)
 	tmp = *tokenlist;
 	expr_index = 0;
 	(*data)->invalid_file = false;
-	while (tmp)
-	{
-		if (error_syntax(tmp, nb_pipe))
-			return ((*data)->nb_pipe = 0, 1);
-		tmp = tmp->next;
-	}
 	tmp = *tokenlist;
 	while (tmp)
 	{

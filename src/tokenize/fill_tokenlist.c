@@ -125,7 +125,7 @@ static char	*add_token(char *line, t_token **tokenlist, t_env_list **env)
 // and adds a token every time it encounters an element of a bash expression.
 // The add token while increment the line pointer to the end of the element
 // so you can then continue trough the rest of the line.
-t_token	**tokenize(char *line, t_env_list **env)
+t_token	**tokenize(char *line, t_data **data)
 {
 	t_token	**tokenlist;
 
@@ -134,11 +134,11 @@ t_token	**tokenize(char *line, t_env_list **env)
 	while (*line)
 	{
 		if ((*line < '\t' || *line > '\r') && *line != ' ')
-			line = add_token(line, tokenlist, env);
+			line = add_token(line, tokenlist, (*data)->env);
 		else
 			line++;
 	}
-	if (clean_up_tokens(tokenlist) == -1)
+	if (clean_up_tokens(tokenlist, data) == -1)
 	{
 		free_token_list(tokenlist);
 		return (NULL);
