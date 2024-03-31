@@ -77,6 +77,8 @@ t_token	*clean_up_quotes(t_token *tmp)
 	if (ft_strcmp(tmp->element, "\"\"") == 0
 		|| ft_strcmp(tmp->element, "\'\'") == 0)
 		tmp->ttype = EMPTY;
+	if ((ft_strcmp(tmp->element, "\"|\"") == 0) || ft_strcmp(tmp->element, "\'|\'") == 0)
+		return (tmp);
 	new_element = malloc(ft_strlen(tmp->element) - (quotes_to_del) + 1);
 	clean_up_new_el(tmp->element, new_element);
 	free(tmp->element);
@@ -84,24 +86,32 @@ t_token	*clean_up_quotes(t_token *tmp)
 	return (tmp);
 }
 
-// Goes trough all the tokens and cleans up the element in every one of them.
-int	clean_up_tokens(t_token **tokenlist, t_data **data)
+int	check_tokens_syntax(t_token **tokenlist, t_data **data)
 {
 	t_token	*tmp;
 
 	tmp = *tokenlist;
 	if (!tmp)
 		return (-1);
-	tmp = clean_up_quotes(tmp);
-	if (ft_strncmp(tmp->element, "|", 1) == 0)
-	{
-		print_error(NULL, NULL, "syntax error near unexpected token `|'");
-		return (-1);
-	}
 	while (tmp)
 	{
 		if (error_syntax(tmp, &(*data)->nb_pipe))
 			return ((*data)->nb_pipe = 0, -1);
+		tmp = tmp->next;
+	}
+	return (1);
+}
+
+// Goes trough all the tokens and cleans up the element in every one of them.
+int	clean_up_tokens(t_token **tokenlist)
+{
+	t_token	*tmp;
+
+	tmp = *tokenlist;
+	if (!tmp)
+		return (-1);
+	while (tmp)
+	{
 		tmp = clean_up_quotes(tmp);
 		if (!tmp)
 			return (-1);

@@ -21,8 +21,7 @@ int	type(char *element, t_env_list **env)
 		|| !ft_strcmp("unset", element) || !ft_strcmp("env", element)
 		|| !ft_strcmp("exit", element))
 		return (BUILTIN);
-	if (!ft_strcmp(">", element) || !ft_strcmp(">>", element) || !ft_strcmp("<",
-			element) || !ft_strcmp("<<", element) || !ft_strcmp("&", element)
+	if (!ft_strcmp("&", element)
 		|| !ft_strcmp("|", element) || !ft_strcmp("&&", element)
 		|| !ft_strcmp("||", element) || !ft_strcmp(",", element)
 		|| !ft_strcmp("(", element) || !ft_strcmp(")", element))
@@ -78,7 +77,7 @@ static void	types_assignement(t_token **tokenlist, t_env_list **env,
 			tmp = set_redirections_type(tmp);
 		else if (type(tmp->element, env) == BUILTIN)
 			tmp->ttype = BUILTIN;
-		else if (type(tmp->element, env) == META_CHAR && tmp->ttype != ESCAPED_META_CHAR)
+		else if (type(tmp->element, env) == META_CHAR)
 			tmp->ttype = META_CHAR;
 		else if (type(tmp->element, env) == COMMAND)
 			tmp->ttype = COMMAND;
@@ -91,9 +90,13 @@ static void	types_assignement(t_token **tokenlist, t_env_list **env,
 // and gives a tokentype to every node of the list.
 int	set_token_types(t_token **tokenlist, t_data **data)
 {
+	if (check_tokens_syntax(tokenlist, data) == -1)
+		return (0);
 	types_assignement(tokenlist, (*data)->env, &(*data)->here_doc);
 	if (handle_redirections(tokenlist, data) == 1)
-		return (1);
+		return (0);
 	clean_up_redirection(tokenlist);
-	return (0);
+	if (clean_up_tokens(tokenlist) == -1)
+		return (0);
+	return (1);
 }

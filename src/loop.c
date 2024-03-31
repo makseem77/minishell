@@ -34,7 +34,7 @@ void	listening_loop(t_data **data)
 		tokenlist = tokenize(line, data);
 		if (tokenlist)
 		{
-			if (!set_token_types(tokenlist, data))
+			if (set_token_types(tokenlist, data))
 				if (*tokenlist)
 					execute_line(tokenlist, data);
 			free_token_list(tokenlist);

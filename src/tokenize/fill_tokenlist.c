@@ -138,11 +138,5 @@ t_token	**tokenize(char *line, t_data **data)
 		else
 			line++;
 	}
-	if (clean_up_tokens(tokenlist, data) == -1)
-	{
-		free_token_list(tokenlist);
-		return (NULL);
-	}
-	else
-		return (tokenlist);
+	return (tokenlist);
 }

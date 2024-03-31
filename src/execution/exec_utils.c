@@ -20,7 +20,10 @@ static char	**duplicate_expression(char **array, int i)
 	i = 0;
 	while (array[i] && ft_strcmp(array[i], "|"))
 	{
-		expression[i] = ft_strdup(array[i]);
+		if ((ft_strcmp(array[i], "\"|\"") == 0) || ft_strcmp(array[i], "\'|\'") == 0)
+			expression[i] = ft_strdup("|");
+		else
+			expression[i] = ft_strdup(array[i]);
 		i++;
 	}
 	expression[i] = 0;

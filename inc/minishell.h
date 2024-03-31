@@ -118,7 +118,8 @@ void					convert_exit_status_into_value(char *new_element,
 
 // CLEAN UP
 t_token					*clean_up_quotes(t_token *tmp);
-int						clean_up_tokens(t_token **tokenlist, t_data **data);
+int						check_tokens_syntax(t_token **tokenlist, t_data **data);
+int						clean_up_tokens(t_token **tokenlist);
 // FILL TOKENLIST
 t_token					**tokenize(char *line, t_data **data);
 t_token					*create_new_token(char *element);

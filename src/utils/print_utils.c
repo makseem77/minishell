@@ -62,6 +62,12 @@ void	print_error(char *command, char *arg, char *error_message)
 	ft_putstr_fd("\n", 2);
 }
 
+bool	is_a_redir_operator(char *element)
+{
+	return ((ft_strncmp(element, "<", 1) == 0) || (ft_strncmp(element, "<<", 1) == 0) 
+			|| (ft_strncmp(element, ">", 1) == 0) ||  (ft_strncmp(element, ">>", 1) == 0));
+}
+
 int	error_syntax(t_token *tmp, int *nb_pipe)
 {
 	if (ft_strcmp(tmp->element, ";") == 0 || ft_strcmp(tmp->element, "\\") == 0)
@@ -75,12 +81,10 @@ int	error_syntax(t_token *tmp, int *nb_pipe)
 		else
 			(*nb_pipe)++;
 	}
-	else if ((tmp->ttype == REDIRECTION || tmp->ttype == HERE_DOC)
-		&& !tmp->next)
+	else if (is_a_redir_operator(tmp->element) && !tmp->next)
 		return (ft_putstr_fd("minishell: syntax error near unexpected token"
 				" `newline'\n", 2), 1);
-	else if ((tmp->ttype == REDIRECTION || tmp->ttype == HERE_DOC)
-		&& (ft_strncmp(tmp->next->element, ">", 1) == 0
+	else if (is_a_redir_operator(tmp->element) && (ft_strncmp(tmp->next->element, ">", 1) == 0
 			|| ft_strncmp(tmp->next->element, "<", 1) == 0))
 		return (print_error(NULL, NULL,
 				"minishell: syntax error near unexpected token > or <"), 1);

@@ -55,7 +55,7 @@ static void	execute_child_process(t_token **tokenlist, t_data **data, int index,
 			exec_builtins(tokenlist, data, expression, args);
 		else if (type(expression[0], (*data)->env) == COMMAND)
 			exec_command(data, expression, env_list_to_array((*data)->env));
-		else if (type(expression[0], (*data)->env) == -1)
+		else 
 			process_invalid(tokenlist, data, expression, args);
 	}
 	else
