@@ -89,7 +89,7 @@ void	create_and_read_from_heredoc(t_token *tmp, t_token *command_token,
 	}
 }
 
-void	read_from_file(t_token *tmp, t_token *command_token)
+int	read_from_file(t_token *tmp, t_token *command_token, t_data **data)
 {
 	int	fd;
 
@@ -106,9 +106,9 @@ void	read_from_file(t_token *tmp, t_token *command_token)
 			tmp->next->next->fd_in = -1;
 		fd = open(tmp->next->element, O_RDWR, 0644);
 		if (fd  == -1)
-			return(print_error(NULL, tmp->next->element, strerror(errno)));
+			return(print_error(NULL, tmp->next->element, strerror(errno)), 0);
 		else
 			close(fd);
 	}
-	read_from_file_helper(tmp, command_token);
+	return (read_from_file_helper(tmp, command_token, data));
 }

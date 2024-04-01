@@ -31,17 +31,24 @@ int	create_or_truncate_helper(t_token *tmp, t_token *command_token, t_data **dat
 	return (0);
 }
 
-void	read_from_file_helper(t_token *tmp, t_token *command_token)
+int	read_from_file_helper(t_token *tmp, t_token *command_token, t_data **data)
 {
 	if ((command_token && command_token->fd_in == -1))
 	{
 		if (command_token && command_token->fd_in == -1
 			&& command_token->fd_out != -1)
 		{
-			print_error(NULL, tmp->next->element, strerror(errno));
+			return (print_error(NULL, tmp->next->element, strerror(errno)), 0);
 			if (command_token->fd_out > 1)
 				close(command_token->fd_out);
 			command_token->fd_out = -1;
 		}
+		if ((*data)->invalid_file)
+		{
+			if (command_token->fd_out > 1)
+				close(command_token->fd_out);
+			return (command_token->fd_out = -1, 1);
+		}
 	}
+	return (1);
 }

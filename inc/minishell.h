@@ -192,7 +192,7 @@ void						set_up_heredoc(int fd, char *limiter);
 int						write_to_heredoc(bool command, t_data **data, t_token **tokenlist);
 int	create_or_append_helper(t_token *tmp, t_token *command_token, t_data **data);
 int	create_or_truncate_helper(t_token *tmp, t_token *command_token, t_data **data);
-void	read_from_file_helper(t_token *tmp, t_token *command_token);
+int	read_from_file_helper(t_token *tmp, t_token *command_token, t_data **data);
 bool	is_a_redir_operator(char *element);
 bool	is_a_quoted_redir_operator(char *element);
 //////////////////////////////////////////////////////////////////
@@ -239,7 +239,7 @@ int						create_or_truncate(t_token *tmp, t_token *command_token,
 void					create_and_read_from_heredoc(t_token *tmp,
 							t_token *command_token, t_data **data,
 							t_token **tokenlist);
-void					read_from_file(t_token *tmp, t_token *command_token);
+int					read_from_file(t_token *tmp, t_token *command_token, t_data **data);
 // PARS REDIRECTS
 void					clean_up_redirection(t_token **tokenlist);
 int						handle_redirections(t_token **tokenlist, t_data **data);

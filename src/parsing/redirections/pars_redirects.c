@@ -90,7 +90,7 @@ static int	create_and_set_fd(t_token *tmp, t_token *command_token,
 		if (ft_strncmp(tmp->element, "<<", 2) == 0)
 			create_and_read_from_heredoc(tmp, command_token, data, tokenlist);
 		else
-			read_from_file(tmp, command_token);
+			return (read_from_file(tmp, command_token, data));
 	}
 	return (1);
 }
@@ -129,7 +129,10 @@ int	handle_redirections(t_token **tokenlist, t_data **data)
 		if (ft_strcmp(tmp->element, "|") == 0)
 			expr_index++;
 		if (!create_and_set_fd(tmp, command_token, data, tokenlist))
+		{
 			(*data)->invalid_file = true;
+			return (0);
+		}
 		tmp = tmp->next;
 	}
 	return (0);
