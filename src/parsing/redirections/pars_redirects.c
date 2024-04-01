@@ -118,20 +118,25 @@ int	handle_redirections(t_token **tokenlist, t_data **data)
 	t_token	*tmp;
 	t_token	*command_token;
 	int		expr_index;
+	bool	flag;
 
 	tmp = *tokenlist;
 	expr_index = 0;
 	(*data)->invalid_file = false;
+	flag = true;
 	tmp = *tokenlist;
 	while (tmp)
 	{
 		command_token = get_cmd_token(tokenlist, expr_index);
 		if (ft_strcmp(tmp->element, "|") == 0)
-			expr_index++;
-		if (!create_and_set_fd(tmp, command_token, data, tokenlist))
 		{
+			expr_index++;
+			flag = true;
+		}
+		if (flag && !create_and_set_fd(tmp, command_token, data, tokenlist))
+		{
+			flag = false;
 			(*data)->invalid_file = true;
-			return (0);
 		}
 		tmp = tmp->next;
 	}
