@@ -86,6 +86,17 @@ static void	types_assignement(t_token **tokenlist, t_env_list **env,
 	}
 }
 
+// void	print_token_list(t_token **tokenlist)
+// {
+// 	t_token *tmp;
+//
+// 	tmp = *tokenlist;
+// 	while(tmp)
+// 	{
+// 		printf("TMP = %s\n", tmp->element);
+// 		tmp = tmp->next;
+// 	}
+// }
 // Goes trough the token linked list
 // and gives a tokentype to every node of the list.
 int	set_token_types(t_token **tokenlist, t_data **data)
@@ -93,10 +104,10 @@ int	set_token_types(t_token **tokenlist, t_data **data)
 	if (check_tokens_syntax(tokenlist, data) == -1)
 		return (0);
 	types_assignement(tokenlist, (*data)->env, &(*data)->here_doc);
+	if (clean_up_tokens(tokenlist) == -1)
+		return (0);
 	if (handle_redirections(tokenlist, data) == 1)
 		return (0);
 	clean_up_redirection(tokenlist);
-	if (clean_up_tokens(tokenlist) == -1)
-		return (0);
 	return (1);
 }

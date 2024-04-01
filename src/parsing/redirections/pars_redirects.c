@@ -20,7 +20,25 @@ static bool	is_to_be_deleted(t_token *tmp)
 			|| tmp->ttype == HERE_DOC || tmp->ttype == DELIMITER));
 }
 
-void	clean_up_redirection(t_token **tokenlist)
+void	clean_up_redirections_quotes(t_token **tokenlist)
+{
+	t_token *tmp;
+	char	*holder;
+
+	tmp = *tokenlist;
+	while (tmp)
+	{
+		if (is_a_quoted_redir_operator(tmp->element))
+		{
+			holder = tmp->element;
+			tmp->element = ft_strtrim(tmp->element, "\'\"");
+			free(holder);
+		}
+		tmp = tmp->next;
+	}
+}
+
+void	delete_redirections_tokens(t_token **tokenlist)
 {
 	t_token	*tmp;
 	t_token	*prev;
@@ -47,6 +65,12 @@ void	clean_up_redirection(t_token **tokenlist)
 			tmp = tmp->next;
 		}
 	}
+}
+
+void	clean_up_redirection(t_token **tokenlist)
+{
+	delete_redirections_tokens(tokenlist);
+	clean_up_redirections_quotes(tokenlist);
 }
 
 static int	create_and_set_fd(t_token *tmp, t_token *command_token,

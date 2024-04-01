@@ -62,10 +62,18 @@ void	print_error(char *command, char *arg, char *error_message)
 	ft_putstr_fd("\n", 2);
 }
 
+bool	is_a_quoted_redir_operator(char *element)
+{
+	return ((ft_strncmp(element, "\'<\'", 3) == 0) || (ft_strncmp(element, "\'<<\'", 4) == 0) 
+			|| (ft_strncmp(element, "\'>\'", 3) == 0) ||  (ft_strncmp(element, "\'>>\'", 4) == 0)
+			|| (ft_strncmp(element, "\"<\"", 3) == 0) || (ft_strncmp(element, "\"<<\"", 4) == 0) 
+			|| (ft_strncmp(element, "\">\"", 3) == 0) ||  (ft_strncmp(element, "\">>\"", 4) == 0));
+}
+
 bool	is_a_redir_operator(char *element)
 {
-	return ((ft_strncmp(element, "<", 1) == 0) || (ft_strncmp(element, "<<", 1) == 0) 
-			|| (ft_strncmp(element, ">", 1) == 0) ||  (ft_strncmp(element, ">>", 1) == 0));
+	return ((ft_strncmp(element, "<", 1) == 0) || (ft_strncmp(element, "<<", 2) == 0) 
+			|| (ft_strncmp(element, ">", 1) == 0) ||  (ft_strncmp(element, ">>", 2) == 0));
 }
 
 int	error_syntax(t_token *tmp, int *nb_pipe)

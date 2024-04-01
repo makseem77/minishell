@@ -111,15 +111,4 @@ void	read_from_file(t_token *tmp, t_token *command_token)
 			close(fd);
 	}
 	read_from_file_helper(tmp, command_token);
-	if ((command_token && command_token->fd_in == -1))
-	{
-		if (command_token && command_token->fd_in == -1
-			&& command_token->fd_out != -1)
-		{
-			print_error(NULL, tmp->next->element, strerror(errno));
-			if (command_token->fd_out > 1)
-				close(command_token->fd_out);
-			command_token->fd_out = -1;
-		}
-	}
 }

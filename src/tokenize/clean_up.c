@@ -112,7 +112,8 @@ int	clean_up_tokens(t_token **tokenlist)
 		return (-1);
 	while (tmp)
 	{
-		tmp = clean_up_quotes(tmp);
+		if (!is_a_quoted_redir_operator(tmp->element))
+			tmp = clean_up_quotes(tmp);
 		if (!tmp)
 			return (-1);
 		if (tmp->element == NULL)

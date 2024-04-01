@@ -193,6 +193,8 @@ int						write_to_heredoc(bool command, t_data **data, t_token **tokenlist);
 int	create_or_append_helper(t_token *tmp, t_token *command_token, t_data **data);
 int	create_or_truncate_helper(t_token *tmp, t_token *command_token, t_data **data);
 void	read_from_file_helper(t_token *tmp, t_token *command_token);
+bool	is_a_redir_operator(char *element);
+bool	is_a_quoted_redir_operator(char *element);
 //////////////////////////////////////////////////////////////////
 
 //////////////////////////////////////////////////////////////////
