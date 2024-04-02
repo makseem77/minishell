@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 12:59:41 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/04/02 13:07:39 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/04/02 13:11:07 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -253,7 +253,7 @@ int						read_from_file_helper(t_token *tmp,
 int						is_a_command(char *element, t_env_list **env);
 // SET TYPE
 int						type(char *element, t_env_list **env);
-int						set_token_types(t_token **tokenlist, t_data **data);`
+int						set_token_types(t_token **tokenlist, t_data **data);
 //////////////////////////////////////////////////////////////////
 //	SIGNALS FOLDER
 //	HD SIGNALS
