@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 12:18:48 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/28 15:28:18 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/04/02 12:28:40 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static void	execute_child_process(t_token **tokenlist, t_data **data, int index,
 			exec_builtins(tokenlist, data, expression, args);
 		else if (type(expression[0], (*data)->env) == COMMAND)
 			exec_command(data, expression, env_list_to_array((*data)->env));
-		else 
+		else
 			process_invalid(tokenlist, data, expression, args);
 	}
 	else

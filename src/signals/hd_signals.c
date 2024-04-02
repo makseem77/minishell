@@ -1,35 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signals.c                                          :+:      :+:    :+:   */
+/*   hd_signals.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/13 15:47:33 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/27 10:07:10 by ymeziane         ###   ########.fr       */
+/*   Created: 2024/04/02 12:57:05 by ymeziane          #+#    #+#             */
+/*   Updated: 2024/04/02 13:04:25 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static	t_heredoc_handler	heredoc_struct;
+static t_heredoc_handler	g_heredoc_struct;
 
-int	exited_status(int status)
+static void	free_in_hd(t_heredoc_handler g_heredoc_struct)
 {
-	int	exit_status;
-
-	if (WIFEXITED(status))
-		exit_status = WEXITSTATUS(status);
-	if (WIFSIGNALED(status))
-	{
-		exit_status = WTERMSIG(status);
-		if (exit_status != 131)
-			exit_status += 128;
-	}
-	return (exit_status);
+	free(g_heredoc_struct.g_limiter_stored);
+	if (g_heredoc_struct.g_fd_hd != -1)
+		close(g_heredoc_struct.g_fd_hd);
 }
 
-static void	handle_signals(int signal)
+void	handle_signals(int signal)
 {
 	int	i;
 	int	end;
@@ -47,11 +39,7 @@ static void	handle_signals(int signal)
 			rl_on_new_line();
 			rl_replace_line("", 0);
 			if (g_status == -2)
-			{
-				close(heredoc_struct.g_fd_hd);
-				free(heredoc_struct.g_limiter_stored);
-				exit(130);
-			}
+				return (free_in_hd(g_heredoc_struct), exit(130));
 			else
 				rl_redisplay();
 		}
@@ -61,27 +49,14 @@ static void	handle_signals(int signal)
 	}
 }
 
-void	init_signals(void)
-{
-	signal(SIGINT, handle_signals);
-	signal(SIGQUIT, SIG_IGN);
-}
-
-void	free_in_hd(t_heredoc_handler heredoc_struct)
-{
-	free(heredoc_struct.g_limiter_stored);
-	if (heredoc_struct.g_fd_hd != -1)
-		close(heredoc_struct.g_fd_hd);
-}
-
 void	set_up_heredoc(int fd, char *limiter)
 {
-	heredoc_struct.g_limiter_stored = ft_strdup(limiter);
-	heredoc_struct.g_fd_hd = fd;
+	g_heredoc_struct.g_limiter_stored = ft_strdup(limiter);
+	g_heredoc_struct.g_fd_hd = fd;
 	g_status = -1;
 }
 
-void	heredoc_loop(t_data **data, t_token **tokenlist)
+static void	heredoc_loop(t_data **data, t_token **tokenlist)
 {
 	char	*line;
 
@@ -90,18 +65,18 @@ void	heredoc_loop(t_data **data, t_token **tokenlist)
 	while (true)
 	{
 		line = readline("> ");
-		if (!line || ft_strcmp(line, heredoc_struct.g_limiter_stored) == 0)
+		if (!line || ft_strcmp(line, g_heredoc_struct.g_limiter_stored) == 0)
 		{
 			if (line)
 				free(line);
 			else
 				ft_putstr_fd("\n", 1);
-			free_in_hd(heredoc_struct);
+			free_in_hd(g_heredoc_struct);
 			exit(0);
 		}
 		else
 		{
-			ft_putendl_fd(line, heredoc_struct.g_fd_hd);
+			ft_putendl_fd(line, g_heredoc_struct.g_fd_hd);
 			free(line);
 		}
 	}
@@ -120,7 +95,7 @@ int	write_to_heredoc(bool command, t_data **data, t_token **tokenlist)
 		g_status = -2;
 		heredoc_loop(data, tokenlist);
 	}
-	free_in_hd(heredoc_struct);
+	free_in_hd(g_heredoc_struct);
 	waitpid(pid, &status, 0);
 	if (status)
 		g_status = exited_status(status);

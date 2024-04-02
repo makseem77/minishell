@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 15:23:35 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/28 15:22:11 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/04/02 12:46:04 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	create_or_truncate(t_token *tmp, t_token *command_token, t_data **data)
 	fd = -1;
 	if (command_token)
 	{
-		if (create_or_append_helper(tmp, command_token, data))
+		if (create_or_truncate_helper(tmp, command_token, data))
 			return (1);
 	}
 	else
@@ -68,7 +68,7 @@ void	create_and_read_from_heredoc(t_token *tmp, t_token *command_token,
 	int	fd;
 
 	fd = open(".tmp", O_CREAT | O_RDWR | O_TRUNC, 0644);
-	set_up_heredoc(fd , tmp->next->element);
+	set_up_heredoc(fd, tmp->next->element);
 	if (!command_token)
 		fd = write_to_heredoc(false, data, tokenlist);
 	else
@@ -105,8 +105,8 @@ int	read_from_file(t_token *tmp, t_token *command_token, t_data **data)
 		if (tmp->next->next)
 			tmp->next->next->fd_in = -1;
 		fd = open(tmp->next->element, O_RDWR, 0644);
-		if (fd  == -1)
-			return(print_error(NULL, tmp->next->element, strerror(errno)), 0);
+		if (fd == -1)
+			return (print_error(NULL, tmp->next->element, strerror(errno)), 0);
 		else
 			close(fd);
 	}

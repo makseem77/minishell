@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 10:59:37 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/28 12:37:39 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/04/02 12:28:52 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ static char	**duplicate_expression(char **array, int i)
 	i = 0;
 	while (array[i] && ft_strcmp(array[i], "|"))
 	{
-		if ((ft_strcmp(array[i], "\"|\"") == 0) || ft_strcmp(array[i], "\'|\'") == 0)
+		if ((ft_strcmp(array[i], "\"|\"") == 0)
+			|| ft_strcmp(array[i], "\'|\'") == 0)
 			expression[i] = ft_strdup("|");
 		else
 			expression[i] = ft_strdup(array[i]);

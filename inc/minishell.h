@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 12:59:41 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/28 13:00:48 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/04/02 13:07:39 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 # define MINISHELL_H
 
 # include "../libft/inc/libft.h"
-# include <stdio.h>
 # include <errno.h>
 # include <fcntl.h>
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <signal.h>
+# include <stdio.h>
 # include <stdlib.h>
 # include <strings.h>
 # include <sys/stat.h>
@@ -89,7 +89,7 @@ typedef struct s_env_list
 typedef struct s_heredoc_handler
 {
 	char				*g_limiter_stored;
-	int	g_fd_hd;
+	int					g_fd_hd;
 }						t_heredoc_handler;
 
 // 1. start with the listening loop that will read the user-input
@@ -146,7 +146,8 @@ void					echo(char **args);
 //	ENV
 void					env(char **args, t_env_list **env);
 //	EXIT
-void					exit_bash(char **args, t_data **data, t_token **token, char **expression);
+void					exit_bash(char **args, t_data **data, t_token **token,
+							char **expression);
 //	PWD
 void					pwd(void);
 char					*get_current_dir(void);
@@ -188,13 +189,7 @@ int						get_output_fd(t_token **tokenlist, int index);
 int						get_input_fd(t_token **tokenlist, int index);
 int						configure_io(t_token **tokenlist, int index,
 							t_data **data);
-void						set_up_heredoc(int fd, char *limiter);
-int						write_to_heredoc(bool command, t_data **data, t_token **tokenlist);
-int	create_or_append_helper(t_token *tmp, t_token *command_token, t_data **data);
-int	create_or_truncate_helper(t_token *tmp, t_token *command_token, t_data **data);
-int	read_from_file_helper(t_token *tmp, t_token *command_token, t_data **data);
-bool	is_a_redir_operator(char *element);
-bool	is_a_quoted_redir_operator(char *element);
+bool					is_a_redir_operator(char *element);
 //////////////////////////////////////////////////////////////////
 
 //////////////////////////////////////////////////////////////////
@@ -231,6 +226,9 @@ void					free_node(t_token *tmp);
 // PARSING FOLDER
 
 // REDIRECTIONS FOLDER
+// CLEAN REDIRECTS
+bool					is_a_quoted_redir_operator(char *element);
+void					clean_up_redirection(t_token **tokenlist);
 // FD REDIRECTS
 int						create_or_append(t_token *tmp, t_token *command_token,
 							t_data **data);
@@ -239,27 +237,39 @@ int						create_or_truncate(t_token *tmp, t_token *command_token,
 void					create_and_read_from_heredoc(t_token *tmp,
 							t_token *command_token, t_data **data,
 							t_token **tokenlist);
-int					read_from_file(t_token *tmp, t_token *command_token, t_data **data);
+int						read_from_file(t_token *tmp, t_token *command_token,
+							t_data **data);
 // PARS REDIRECTS
-void					clean_up_redirection(t_token **tokenlist);
 int						handle_redirections(t_token **tokenlist, t_data **data);
+// REDIRECTIONS UTILS
+int						create_or_append_helper(t_token *tmp,
+							t_token *command_token, t_data **data);
+int						create_or_truncate_helper(t_token *tmp,
+							t_token *command_token, t_data **data);
+int						read_from_file_helper(t_token *tmp,
+							t_token *command_token, t_data **data);
 
 // CHECK CMD
 int						is_a_command(char *element, t_env_list **env);
 // SET TYPE
 int						type(char *element, t_env_list **env);
-int						set_token_types(t_token **tokenlist, t_data **data);
+int						set_token_types(t_token **tokenlist, t_data **data);`
 //////////////////////////////////////////////////////////////////
-
+//	SIGNALS FOLDER
+//	HD SIGNALS
+void					handle_signals(int signal);
+void					set_up_heredoc(int fd, char *limiter);
+int						write_to_heredoc(bool command, t_data **data,
+							t_token **tokenlist);
+//	SIGNALS
+int						exited_status(int status);
+void					init_signals(void);
+//////////////////////////////////////////////////////////////////
 //	LOOP
 void					listening_loop(t_data **data);
 
 //	PARSING
 int						set_token_types(t_token **tokenlist, t_data **data);
 int						type(char *element, t_env_list **env);
-
-//	SIGNALS
-void					init_signals(void);
-int						exited_status(int status);
 
 #endif

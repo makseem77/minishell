@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 10:26:56 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/28 09:44:07 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/04/02 12:30:29 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,8 @@ int	is_valid_status(char *status)
 	return (!overflow);
 }
 
-void	free_and_exit(t_data **data, t_token **token, char **args, char **expression)
+void	free_and_exit(t_data **data, t_token **token,
+		char **args, char **expression)
 {
 	free_double_array(args);
 	if (token)
@@ -79,21 +80,25 @@ void	free_and_exit(t_data **data, t_token **token, char **args, char **expressio
 
 // Exits the program with the given status.
 // If the status is not a valid number, it will print the error message.
-void	exit_bash(char **args, t_data **data, t_token **token, char **expression)
+void	exit_bash(char **args, t_data **data,
+		t_token **token, char **expression)
 {
 	int		is_valid;
 
-	if (!expression) 
-		return (ft_putstr_fd("exit\n", 1), free_and_exit(data, token, args, expression));
-	if (expression || (expression[0] && expression[1]))  
+	if (!expression)
+		return (ft_putstr_fd("exit\n", 1),
+			free_and_exit(data, token, args, expression));
+	if (expression || (expression[0] && expression[1]))
 		ft_putstr_fd("exit\n", 1);
 	if (!(expression[1]))
-		return(g_status = EXIT_SUCCESS, free_and_exit(data, token, args, expression));
+		return (g_status = EXIT_SUCCESS,
+			free_and_exit(data, token, args, expression));
 	is_valid = is_valid_status(expression[1]);
 	if (!is_valid)
 	{
 		g_status = 2;
-		return (print_error("exit", expression[1], "numeric argument required"), free_and_exit(data, token, args, expression));
+		return (print_error("exit", expression[1], "numeric argument required"),
+			free_and_exit(data, token, args, expression));
 	}
 	if (expression[1] && expression[2])
 	{

@@ -1,10 +1,12 @@
+/* ************************************************************************** */
+/*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   exec_builtins.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/14 17:23:46 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/28 12:33:07 by ymeziane         ###   ########.fr       */
+/*   Created: 2024/04/02 12:29:08 by ymeziane          #+#    #+#             */
+/*   Updated: 2024/04/02 12:29:19 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +51,7 @@ static void	handle_exit(t_token **tokenlist, t_data **data, char **expression,
 			exit_bash(args, data, tokenlist, expression);
 	}
 }
+
 // Executes the builtin command in the token.
 void	exec_builtins(t_token **tokenlist, t_data **data, char **expression,
 		char **args)

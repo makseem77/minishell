@@ -1,5 +1,6 @@
 .ccls-cache/
 .vs-code/
+.vscode/
 test.c
 test
 minishell_tester/

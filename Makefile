@@ -11,18 +11,20 @@ LIBFT_DIR = libft
 SRC_DIR = src
 OBJ_DIR = obj
 
-SRC_FILES = main loop signals\
+SRC_FILES = main loop \
 			builtins/ft_unset builtins/ft_pwd builtins/ft_cd \
 			builtins/ft_env builtins/ft_echo builtins/ft_exit \
 			builtins/export/export builtins/export/export_utils \
-			tokenize/variable/check_variable tokenize/variable/convert_to_value \
-			tokenize/clean_up tokenize/fill_tokenlist \
-			parsing/redirections/pars_redirects parsing/redirections/fd_redirects parsing/redirections/redirections_utils \
-			parsing/check_cmd parsing/set_type \
 			execution/exec_line/exec_line execution/exec_line/exec_expression \
 			execution/exec_builtins execution/exec_utils execution/pipes execution/redirections \
-			utils/lst_utils utils/print_utils utils/env_utils \
 			free/free_array free/free_struct \
+			parsing/redirections/clean_redirects parsing/redirections/pars_redirects \
+			parsing/redirections/fd_redirects parsing/redirections/redirections_utils \
+			parsing/check_cmd parsing/set_type \
+			signals/hd_signals signals/signals \
+			tokenize/variable/check_variable tokenize/variable/convert_to_value \
+			tokenize/clean_up tokenize/fill_tokenlist \
+			utils/lst_utils utils/print_utils utils/env_utils \
 
 SRC = $(addprefix $(SRC_DIR)/, $(addsuffix .c, $(SRC_FILES)))
 OBJ = $(addprefix $(OBJ_DIR)/, $(addsuffix .o, $(SRC_FILES)))

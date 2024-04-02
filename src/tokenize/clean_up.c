@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 11:57:41 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/28 12:17:51 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/04/02 12:34:21 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,8 @@ t_token	*clean_up_quotes(t_token *tmp)
 	if (ft_strcmp(tmp->element, "\"\"") == 0
 		|| ft_strcmp(tmp->element, "\'\'") == 0)
 		tmp->ttype = EMPTY;
-	if ((ft_strcmp(tmp->element, "\"|\"") == 0) || ft_strcmp(tmp->element, "\'|\'") == 0)
+	if ((ft_strcmp(tmp->element, "\"|\"") == 0)
+		|| ft_strcmp(tmp->element, "\'|\'") == 0)
 		return (tmp);
 	new_element = malloc(ft_strlen(tmp->element) - (quotes_to_del) + 1);
 	clean_up_new_el(tmp->element, new_element);
@@ -122,29 +123,3 @@ int	clean_up_tokens(t_token **tokenlist)
 	}
 	return (1);
 }
-
-// void	clean_up_redirection(t_token **tokenlist)
-// {
-// 	t_token	*tmp;
-// 	t_token	*next;
-// 	char	**holder;
-// 	int	i;
-//
-// 	tmp = *tokenlist;
-// 	prev = NULL;
-// 	while (tmp)
-// 	{
-// 		if (has_separator(tmp->element))
-// 		{
-// 			holder = ft_split(tmp->element, ' ');
-// 			tmp->element = ft_strdup(holder[i]); 
-// 			while (holder[i])
-// 			{
-// 				next = tmp->next;
-// 				tmp->next = create_new_token();
-// 				tmp->next->next = next;
-// 			}
-// 		}
-// 		
-// 	}
-// }
