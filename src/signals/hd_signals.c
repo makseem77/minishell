@@ -60,8 +60,9 @@ static void	heredoc_loop(t_data **data, t_token **tokenlist)
 {
 	char	*line;
 
-	free_token_list(tokenlist);
 	free_data_struct(*data);
+	close_all_pipes(tokenlist, NULL, 0);
+	free_token_list(tokenlist);
 	while (true)
 	{
 		line = readline("> ");

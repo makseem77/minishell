@@ -46,6 +46,8 @@ void	close_all_pipes(t_token **tokenlist, int **fds, int nb_pipe)
 			close(tmp->fd_in);
 		tmp = tmp->next;
 	}
+	if (!fds)
+		return ;
 	while (i < nb_pipe)
 	{
 		close(fds[i][0]);
