@@ -15,7 +15,7 @@
 static int	create_and_set_fd(t_token *tmp, t_token *command_token,
 		t_data **data, t_token **tokenlist)
 {
-	if (ft_strncmp(tmp->element, ">>", 2) == 0 || ft_strcmp(tmp->element,
+	if (ft_strcmp(tmp->element, ">>") == 0 || ft_strcmp(tmp->element,
 			">") == 0)
 	{
 		if (ft_strncmp(tmp->element, ">>", 2) == 0)
@@ -23,7 +23,7 @@ static int	create_and_set_fd(t_token *tmp, t_token *command_token,
 		else
 			return (create_or_truncate(tmp, command_token, data));
 	}
-	else if (ft_strncmp(tmp->element, "<<", 2) == 0 || ft_strcmp(tmp->element,
+	else if (ft_strcmp(tmp->element, "<<") == 0 || ft_strcmp(tmp->element,
 			"<") == 0)
 	{
 		if (ft_strncmp(tmp->element, "<<", 2) == 0)
