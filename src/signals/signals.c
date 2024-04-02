@@ -6,11 +6,22 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 15:47:33 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/04/02 13:04:21 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/04/02 14:05:51 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	handle_sigquit(int sig)
+{
+	if (sig == SIGQUIT && g_status == -1)
+	{
+		ft_putstr_fd("Quit (core dumped)\n", 1);
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		g_status = 131;
+	}
+}
 
 int	exited_status(int status)
 {
@@ -29,6 +40,6 @@ int	exited_status(int status)
 
 void	init_signals(void)
 {
-	signal(SIGINT, handle_signals);
+	signal(SIGINT, handle_sigint);
 	signal(SIGQUIT, SIG_IGN);
 }

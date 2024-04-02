@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 12:24:09 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/03/28 12:54:37 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/04/02 14:03:51 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ void	execute_line(t_token **tokenlist, t_data **data)
 	{
 		args = tokens_to_array(tokenlist);
 		g_status = -1;
+		signal(SIGQUIT, handle_sigquit);
 		(*data)->pipe_fds = init_pipes(data);
 		right_pid = exec_all_cmds(tokenlist, data, args);
 		close_all_write_pipes(data);

@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 12:59:41 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/04/02 13:11:07 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/04/02 14:04:29 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -257,11 +257,12 @@ int						set_token_types(t_token **tokenlist, t_data **data);
 //////////////////////////////////////////////////////////////////
 //	SIGNALS FOLDER
 //	HD SIGNALS
-void					handle_signals(int signal);
+void					handle_sigint(int signal);
 void					set_up_heredoc(int fd, char *limiter);
 int						write_to_heredoc(bool command, t_data **data,
 							t_token **tokenlist);
 //	SIGNALS
+void					handle_sigquit(int sig);
 int						exited_status(int status);
 void					init_signals(void);
 //////////////////////////////////////////////////////////////////

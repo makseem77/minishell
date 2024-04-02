@@ -6,7 +6,7 @@
 /*   By: ymeziane <ymeziane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 12:57:05 by ymeziane          #+#    #+#             */
-/*   Updated: 2024/04/02 13:04:25 by ymeziane         ###   ########.fr       */
+/*   Updated: 2024/04/02 13:43:56 by ymeziane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static void	free_in_hd(t_heredoc_handler g_heredoc_struct)
 		close(g_heredoc_struct.g_fd_hd);
 }
 
-void	handle_signals(int signal)
+void	handle_sigint(int signal)
 {
 	int	i;
 	int	end;
