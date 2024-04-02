@@ -64,7 +64,7 @@ static void	handle_signals(int signal)
 void	init_signals(void)
 {
 	signal(SIGINT, handle_signals);
-	signal(SIGQUIT, handle_signals);
+	signal(SIGQUIT, SIG_IGN);
 }
 
 void	free_in_hd(t_heredoc_handler heredoc_struct)
