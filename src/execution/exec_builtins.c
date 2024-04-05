@@ -113,7 +113,11 @@ bool	check_and_exec_single_builtin(t_token **tokenlist, t_data **data,
 			close(saved_stdin);
 		}
 		else
+		{
+			close(saved_stdout);
+			close(saved_stdin);
 			g_status = 1;
+		}
 		return (true);
 	}
 	return (false);
