@@ -109,15 +109,11 @@ bool	check_and_exec_single_builtin(t_token **tokenlist, t_data **data,
 			exec_builtins(tokenlist, data, expression, args);
 			dup2(saved_stdout, STDOUT_FILENO);
 			dup2(saved_stdin, STDIN_FILENO);
-			close(saved_stdout);
-			close(saved_stdin);
 		}
 		else
-		{
-			close(saved_stdout);
-			close(saved_stdin);
 			g_status = 1;
-		}
+		close(saved_stdout);
+		close(saved_stdin);
 		return (true);
 	}
 	return (false);
