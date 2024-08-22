@@ -12,6 +12,10 @@
 
 #include "minishell.h"
 
+//Here we handle the sigquit signal like so:
+//If the status is not -1 (meaning if we are not in the process of a bash command)
+//and the status code has been set to 0, 1 or anything, we handle sigquit by writing
+//a message and redisplaying a  prompt.
 void	handle_sigquit(int sig)
 {
 	if (sig == SIGQUIT && g_status == -1)
@@ -23,6 +27,7 @@ void	handle_sigquit(int sig)
 	}
 }
 
+//This function goal is to get the right exit status after the end of a command.
 int	exited_status(int status)
 {
 	int	exit_status;
@@ -38,6 +43,7 @@ int	exited_status(int status)
 	return (exit_status);
 }
 
+//This function initializes the siginte signal to a custom function and the sigquit signal to be ignored (SIG_IGN).
 void	init_signals(void)
 {
 	signal(SIGINT, handle_sigint);

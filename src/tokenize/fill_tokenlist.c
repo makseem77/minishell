@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-// Creates a new token, adds a duplicate of element and returns it.
+// Creates a new token, adds a duplicate of the element and returns the newly created token.
 t_token	*create_new_token(char *element)
 {
 	t_token	*token;
@@ -92,9 +92,11 @@ static char	*get_element(char *line)
 // Creates and adds a new token to the end of tokenlist.
 // Returns the pointer to line incremented by the len of the element
 // to the end of the element.
-// If the element is a var ($VAR) it will replace the variable by its value.
-// If the element has a variable in it,
+// If the element is a var ($VAR) or has a variable within, it will replace the variable by its value.
 // we replace it by it's value so we can tokenize it.
+// exemple: echo $USER will give this linked list: echo -> username
+// As you can see, we return a pointer to line + the lenght of the element we just converted so we
+// can keep going trough the line.
 static char	*add_token(char *line, t_token **tokenlist, t_env_list **env)
 {
 	t_token	*tmp;
@@ -125,6 +127,8 @@ static char	*add_token(char *line, t_token **tokenlist, t_env_list **env)
 // and adds a token every time it encounters an element of a bash expression.
 // The add token while increment the line pointer to the end of the element
 // so you can then continue trough the rest of the line.
+// For instance, a promt like: ls -l src/ 
+// will create a linked list like so: ls -> -l -> src -> NULL
 t_token	**tokenize(char *line, t_data **data)
 {
 	t_token	**tokenlist;

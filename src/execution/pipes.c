@@ -12,6 +12,8 @@
 
 #include "minishell.h"
 
+//This functions creates an array of int arrays of size 2 that will store 
+//all the pipe file descriptors.
 int	**init_pipes(t_data **data)
 {
 	int	**fds;

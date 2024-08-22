@@ -41,6 +41,10 @@ static bool	is_minishell(char *cmd)
 	return (false);
 }
 
+//Here we are almost to the point where we actually launch the command. We have our line
+//like ls | cat | sort , we need to cut it to keep only one command according to the index
+//Then we configure the output and input according to possible pipes and we check if the command
+//is a built-in, a command or a invalid command.
 static void	execute_child_process(t_token **tokenlist, t_data **data, int index,
 		char **args)
 {
@@ -66,6 +70,10 @@ static void	execute_child_process(t_token **tokenlist, t_data **data, int index,
 	g_status = 1;
 }
 
+//This is the function we use to execute each expression. First we check if the 
+//expression is a single built-in (if this is the case, we don't execute it in a 
+//forked process). If it's not the case, we fork the process and execute the command
+//in it by calling the execute_child_process function.
 pid_t	exec_expression(t_token **tokenlist, t_data **data, int index,
 		char **args)
 {

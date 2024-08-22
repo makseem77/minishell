@@ -12,6 +12,8 @@
 
 #include "minishell.h"
 
+//This variable is used to store the exit code of the last command executed 
+//in the  shell.
 int		g_status = 0;
 
 // The main loop of the program

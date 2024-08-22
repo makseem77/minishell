@@ -13,8 +13,8 @@
 #include "minishell.h"
 
 //Sets the data structure.
-//Returns true if the data structure is set, false otherwise.
-//The data structure is set by allocating memory for it and setting its fields.
+//Returns true if the data structure is set succesfully, false otherwise.
+//The data structure is created by allocating memory for it and setting its fields.
 //The old_pwd field is set to the current directory.
 //The env field is set to the environment variables.
 //The exp_list field is set to the export variables.

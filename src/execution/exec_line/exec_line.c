@@ -22,6 +22,8 @@ void	free_after_execution(t_token **tokenlist, t_data **data, char **args,
 	free_token_list(tokenlist);
 }
 
+//Here we simply loop over the line and execute each expression. 
+//If "ls -l | sort | rev | cat -n" is a line, "ls- l" is an expression, "sort" is an expression ect..
 static pid_t	exec_all_cmds(t_token **tokenlist, t_data **data, char **args)
 {
 	int		i;
@@ -51,6 +53,11 @@ void	close_all_write_pipes(t_data **data)
 	}
 }
 
+//This function is the beginning of the executing part.
+//We have our tokenlist with type assigned for each tokens, we processed all the
+//possible redirections and stored the fds of input and output of each command and
+//cleaned all tokens relative to redirections. We are now almost ready to execute 
+//our commands.
 void	execute_line(t_token **tokenlist, t_data **data)
 {
 	char	**args;

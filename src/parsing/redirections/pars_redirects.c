@@ -12,6 +12,8 @@
 
 #include "minishell.h"
 
+//This functions  goal is to create the file and set the fd of the file created in the
+//command token.
 static int	create_and_set_fd(t_token *tmp, t_token *command_token,
 		t_data **data, t_token **tokenlist)
 {
@@ -34,6 +36,9 @@ static int	create_and_set_fd(t_token *tmp, t_token *command_token,
 	return (1);
 }
 
+//Returns the cmd token from  the token list, depending on the expr_index
+//if expr_index is 0, and we have ls |  rev | cat, it will return the token with ls.
+//if expr_index is 3, it will return cat.
 static t_token	*get_cmd_token(t_token **tokenlist, int expr_index)
 {
 	t_token	*tmp;
@@ -52,6 +57,13 @@ static t_token	*get_cmd_token(t_token **tokenlist, int expr_index)
 	return (NULL);
 }
 
+//The goal of this function is to, when given a tokenlist, find where the 
+//output of the command token be sent to.
+//Example: ls > file.txt
+//Our function will detect the ">", create a file named file.txt and store its 
+//file descriptor in the command token.
+//Likewise for the "<" but it will not create the file, and store the file descriptor
+//so the command can read from it.
 int	handle_redirections(t_token **tokenlist, t_data **data)
 {
 	t_token	*tmp;

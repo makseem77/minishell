@@ -64,6 +64,9 @@ static int	compute_new_element_len(char *element, t_env_list **env)
 	return (new_element_len);
 }
 
+//This functions aims to convert a "word" extracted from the prompt line that is or has within it
+//an environment variable, like $USER or xxx$USER.
+//We want to convert the $VAR to its value before putting it into the tokenlist.
 char	*convert_element(char *element, t_env_list **env)
 {
 	char	*new_element;

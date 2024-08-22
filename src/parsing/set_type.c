@@ -88,6 +88,7 @@ static void	types_assignement(t_token **tokenlist, t_env_list **env,
 
 // Goes trough the token linked list
 // and gives a tokentype to every node of the list.
+// Also calls the handle_redirections function which will do its job.
 int	set_token_types(t_token **tokenlist, t_data **data)
 {
 	if (check_tokens_syntax(tokenlist, data) == -1)
